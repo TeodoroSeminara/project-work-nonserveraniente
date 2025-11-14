@@ -1,0 +1,16 @@
+* {
+  font-family: "Space Grotesk", sans-serif !important;
+}
+
+a{
+  text-decoration: none;
+}
+
+li{
+  list-style: none;
+} 
+
+/* Style Logo NavBar */
+.navbar__logo{
+  color: #f47b73;
+}
