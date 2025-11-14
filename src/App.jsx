@@ -5,7 +5,10 @@ function App() {
 
   return (
     <>
-      <h1>Hello</h1>
+      <div className='container'>div</div>
+      <div className='bg-primary'>div2</div>
+      <div>div3</div>
+      <p className='text-body-secondary'>Hello</p>
     </>
   )
 }
