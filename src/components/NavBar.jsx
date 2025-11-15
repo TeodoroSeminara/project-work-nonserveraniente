@@ -4,15 +4,19 @@ import { Link } from "react-router-dom"
 import { ShoppingCart, Heart, Search, Badge } from "lucide-react";
 
 export default function NavBar() {
+
+  
+
   return (
     <>
      <nav className="container d-flex justify-content-between p-3">
       {/* Logo */}
-       <h1 className="navbar__logo fs-4 ">NonServeaNiente</h1>
+      <Link path="/"><h1 className="navbar__logo fs-4 ">NonServeaNiente</h1></Link>
        {/* Elementi di navigazione con icone annesse */}
         <ul className="d-flex justify-content-between gap-5 ">
           <li>
             <Link >
+            {/* SearchBar */}
                 <Search 
                 size={18}
                 color="#000"/>
@@ -20,6 +24,7 @@ export default function NavBar() {
           </li>
           <li>
             <Link >
+            {/* Wishlist */}
                 <Heart 
                 size={18}
                 color="#000"/>
@@ -28,6 +33,7 @@ export default function NavBar() {
           <li>
             <div className="position-relative">
             <Link>
+            {/* Carrello */}
               <ShoppingCart 
               size={18}
               color="#000"

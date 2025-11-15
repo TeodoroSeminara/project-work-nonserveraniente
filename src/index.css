@@ -1,16 +1,8 @@
 * {
-  font-family: "Space Grotesk", sans-serif !important;
+  font-family: "Space Grotesk", sans-serif;
 }
 
-a{
-  text-decoration: none;
-}
-
-li{
-  list-style: none;
-} 
-
-/* Style Logo NavBar */
-.navbar__logo{
-  color: #f47b73;
+:root{
+  /* colore per alcuni dettagli */
+  --text: #f47b73;
 }
