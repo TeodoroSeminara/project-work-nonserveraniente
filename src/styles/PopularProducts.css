@@ -1,0 +1,24 @@
+.products-section {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 50px auto;
+}
+
+.products-section-title {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.products-section-p {
+    color: #444444;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.products-section-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    justify-content: center;
+}
