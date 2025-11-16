@@ -17,7 +17,7 @@ export default function AllProducts() {
       className="products-section"
       id="all-products"
     >
-      <h2 className="products-section-title">Tutti i prodotti</h2>
+      <h2 className="products-section-title">Bello...</h2>
 
       <div className="products-section-flex">
         {products.map((p) => (

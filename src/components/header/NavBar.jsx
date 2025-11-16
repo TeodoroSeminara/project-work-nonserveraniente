@@ -11,7 +11,7 @@ export default function NavBar() {
     <>
      <nav className="container d-flex justify-content-between p-3">
       {/* Logo */}
-      <Link path="/"><h1 className="navbar__logo fs-4 ">NonServeaNiente</h1></Link>
+      <Link to="/"><h1 className="navbar__logo fs-4 ">NonServeaNiente</h1></Link>
        {/* Elementi di navigazione con icone annesse */}
         <ul className="d-flex justify-content-between gap-5 ">
           <li>
