@@ -1,4 +1,4 @@
-import "../styles/FinalCTA.css";
+import "../../styles/FinalCTA.css";
 
 export default function FinalCTA({ onExploreAll }) {
     const handleClick = () => {

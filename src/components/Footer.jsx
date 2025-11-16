@@ -1,5 +1,5 @@
 // Footer presente in tutte le pagine
-import './style/Footer.css'
+import '../styles/Footer.css'
 
 export default function Footer(){
   return (

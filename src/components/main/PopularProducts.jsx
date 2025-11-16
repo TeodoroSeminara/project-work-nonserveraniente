@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getProducts } from "../services/api";
+import { getProducts } from "../../services/api";
 import { ProductCard } from "./ProductCard";
-import "../styles/PopularProducts.css"
+import "../../styles/PopularProducts.css"
 
 // Prendiamo i primi 4 prodotti dal mock
 export default function PopularProducts() {

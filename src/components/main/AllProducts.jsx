@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getProducts } from "../services/api";
+import { getProducts } from "../../services/api";
 import { ProductCard } from "./ProductCard";
-import "../styles/PopularProducts.css";
+import "../../styles/PopularProducts.css";
 
 export default function AllProducts() {
   const [products, setProducts] = useState([]);

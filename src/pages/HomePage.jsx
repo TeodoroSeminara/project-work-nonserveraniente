@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Hero } from "../components/Hero";
-import PopularProducts from "../components/PopularProducts";
-import LastAdded from "../components/LastAdded";
-import FinalCTA from "../components/FinalCTA";
-import AllProducts from "../components/AllProducts";
+import { Hero } from "../components/hero/Hero";
+import PopularProducts from "../components/main/PopularProducts";
+import LastAdded from "../components/main/LastAdded";
+import FinalCTA from "../components/hero/FinalCTA";
+import AllProducts from "../components/main/AllProducts";
 
 export default function HomePage() {
   // Stato che dice se mostrare o no la sezione "Tutti i prodotti"

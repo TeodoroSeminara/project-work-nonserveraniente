@@ -1,4 +1,4 @@
-import "../styles/Hero.css";
+import "../../styles/Hero.css";
 
 export function Hero() {
     // Funzione chiamata quando clicchi il bottone
