@@ -53,7 +53,14 @@
     padding: 10px 20px;
     border-radius: 12px;
     background-color: #ffffff;
-    color: #111;
+    color: var(--text);
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hero-content button:hover {
+    background-color: var(--bg);
+    color: white;
+    transform: scale(1.05);
 }
