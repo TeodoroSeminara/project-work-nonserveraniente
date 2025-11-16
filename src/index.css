@@ -7,3 +7,7 @@
   --text: #f47b73;
   --bg: #ff867d;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}

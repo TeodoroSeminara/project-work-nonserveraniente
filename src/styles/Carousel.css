@@ -52,3 +52,27 @@
     color: #444;
     text-align: right;
 }
+
+@media (max-width: 1120px) {
+
+    .product-card {
+        width: 270px;
+    }
+
+    .product-card-image-wrapper {
+        height: 210px;
+    }
+
+}
+
+@media screen and (max-width: 670px) {
+
+    .product-card {
+        width: 350px;
+    }
+
+    .product-card-image-wrapper {
+        height: 270px;
+    }
+
+}

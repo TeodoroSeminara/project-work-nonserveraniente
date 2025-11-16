@@ -1,61 +1,84 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ProductCard } from "./ProductCard";
+import "../../styles/PopularProducts.css";
 import "../../styles/Carousel.css"
-import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-// Questo componente mostra una lista di prodotti con un carosello.
-// Riceve:
-// - products: array di prodotti da mostrare
-// - itemsPerPage: quanti prodotti mostrare per pagina (default 4)
-export default function Carousel({ products, itemsPerPage = 4 }) {
+export default function Carousel({ products, defaultItemsPerPage = 4 }) {
 
-    // Indice di partenza del gruppo di prodotti visibili
-    const [startIndex, setStartIndex] = useState(0);
+  const [startIndex, setStartIndex] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(defaultItemsPerPage);
 
-    // Se non ci sono prodotti, non renderizziamo nulla
-    if (!products || products.length === 0) {
-        return null
+  // Effetto che decide quante card mostrare in base alla larghezza dello schermo
+  useEffect(() => {
+    function updateItemsPerPage() {
+      const width = window.innerWidth;
+
+      if (width < 670) {
+        setItemsPerPage(1);      
+      } else if (width < 1120) {
+        setItemsPerPage(2);      
+      } else {
+        setItemsPerPage(defaultItemsPerPage); 
+      }
+
+      // Ogni volta che cambia layout, torniamo alla prima pagina
+      setStartIndex(0);
     }
 
-    // Calcoliamo il massimo indice di partenza possibile
-    const maxStartIndex = Math.max(products.length - itemsPerPage, 0);
+    updateItemsPerPage(); // chiamata iniziale
 
-    // Prodotti visibili nell apgina attuale del carosello
-    const visibleProducts = products.slice(
-        startIndex,
-        startIndex + itemsPerPage
-    );
-    //Numero totale di pagine (gruppi da itemsPerPage)
-    const totalPages = Math.ceil(products.length / itemsPerPage);
+    window.addEventListener("resize", updateItemsPerPage);
 
-    // Pagina corrente: partiamo da 1 non da 0
-    const currentPage = Math.floor(startIndex / itemsPerPage) + 1;
-
-    // Vai alla pagina successiva (sposta l'indice di partenza in avanti)
-    const handleNext = () => {
-        setStartIndex((prev) => Math.min(prev + itemsPerPage, maxStartIndex))
+    return () => {
+      window.removeEventListener("resize", updateItemsPerPage);
     };
+  }, [defaultItemsPerPage]);
 
-    //Torna alla pagina precedente
-    const handlePrev = () => {
-        setStartIndex((prev) => Math.max(prev - itemsPerPage, 0))
-    };
+  // 2) SOLO ORA possiamo fare il return condizionale
+  if (!products || products.length === 0) {
+    return null;
+  }
+
+  const maxStartIndex = Math.max(products.length - itemsPerPage, 0);
+  const visibleProducts = products.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const currentPage = Math.floor(startIndex / itemsPerPage) + 1;
+
+  const handleNext = () => {
+    setStartIndex((prev) => Math.min(prev + itemsPerPage, maxStartIndex));
+  };
+
+  const handlePrev = () => {
+    setStartIndex((prev) => Math.max(prev - itemsPerPage, 0));
+  };
+
 
     return (
         <div className="products-carousel">
             <div className="products-carousel-row">
-                <button className="carousel-button"
+                {/* Bottone pagina precedente */}
+                <button
+                    className="carousel-button"
                     onClick={handlePrev}
                     disabled={startIndex === 0}
                     aria-label="Pagina precedente"
                 >
                     <FiChevronLeft />
                 </button>
+
+                {/* Card visibili (1, 2 o 4 a seconda della larghezza) */}
                 <div className="product-section-carousel-flex">
                     {visibleProducts.map((p) => (
                         <ProductCard key={p.id} product={p} />
                     ))}
                 </div>
+
+                {/* Bottone pagina successiva */}
                 <button
                     className="carousel-button"
                     onClick={handleNext}
@@ -65,9 +88,10 @@ export default function Carousel({ products, itemsPerPage = 4 }) {
                     <FiChevronRight />
                 </button>
             </div>
-            <p className="products-carousel-counter">
+
+            <p className="products-carousel-indicator">
                 {currentPage} di {totalPages}
             </p>
         </div>
-    )
+    );
 }
