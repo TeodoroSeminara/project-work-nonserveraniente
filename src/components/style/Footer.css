@@ -1,0 +1,26 @@
+a{
+  text-decoration: none !important;
+}
+
+li{
+  list-style: none;
+} 
+
+.footer-ul{
+  padding: 0;
+  margin: 0;
+}
+
+.footer-h4{
+  font-size: 1.40rem;
+}
+
+.footer-li-info{
+  font-size: 0.80rem;
+}
+
+/* Style Logo NavBar */
+.navbar__logo{
+  color: var(--text);
+  cursor: pointer;
+}
