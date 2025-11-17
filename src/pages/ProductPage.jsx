@@ -16,9 +16,9 @@ export default function ProductPage() {
       description:
         "Descrizione provvisoria del prodotto. Poi la sostituirai con quella vera.",
       images: [
-        "Immagine1",
-        "Immagine2",
-        "Immagine3",
+        "https://picsum.photos/600/400",
+        "https://picsum.photos/200",
+        "https://picsum.photos/id/237/600/400",
         "Immagine4",
       ],
     }
@@ -37,15 +37,16 @@ export default function ProductPage() {
         <img className="main-image" src={mainImage} alt="Main product" />
 
         <div className="thumbnail-row">
-          {product.images.slice(1).map((img, index) => (
-            <img
-              key={index}
-              src={img}
-              className="thumbnail"
-              onClick={() => setMainImage(img)}
-            />
+          {product.images.map((img, index) => (
+          <img
+            key={index}
+            src={img}
+            className="thumbnail"
+            onClick={() => setMainImage(img)}
+          />
           ))}
         </div>
+
       </div>
 
       {/* Colonna a destra */}
