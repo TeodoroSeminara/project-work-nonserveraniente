@@ -1,12 +1,13 @@
 import { useParams, Link } from "react-router-dom"
 import { useEffect, useState } from "react"
-import "./ProductPage.css"
+import "../styles/ProductPage.css";
 
 export default function ProductPage() {
   const { id } = useParams()
 
   const [product, setProduct] = useState(null)
   const [mainImage, setMainImage] = useState("")
+  const [activeIndex, setActiveIndex] = useState(0)
 
   useEffect(() => {
     const fakeProduct = {
@@ -19,7 +20,6 @@ export default function ProductPage() {
         "https://picsum.photos/600/400",
         "https://picsum.photos/200",
         "https://picsum.photos/id/237/600/400",
-        "Immagine4",
       ],
     }
 
@@ -27,29 +27,58 @@ export default function ProductPage() {
     setMainImage(fakeProduct.images[0])
   }, [id])
 
+  function selectImage(index) {
+    setActiveIndex(index)
+    setMainImage(product.images[index])
+  }
+
+  function prevImage() {
+    const newIndex = (activeIndex - 1 + product.images.length) % product.images.length
+    selectImage(newIndex)
+  }
+
+  function nextImage() {
+    const newIndex = (activeIndex + 1) % product.images.length
+    selectImage(newIndex)
+  }
+
   if (!product) return <h2>Caricamento...</h2>
 
   return (
     <div className="product-container">
 
-      {/* Colonna a sinistra */}
       <div className="product-image-section">
         <img className="main-image" src={mainImage} alt="Main product" />
 
         <div className="thumbnail-row">
-          {product.images.map((img, index) => (
-          <img
-            key={index}
-            src={img}
-            className="thumbnail"
-            onClick={() => setMainImage(img)}
-          />
-          ))}
-        </div>
 
+          {/* FRECCIA SINISTRA */}
+          <button className="arrow-btn" onClick={prevImage}>
+            ‹
+          </button>
+
+          {/* MINIATURE */}
+          <div className="thumbnail-wrapper">
+            {product.images.map((img, index) => (
+              <img
+                key={index}
+                src={img}
+                className={
+                  index === activeIndex ? "thumbnail selected" : "thumbnail"
+                }
+                onClick={() => selectImage(index)}
+              />
+            ))}
+          </div>
+
+          {/* FRECCIA DESTRA */}
+          <button className="arrow-btn" onClick={nextImage}>
+            ›
+          </button>
+
+        </div>
       </div>
 
-      {/* Colonna a destra */}
       <div className="product-info-box">
         <h1 className="product-title">{product.name}</h1>
         <p className="product-price">€ {product.price}</p>
