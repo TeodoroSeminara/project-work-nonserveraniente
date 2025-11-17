@@ -1,0 +1,48 @@
+.final-cta {
+    width: 100%;
+    padding: 40px 16px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Box interno con larghezza massima */
+.final-cta-inner {
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+    padding: 30px 20px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #ff8f7d, #fca594);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.final-cta-title {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+}
+
+.final-cta-p {
+    color: #444;
+    margin-bottom: 20px;
+}
+
+.final-cta-button {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 26px;
+    background-color: #111;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 600px) {
+    .final-cta-inner {
+        padding: 24px 16px;
+    }
+
+    .final-cta-title {
+        font-size: 1.5rem;
+    }
+}

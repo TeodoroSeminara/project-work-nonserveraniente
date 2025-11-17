@@ -1,0 +1,20 @@
+import "../../styles/FinalCTA.css";
+
+export default function FinalCTA({ onExploreAll }) {
+    const handleClick = () => {
+        // Controllo di sicurezza: onExploreAll deve essere una funzione
+        if (typeof onExploreAll === "function") {
+            onExploreAll();
+        }
+    };
+
+    return (
+        <section className="final-cta">
+            <div className="final-cta-inner">
+                <h2 className="final-cta-title">Pronto a Sprecare i tuoi risparmi?</h2>
+                <p className="final-cta-p">Hai visto il peggio, ma il meglio del peggio ti sta ancora aspettando.</p>
+                <button className="final-cta-button" onClick={handleClick}>Esplora tutti i prodotti</button>
+            </div>
+        </section>
+    );
+}
