@@ -12,13 +12,9 @@ export function Hero() {
 
     return (
         <section className="hero">
-            <video
-                className="hero-video"
-                src="/videos/hero-background.mp4" 
-                autoPlay        
-                muted           
-                loop           
-                playsInline    
+            <img
+                className="hero-img"
+                src="/images/hero-background.png"  
             />
             <div className="hero-overlay">
                 <div className="hero-content">

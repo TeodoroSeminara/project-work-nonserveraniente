@@ -18,10 +18,10 @@ export default function Carousel({ products, defaultItemsPerPage = 4 }) {
     function updateItemsPerPage() {
       const width = window.innerWidth;
 
-      if (width < 480) {
+      if (width < 670) {
         // Mobile piccolo: 1 card per pagina
         setItemsPerPage(1);
-      } else if (width < 768) {
+      } else if (width < 1120) {
         // Tablet: 2 card per pagina
         setItemsPerPage(2);
       } else {

@@ -29,8 +29,8 @@
     border: none;
     padding: 10px 20px;
     border-radius: 12px;
-    background: var(--bg);
-    color: white;
+    background: white;
+    color: var(--text);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -38,9 +38,9 @@
 }
 
 .load-more-button:hover {
-    transform: scale(1.05);
-    background: white;
-    color: var(--text);
+    transform: scale(1.2);
+    background: var(--bg);
+    color: white;
 }
 
 .go-back-button,

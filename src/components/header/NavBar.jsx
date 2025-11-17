@@ -10,7 +10,7 @@ export default function NavBar() {
 
   return (
     <>
-      <nav className="container d-flex justify-content-between p-3">
+      <nav className="container d-flex justify-content-between p-3 navbar">
         {/* Logo */}
         <Link to="/"><h1 className="navbar-logo fs-3 m-0">NonServeaNiente</h1></Link>
         {/* Elementi di navigazione con icone annesse */}
