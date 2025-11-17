@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { getProducts } from "../services/api"
 import "../styles/ProductPage.css";
 
 export default function ProductPage() {
