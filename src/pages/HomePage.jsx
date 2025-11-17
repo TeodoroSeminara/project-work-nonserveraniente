@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Hero } from "../components/hero/Hero";
 import PopularProducts from "../components/main/PopularProducts";
@@ -31,6 +32,7 @@ export default function HomePage() {
 
   return (
     <>
+
       <Hero />
       <PopularProducts />
       <LastAdded />
