@@ -42,7 +42,7 @@
 }
 
 .carousel-button:hover:not(:disabled) {
-    background-color: var(--bg);
+    background: var(--bg);
     color: white;
     transform: scale(1.2);
 }

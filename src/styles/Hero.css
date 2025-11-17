@@ -62,7 +62,7 @@
 }
 
 .hero-content button:hover {
-    background-color: var(--bg);
+    background: var(--bg);
     color: white;
     transform: scale(1.05);
 }

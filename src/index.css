@@ -5,7 +5,7 @@
 :root{
   /* colore per alcuni dettagli */
   --text: #f47b73;
-  --bg: #ff867d;
+  --bg: linear-gradient(90deg,rgb(253, 159, 127) 0%, rgb(255, 173, 65) 100%);
 }
 
 ::-webkit-scrollbar {
