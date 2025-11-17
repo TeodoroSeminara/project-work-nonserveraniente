@@ -43,11 +43,6 @@ export default function HomePage() {
 
       {/* Questa sezione appare solo dopo il click */}
       {showAllProducts && <AllProducts />}
-
-      {/* Bottone temporaneo per testare la ProductPage */}
-      <Link to="/1">
-        <button>Vai al prodotto di test</button>
-      </Link>
     </>
   );
 }
