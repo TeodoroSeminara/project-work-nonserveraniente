@@ -1,3 +1,5 @@
+/* DESKTOP */
+
 .product-container {
   display: flex;
   gap: 20px;
@@ -6,15 +8,32 @@
   margin: 0 auto;
 }
 
-.product-image-box {
+/* IMMAGINI */
+.product-image-section {
   flex: 1;
 }
 
-.product-image {
+.main-image {
   width: 100%;
   border-radius: 4px;
+  margin-bottom: 10px;
 }
 
+.thumbnail-row {
+  display: flex;
+  gap: 10px;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+/* INFO */
 .product-info-box {
   flex: 1;
   display: flex;
@@ -42,4 +61,21 @@
   text-decoration: none;
   display: inline-block;
   color: inherit;
+}
+
+/* VERSIONE MOBILE */
+
+@media (max-width: 768px) {
+  .product-container {
+    flex-direction: column;
+  }
+
+  .thumbnail-row {
+    justify-content: center;
+  }
+
+  .thumbnail {
+    width: 70px;
+    height: 70px;
+  }
 }

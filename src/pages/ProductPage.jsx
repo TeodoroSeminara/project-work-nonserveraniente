@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 import { useEffect, useState } from "react"
 import "./ProductPage.css"
 
@@ -6,29 +6,49 @@ export default function ProductPage() {
   const { id } = useParams()
 
   const [product, setProduct] = useState(null)
+  const [mainImage, setMainImage] = useState("")
 
   useEffect(() => {
-    // Placeholder temporaneo
     const fakeProduct = {
       id,
       name: "Nome del prodotto",
       price: 49.99,
       description:
-        "Descrizione a cazzo di cane provvisoria ",
-      image: "???",
+        "Descrizione provvisoria del prodotto. Poi la sostituirai con quella vera.",
+      images: [
+        "Immagine1",
+        "Immagine2",
+        "Immagine3",
+        "Immagine4",
+      ],
     }
 
     setProduct(fakeProduct)
+    setMainImage(fakeProduct.images[0])
   }, [id])
 
-  if (!product) return <h2>Prodotto non trovato...</h2>
+  if (!product) return <h2>Caricamento...</h2>
 
   return (
     <div className="product-container">
-      <div className="product-image-box">
-        <img className="product-image" src={product.image} alt={product.name} />
+
+      {/* Colonna a sinistra */}
+      <div className="product-image-section">
+        <img className="main-image" src={mainImage} alt="Main product" />
+
+        <div className="thumbnail-row">
+          {product.images.slice(1).map((img, index) => (
+            <img
+              key={index}
+              src={img}
+              className="thumbnail"
+              onClick={() => setMainImage(img)}
+            />
+          ))}
+        </div>
       </div>
 
+      {/* Colonna a destra */}
       <div className="product-info-box">
         <h1 className="product-title">{product.name}</h1>
         <p className="product-price">€ {product.price}</p>
@@ -36,7 +56,9 @@ export default function ProductPage() {
 
         <button className="product-btn">Aggiungi al carrello</button>
 
-        
+        <Link className="back-home-btn" to="/">
+          Torna alla Home
+        </Link>
       </div>
     </div>
   )
