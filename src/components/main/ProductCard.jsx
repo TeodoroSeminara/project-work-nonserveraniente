@@ -21,5 +21,6 @@ export function ProductCard({ product }) {
                 <p className="product-card-price">{product.price}€</p>
             </div>
         </Link>
+
     );
 }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getProducts } from "../../services/api";
-import { ProductCard } from "./ProductCard";
 import "../../styles/PopularProducts.css"
+import Carousel from "./Carousel";
 
 // Prendiamo i primi 4 prodotti dal mock
 export default function PopularProducts() {
@@ -10,7 +10,7 @@ export default function PopularProducts() {
 
     useEffect(() => {
         getProducts().then((data) => {
-            setProducts(data.slice(0, 4));
+            setProducts(data.slice(0, 12));
         });
     }, []);
 
@@ -18,11 +18,8 @@ export default function PopularProducts() {
         <section className="products-section" id="popular-products">
             <h2 className="products-section-title">Prodotti più popolari</h2>
             <p className="products-section-p">Non li conosce nessuno</p>
-            <div className="products-section-flex">
-                {products.map((p) => (
-                    <ProductCard key={p.id} product={p}/>
-                ))}
-            </div>
+            {/* Carosello di 4 prodotti per pagina */}
+            <Carousel products={products} itemsPerPage={4} />
         </section>
     )
 }

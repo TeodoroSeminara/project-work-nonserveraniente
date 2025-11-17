@@ -37,3 +37,17 @@ export async function getProductById(id) {
   console.log("getProductById - dato dal backend:", data);
   return data;
 }
+
+// (Opzionale) Funzione per recuperare un singolo prodotto per id.
+// Utile se un domani farai una pagina /products/:id
+export async function getProductById(id) {
+  const res = await fetch(`${API_BASE_URL}/${id}`);
+
+  if (!res.ok) {
+    throw new Error("Errore nel recupero del prodotto");
+  }
+
+  const data = await res.json();
+  console.log("getProductById - dato dal backend:", data);
+  return data;
+}
