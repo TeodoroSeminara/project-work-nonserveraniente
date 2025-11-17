@@ -1,11 +1,39 @@
-// Importiamo l'array di prodotti finto (mockProducts.js)
-import { mockProducts } from "../mocks/products";
+// Qui definiamo l'URL base del nostro backend.
+// Il backend gira su localhost:3000 e tutte le rotte prodotti
+// hanno il prefisso /api/nonserveaniente impostato in app.js
+const API_BASE_URL = "http://localhost:3000/api/nonserveaniente";
 
-// Funzione per simulare un piccolo ritardo per farla sembrare chiamata APi
-const delay = (ms) => new Promise((res) => setTimeout(res, ms));
-
-// Funzione per simulare una chiamata API. Poi metteremo una fetch vera
+// Questa funzione chiede TUTTI i prodotti al backend.
+// Viene usata da PopularProducts, LastAdded, AllProducts, ecc.
 export async function getProducts() {
-    await delay(200);
-    return mockProducts;
+  // Facciamo una GET all'endpoint /api/nonserveaniente
+  const res = await fetch(API_BASE_URL);
+
+  // Se la risposta NON è ok, lanciamo un errore.
+  if (!res.ok) {
+    throw new Error("Errore nel recupero dei prodotti");
+  }
+
+  // Convertiamo la risposta in JSON.
+  const data = await res.json();
+
+  // Log di debug
+  console.log("getProducts - dati dal backend:", data);
+
+  // Supponiamo che il backend ritorni già un array di prodotti.
+  return data;
+}
+
+// (Opzionale) Funzione per recuperare un singolo prodotto per id.
+// Utile se un domani farai una pagina /products/:id
+export async function getProductById(id) {
+  const res = await fetch(`${API_BASE_URL}/${id}`);
+
+  if (!res.ok) {
+    throw new Error("Errore nel recupero del prodotto");
+  }
+
+  const data = await res.json();
+  console.log("getProductById - dato dal backend:", data);
+  return data;
 }

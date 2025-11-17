@@ -1,11 +1,14 @@
 import "../../styles/FinalCTA.css";
+import { useNavigate } from "react-router-dom";
 
-export default function FinalCTA({ onExploreAll }) {
+export default function FinalCTA() {
+
+    const navigate = useNavigate();
+
     const handleClick = () => {
-        // Controllo di sicurezza: onExploreAll deve essere una funzione
-        if (typeof onExploreAll === "function") {
-            onExploreAll();
-        }
+
+        navigate("/immondizia")
+
     };
 
     return (

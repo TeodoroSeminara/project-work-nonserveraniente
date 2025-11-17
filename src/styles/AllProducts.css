@@ -1,0 +1,64 @@
+.all-products-wrapper {
+    padding: 20px 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.all-products-footer {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.all-products-counter {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Bottoni */
+.all-products-button-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.load-more-button {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background-color: var(--bg);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.load-more-button:hover {
+    transform: scale(1.05);
+    background-color: white;
+    color: var(--text);
+}
+
+.go-back-button,
+.go-home-button {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background-color: #ffffff;
+    color: var(--text);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.go-back-button:hover,
+.go-home-button:hover {
+    background-color: var(--bg);
+    color: white;
+    transform: scale(1.2);
+}

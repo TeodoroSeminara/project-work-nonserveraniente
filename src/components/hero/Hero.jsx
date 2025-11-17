@@ -1,12 +1,13 @@
 import "../../styles/Hero.css";
+import { useNavigate } from "react-router-dom";
 
 export function Hero() {
+
+    const navigate = useNavigate()
+
     // Funzione chiamata quando clicchi il bottone
     const handleClick = () => {
-        const section = document.getElementById("popular-products");
-        if (section) {
-            section.scrollIntoView({ behavior: "smooth" });
-        }
+        navigate("/catalogo")
     };
 
     return (
@@ -24,7 +25,7 @@ export function Hero() {
                     <h1>Non Serve A Niente</h1>
                     <p>Compra ora, pentiti dopo.</p>
                     <button onClick={handleClick}>
-                        Sei ancora in tempo...
+                        Buona fortuna
                     </button>
                 </div>
             </div>

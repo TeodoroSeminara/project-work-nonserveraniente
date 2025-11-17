@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getProducts } from "../../services/api";
-import { ProductCard } from "./ProductCard";
+import Carousel from "./Carousel";
 // Riutilizziamo lo stesso CSS dei popolari
 import "../../styles/PopularProducts.css";
 
@@ -10,7 +10,7 @@ export default function LastAdded() {
     useEffect(() => {
         getProducts().then((data) => {
             // prendiamo gli ultimi 4 prodotti dal mock
-            const latest = data.slice(-4).reverse();
+            const latest = data.slice(-12).reverse();
             setProducts(latest);
         });
     }, []);
@@ -19,11 +19,7 @@ export default function LastAdded() {
         <section className="products-section">
             <h2 className="products-section-title">Ultimi arrivi</h2>
             <p className="products-section-p">Altre occasioni per buttare soldi</p>
-            <div className="products-section-flex">
-                {products.map((p) => (
-                    <ProductCard key={p.id} product={p} />
-                ))}
-            </div>
+            <Carousel products={products} itemsPerPage={4} />
         </section>
     );
 }

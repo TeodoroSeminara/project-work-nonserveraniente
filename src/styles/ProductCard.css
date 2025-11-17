@@ -9,16 +9,26 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 8px;
-    flex: 0 0 230px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    width: 230px;
+    height: 515px;
 }
 
 /* Per quando ci sarà l'immagine vera */
-.product-card-image-placeholder {
+.product-card-image-wrapper {
     width: 100%;
-    height: 170px;
+    height: 180px;
     border-radius: 14px;
-    background: linear-gradient(135deg, #f3f3f3, #dadada);
+    overflow: hidden;
     margin-bottom: 10px;
+    background: #f3f3f3;
+}
+
+.product-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* Titolo (nome del prodotto) */
@@ -37,5 +47,5 @@
 .product-card-price {
     margin-top: 8px;
     font-weight: 700;
-    color: #1a73e8;
+    color: var(--text);
 }
