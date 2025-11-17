@@ -7,7 +7,7 @@ export function Hero() {
 
     // Funzione chiamata quando clicchi il bottone
     const handleClick = () => {
-        navigate("/immondizia")
+        navigate("/catalogo")
     };
 
     return (
@@ -25,7 +25,7 @@ export function Hero() {
                     <h1>Non Serve A Niente</h1>
                     <p>Compra ora, pentiti dopo.</p>
                     <button onClick={handleClick}>
-                        Guarda tutta l'immondizia
+                        Buona fortuna
                     </button>
                 </div>
             </div>

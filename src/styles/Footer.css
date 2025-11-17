@@ -1,5 +1,5 @@
 a{
-  text-decoration: none !important;
+  text-decoration: none;
 }
 
 li{
@@ -19,8 +19,3 @@ li{
   font-size: 0.80rem;
 }
 
-/* Style Logo NavBar */
-.navbar__logo{
-  color: var(--text);
-  cursor: pointer;
-}

@@ -6,16 +6,20 @@
 
 .navbar-icon svg {
     transition: all 0.3s ease;
-} 
+}
 
 .navbar-icon:hover svg {
     transform: scale(1.3);
     color: var(--text);
 }
 
-.navbar__logo {
+.navbar-logo {
+    color: var(--text);
+    cursor: pointer;
     transition: all 0.3s ease;
+    
 }
-.navbar__logo:hover {
+
+.navbar-logo:hover {
     transform: scale(1.05);
 }
