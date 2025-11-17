@@ -5,6 +5,7 @@ import PopularProducts from "../components/main/PopularProducts";
 import LastAdded from "../components/main/LastAdded";
 import FinalCTA from "../components/hero/FinalCTA";
 import AllProducts from "../components/main/AllProducts";
+import { Link } from "react-router-dom"
 
 export default function HomePage() {
   // Stato che dice se mostrare o no la sezione "Tutti i prodotti"
@@ -42,6 +43,15 @@ export default function HomePage() {
 
       {/* Questa sezione appare solo dopo il click */}
       {showAllProducts && <AllProducts />}
+
+      {/* Bottone temporaneo per testare la ProductPage */}
+      <Link to="/1">
+        <button>Vai al prodotto di test</button>
+      </Link>
     </>
   );
 }
+
+
+
+   
