@@ -3,24 +3,21 @@ import { useEffect, useState } from "react";
 import { getProducts } from "../services/api"; 
 import "../styles/ProductPage.css";
 
-
 export default function ProductPage() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState("");
 
   useEffect(() => {
     getProducts().then((products) => {
-      const found = products.find((p) => p.id === Number(id));
+      const found = products.find((p) => p.slug === slug);
 
       if (found) {
         setProduct(found);
-
-        // usa l'immagine principale
         setMainImage(found.image_url);
       }
     });
-  }, [id]);
+  }, [slug]);
 
   if (!product) return <h2>Caricamento...</h2>;
 
@@ -31,7 +28,6 @@ export default function ProductPage() {
       <div className="product-image-section">
         <img className="main-image" src={mainImage} alt={product.name} />
 
-        {/* Multiple immagini */}
         <div className="thumbnail-row">
           <img
             className="thumbnail"

@@ -4,7 +4,7 @@ import "../../styles/ProductCard.css";
 export function ProductCard({ product }) {
     return (
         <Link
-            to={`/${product.id}`}
+            to={`/${product.slug}`}
             className="product-card-link"
             style={{ textDecoration: "none", color: "inherit" }}
         >
