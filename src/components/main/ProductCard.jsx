@@ -3,7 +3,11 @@ import "../../styles/ProductCard.css";
 
 export function ProductCard({ product }) {
     return (
-        <Link to={`/product/${product.slug}`} className="product-card-link">
+        <Link 
+            to={`/product/${product.slug}`} 
+            className="product-card-link"
+            style={{ textDecoration: "none", color: "inherit" }}
+        >
             <div className="product-card">
                 <div className="product-card-image-wrapper">
                     <img 
