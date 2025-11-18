@@ -6,8 +6,6 @@ import "../../styles/NavBar.css"
 
 export default function NavBar() {
 
-
-
   return (
     <>
       <nav className="container d-flex justify-content-between p-3">

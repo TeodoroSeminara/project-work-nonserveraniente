@@ -1,11 +1,11 @@
 
 
-const CartPage = () => {
+export default function CartPage(){
   return (
-    <div>
-      
-    </div>
+    <>
+    <h1>ciao</h1>
+    </>
   )
 }
 
-export default CartPage
+
