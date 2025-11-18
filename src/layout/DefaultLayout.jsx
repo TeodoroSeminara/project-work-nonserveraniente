@@ -8,10 +8,10 @@ export default function DefaultLayout() {
     <>
      <header>
        <NavBar/>
-        <Outlet/>
      </header>
 
       <main>
+        <Outlet/>
       </main>
 
       <footer>

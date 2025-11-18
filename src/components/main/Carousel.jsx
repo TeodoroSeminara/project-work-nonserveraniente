@@ -91,7 +91,7 @@ export default function Carousel({ products, defaultItemsPerPage = 4 }) {
         {/* Card visibili nella pagina corrente */}
         <div className="product-section-carousel-flex">
           {visibleProducts.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <ProductCard key={p.slug} product={p} />
           ))}
         </div>
 

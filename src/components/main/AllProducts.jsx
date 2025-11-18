@@ -57,7 +57,7 @@ export default function AllProducts() {
 
         <div className="products-section-flex">
           {visibleProducts.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <ProductCard key={p.slug} product={p} />
           ))}
         </div>
         <div className="all-products-footer">
