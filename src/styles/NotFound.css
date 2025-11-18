@@ -1,0 +1,35 @@
+.notfound-container {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.notfound-title {
+  font-size: 8rem;
+  font-weight: 800;
+  color: #ff4d4d;
+  margin: 0;
+}
+
+.notfound-subtitle {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.notfound-text {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.notfound-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #ff4d4d;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: background 0.2s ease-in-out;
+}
+
+
