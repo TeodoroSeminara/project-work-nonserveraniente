@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage'
 import ProductPage from './pages/ProductPage'
 import DefaultLayout from './layout/DefaultLayout'
 import AllProducts from './components/main/AllProducts'
+import CartPage from './pages/CartPage'
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path='/carrello' element={<CartPage/>}></Route>
             <Route path="/:id" element={<ProductPage />} />
             <Route path="/catalogo" element={<AllProducts />} />
           </Route>

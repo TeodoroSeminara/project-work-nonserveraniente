@@ -29,7 +29,8 @@ export default function NavBar() {
           </li>
           <li>
             <div className="position-relative">
-              <Link className="navbar-icon">
+              <Link className="navbar-icon"
+               to="/carrello">
                 {/* Carrello */}
                 <ShoppingCart />
                 <Badge
