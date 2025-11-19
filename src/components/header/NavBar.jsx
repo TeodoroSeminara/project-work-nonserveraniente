@@ -37,6 +37,7 @@ export default function NavBar() {
                   size={20}
                   className="position-absolute bottom-50" />
                 <span
+                  id="cartBadge"
                   className="position-absolute bottom-50 badge text-black">
                  {cartCount}
                 </span>
