@@ -3,15 +3,20 @@ import "../styles/NotFound.css";
 
 export default function NotFound() {
   return (
-    <div className="notfound-container">
-      <h1 className="notfound-title">404</h1>
-      <h2 className="notfound-subtitle">Pagina non trovata</h2>
-      <p className="notfound-text">
-        La pagina che stai cercando non esiste o è stata rimossa.
-      </p> 
+    <div className="notfound-wrapper">
+      <img 
+        src="/images/404_error.png" 
+        alt="404 error" 
+        className="notfound-image" 
+      />
 
-      <Link to="/" className="notfound-btn">
-        Torna alla Home
+      <h1 className="notfound-title">Oops...</h1>
+      <p className="notfound-sub">
+        Sembra che questa pagina si sia persa come i tuoi soldi su questo sito.
+      </p>
+
+      <Link to="/">
+        <button className="notfound-button">Torna alla Home</button>
       </Link>
     </div>
   );

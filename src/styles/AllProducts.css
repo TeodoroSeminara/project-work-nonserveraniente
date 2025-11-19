@@ -4,6 +4,13 @@
     justify-content: center;
 }
 
+.all-products-section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
 .all-products-footer {
     margin-top: 24px;
     display: flex;

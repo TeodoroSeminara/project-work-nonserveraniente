@@ -13,7 +13,7 @@
     padding: 30px 20px;
     border-radius: 24px;
     background: linear-gradient(135deg, #ff8f7d, #fca594);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.293);
 }
 
 .final-cta-title {
@@ -29,12 +29,18 @@
 .final-cta-button {
     border: none;
     border-radius: 12px;
-    padding: 10px 26px;
+    padding: 10px 20px;
     background-color: #111;
     color: #fff;
     font-weight: 600;
     cursor: pointer;
     font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.293);
+}
+
+.final-cta-button:hover {
+    transform: scale(1.1);
 }
 
 @media (max-width: 600px) {

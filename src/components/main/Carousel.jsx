@@ -107,7 +107,7 @@ export default function Carousel({ products, defaultItemsPerPage = 4 }) {
       </div>
 
       <p className="products-carousel-indicator">
-        Pagina {currentPage} di {totalPages}
+        {currentPage} di {totalPages}
       </p>
     </div>
   );

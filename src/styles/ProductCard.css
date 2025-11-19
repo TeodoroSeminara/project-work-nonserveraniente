@@ -16,7 +16,7 @@
     overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
-    box-shadow: 2px 2px 5px 0px #02020238;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.256);
 }
 
 .product-card:hover {

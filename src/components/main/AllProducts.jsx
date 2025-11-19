@@ -47,7 +47,7 @@ export default function AllProducts() {
   return (
     <div className="all-products-wrapper">
       <section className="products-section" id="all-products">
-        <h2 className="products-section-title">Bello...</h2>
+        <h2 className="all-products-section-title">Bello...</h2>
 
         <div className="products-section-flex">
           {visibleProducts.map((p) => (
