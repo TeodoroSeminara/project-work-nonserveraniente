@@ -7,10 +7,7 @@ import "../../styles/PopularProducts.css";
 import "../../styles/AllProducts.css";
 
 export default function AllProducts() {
-  const { products, loadingProducts } = useApi();
-
-  // Numero di prodotti visibili
-  const [visibleCount, setVisibleCount] = useState(12);
+  const { products, loadingProducts, loadMoreProducts, hasMore } = useApi();
 
   const navigate = useNavigate();
 
@@ -26,16 +23,6 @@ export default function AllProducts() {
     );
   }
 
-  // Prodotti attualmente visibili
-  const visibleProducts = products.slice(0, visibleCount);
-
-  // Hai mostrato tutto?
-  const hasShownAll = visibleCount >= products.length;
-
-  const handleLoadMore = () => {
-    setVisibleCount(prev => prev + 12);
-  };
-
   const handleScrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -47,29 +34,35 @@ export default function AllProducts() {
   return (
     <div className="all-products-wrapper">
       <section className="products-section" id="all-products">
-        <h2 className="products-section-title">Bello...</h2>
+        <h2 className="all-products-section-title">Bello...</h2>
 
         <div className="products-section-flex">
-          {visibleProducts.map((p) => (
+          {products.map((p) => (
             <ProductCard key={p.slug} product={p} />
           ))}
         </div>
 
         <div className="all-products-footer">
           <p className="all-products-counter">
-            Mostrati {visibleProducts.length} di {products.length} prodotti inutili
+            Mostrati {products.length} prodotti inutili
           </p>
+
 
           <div className="all-products-button-row">
             <button className="go-back-button" onClick={handleScrollToTop}>
               <FiArrowUp />
             </button>
 
-            {!hasShownAll && (
-              <button className="load-more-button" onClick={handleLoadMore}>
+            {hasMore && !loadingProducts && (
+              <button className="load-more-button" type="button"
+                onClick={e => {
+                  e.preventDefault(); // Precauzione massima!
+                  loadMoreProducts();
+                }}>
                 Carica altro
               </button>
             )}
+
 
             <button className="go-home-button" onClick={handleGoHome}>
               <FiHome />
