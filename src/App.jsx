@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { CartProvider } from "./context/CartContext";
 import './App.css'
 import './index.css'
 
@@ -14,6 +15,7 @@ import NotFound from './pages/NotFound'
 function App() {
   return (
     <>
+    <CartProvider>
       <BrowserRouter>
         <Routes>
           <Route element={<DefaultLayout />}>
@@ -25,6 +27,7 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+    </CartProvider>
     </>
   )
 }
