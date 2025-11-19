@@ -1,9 +1,11 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProductBySlug } from "../services/api";
+import { useCart } from "../context/CartContext";
 import "../styles/ProductPage.css";
 
 export default function ProductPage() {
+  const { addToCart } = useCart();
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState("");
@@ -47,7 +49,8 @@ useEffect(() => {
         <p className="product-price">{product.price}€</p>
         <p className="product-description">{product.description}</p>
 
-        <button className="product-btn">Aggiungi al carrello</button>
+        <button onClick={addToCart}
+        className="product-btn" >Aggiungi al carrello</button>
 
         <Link className="back-home-btn" to="/">
           Torna alla Home
