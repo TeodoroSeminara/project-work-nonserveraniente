@@ -1,26 +1,23 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getProducts } from "../services/api"; 
+import { getProductBySlug } from "../services/api";
 import "../styles/ProductPage.css";
 
-
 export default function ProductPage() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState("");
 
-  useEffect(() => {
-    getProducts().then((products) => {
-      const found = products.find((p) => p.id === Number(id));
+useEffect(() => {
+  getProductBySlug(slug).then((data) => {
+    const uniqueImages = [...new Set(data.images)];
 
-      if (found) {
-        setProduct(found);
+    setProduct({ ...data, images: uniqueImages });
 
-        // usa l'immagine principale
-        setMainImage(found.image_url);
-      }
-    });
-  }, [id]);
+    setMainImage(uniqueImages.length > 0 ? uniqueImages[0] : null);
+  });
+}, [slug]);
+
 
   if (!product) return <h2>Caricamento...</h2>;
 
@@ -31,13 +28,16 @@ export default function ProductPage() {
       <div className="product-image-section">
         <img className="main-image" src={mainImage} alt={product.name} />
 
-        {/* Multiple immagini */}
+        {/* Thumbnails */}
         <div className="thumbnail-row">
-          <img
-            className="thumbnail"
-            src={product.image_url}
-            onClick={() => setMainImage(product.image_url)}
-          />
+          {product.images?.map((img, index) => (
+            <img
+              key={index}
+              className={`thumbnail ${img === mainImage ? "active-thumb" : ""}`}
+              src={img}
+              onClick={() => setMainImage(img)}
+            />
+          ))}
         </div>
       </div>
 

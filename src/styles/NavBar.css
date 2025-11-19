@@ -23,7 +23,3 @@
 .navbar-logo:hover {
     transform: scale(1.05);
 }
-
-header{
-    border-bottom: 0.15px solid grey;
-}

@@ -18,10 +18,10 @@ export default function Carousel({ products, defaultItemsPerPage = 4 }) {
     function updateItemsPerPage() {
       const width = window.innerWidth;
 
-      if (width < 480) {
+      if (width < 670) {
         // Mobile piccolo: 1 card per pagina
         setItemsPerPage(1);
-      } else if (width < 768) {
+      } else if (width < 1120) {
         // Tablet: 2 card per pagina
         setItemsPerPage(2);
       } else {
@@ -91,7 +91,7 @@ export default function Carousel({ products, defaultItemsPerPage = 4 }) {
         {/* Card visibili nella pagina corrente */}
         <div className="product-section-carousel-flex">
           {visibleProducts.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <ProductCard key={p.slug} product={p} />
           ))}
         </div>
 
@@ -107,7 +107,7 @@ export default function Carousel({ products, defaultItemsPerPage = 4 }) {
       </div>
 
       <p className="products-carousel-indicator">
-        Pagina {currentPage} di {totalPages}
+        {currentPage} di {totalPages}
       </p>
     </div>
   );

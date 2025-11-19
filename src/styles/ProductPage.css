@@ -104,6 +104,7 @@
 .product-price {
   font-size: 1.6rem;
   font-weight: 700;
+  color: var(--text); 
 }
 
 .product-description {
@@ -128,7 +129,7 @@
 
 .product-btn:hover,
 .back-home-btn:hover {
-    background-color: #f47b73;
+    background: var(--bg);
     color: white;
     transform: scale(1.05);
 }
