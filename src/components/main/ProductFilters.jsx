@@ -1,83 +1,109 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
+// Opzioni "utility" e "category" statiche
 const utilityOptions = [
     { label: "Utilità 1", value: 1 },
     { label: "Utilità 2", value: 2 },
     { label: "Utilità 3", value: 3 },
     { label: "Utilità 4", value: 4 },
-    { label: "Utilità 5", value: 5 }
+    { label: "Utilità 5", value: 5 },
 ];
 
-export default function ProductFilters({ categoriesFromDb, onFilter }) {
+const categoryOptions = [
+    { label: "Casa & Arredo", value: 1 },
+    { label: "Tecnologia Inutile", value: 2 },
+    { label: "Accessori e Moda", value: 3 },
+    { label: "Cucina e Tavola", value: 4 },
+    { label: "Tempo libero & Regali", value: 5 },
+    { label: "Sport Outdoor", value: 6 },
+    { label: "Ufficio & Studio", value: 7 },
+];
+
+export default function ProductFilters({ onFilter }) {
     const [search, setSearch] = useState("");
-    const [priceRange, setPriceRange] = useState([0, 100]); // adatta al tuo range prodotti!
+    const [priceRange, setPriceRange] = useState([0, 500]);
     const [utilities, setUtilities] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [latest, setLatest] = useState(false);
+    const [sortOrder, setSortOrder] = useState("id_desc"); // "id_asc" / "id_desc"
 
-    useEffect(() => {
-        // caricamento categories dal padre/props
-        setCategories([]); // di default nessuno selezionato
-    }, [categoriesFromDb]);
-
-    // Utility (valori int)
-    const handleChangeUtility = (val) => {
-        setUtilities(utilities.includes(val)
-            ? utilities.filter(u => u !== val)
-            : [...utilities, val]);
-    };
-
-    // Categories (id int)
-    const handleChangeCategory = (val) => {
-        setCategories(categories.includes(val)
-            ? categories.filter(c => c !== val)
-            : [...categories, val]);
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    // Callback centrale: aggiorna filtri e chiama la prop
+    const triggerFilter = ({
+        newSearch = search,
+        newPriceRange = priceRange,
+        newUtilities = utilities,
+        newCategories = categories,
+        newSortOrder = sortOrder,
+    } = {}) => {
         onFilter({
-            name: search,
-            price_min: priceRange[0],
-            price_max: priceRange[1],
-            utility: utilities.length > 0 ? utilities : undefined,
-            category: categories.length > 0 ? categories : undefined,
-            sort: latest ? "id_desc" : "",
+            name: newSearch || undefined,
+            price_min: newPriceRange[0],
+            price_max: newPriceRange[1],
+            utility: newUtilities.length > 0 ? newUtilities.join(",") : undefined,
+            category: newCategories.length > 0 ? newCategories.join(",") : undefined,
+            sort: newSortOrder,
         });
-        // NON resettare lo stato!
+    };
+
+    // Handlers per filtri live (solo su interazione!)
+    const handleChangeSearch = (e) => {
+        const value = e.target.value;
+        setSearch(value);
+        triggerFilter({ newSearch: value });
+    };
+    const handleChangePrice = (range) => {
+        setPriceRange(range);
+        triggerFilter({ newPriceRange: range });
+    };
+    const handleChangeUtility = (val) => {
+        const updated = utilities.includes(val)
+            ? utilities.filter(u => u !== val)
+            : [...utilities, val];
+        setUtilities(updated);
+        triggerFilter({ newUtilities: updated });
+    };
+    const handleChangeCategory = (val) => {
+        const updated = categories.includes(val)
+            ? categories.filter(c => c !== val)
+            : [...categories, val];
+        setCategories(updated);
+        triggerFilter({ newCategories: updated });
+    };
+    const handleToggleSortOrder = () => {
+        const newOrder = sortOrder === "id_desc" ? "id_asc" : "id_desc";
+        setSortOrder(newOrder);
+        triggerFilter({ newSortOrder: newOrder });
     };
 
     return (
-        <form className="products-filter-sidebar" onSubmit={handleSubmit}>
+        <div className="products-filter-sidebar">
+            {/* Input testo */}
             <div>
                 <input
                     type="text"
                     placeholder="Cerca per nome..."
                     value={search}
-                    onChange={e => setSearch(e.target.value)}
+                    onChange={handleChangeSearch}
                 />
             </div>
-            <div style={{ margin: "0.5em 0" }}>
+            {/* Slider prezzo */}
+            <div style={{ margin: "0.7em 0" }}>
                 <label>Prezzo:</label>
                 <Slider
                     range
                     min={0}
                     max={500}
-                    defaultValue={priceRange}
                     value={priceRange}
                     allowCross={false}
-                    onChange={setPriceRange}
-                    marks={{
-                        0: "0€",
-                        500: "500€"
-                    }}
+                    onChange={handleChangePrice}
+                    marks={{ 0: "0€", 500: "500€" }}
                 />
                 <span>
                     {priceRange[0]} € – {priceRange[1]} €
                 </span>
             </div>
+            {/* Utility checkbox */}
             <div>
                 <span style={{ fontWeight: 600 }}>Utilità:</span>
                 {utilityOptions.map(util => (
@@ -91,30 +117,41 @@ export default function ProductFilters({ categoriesFromDb, onFilter }) {
                     </label>
                 ))}
             </div>
+            {/* Categoria checkbox */}
             <div>
                 <span style={{ fontWeight: 600 }}>Categorie:</span>
-                {categoriesFromDb && categoriesFromDb.map(cat => (
-                    <label key={cat.id} style={{ display: "block" }}>
+                {categoryOptions.map(cat => (
+                    <label key={cat.value} style={{ display: "block" }}>
                         <input
                             type="checkbox"
-                            checked={categories.includes(cat.id)}
-                            onChange={() => handleChangeCategory(cat.id)}
+                            checked={categories.includes(cat.value)}
+                            onChange={() => handleChangeCategory(cat.value)}
                         />
-                        {cat.name}
+                        {cat.label}
                     </label>
                 ))}
             </div>
-            <div>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={latest}
-                        onChange={(e) => setLatest(e.target.checked)}
-                    />
-                    Ordina per ultimi arrivi
-                </label>
+            {/* Ordine "Ultimi Arrivi" con freccetta-toggle */}
+            <div style={{ margin: "1em 0" }}>
+                <span style={{ fontWeight: 600 }}>Ordine per Arrivi:</span>
+                <button
+                    type="button"
+                    onClick={handleToggleSortOrder}
+                    style={{
+                        background: "none",
+                        border: "none",
+                        marginLeft: "8px",
+                        cursor: "pointer",
+                        fontSize: "1.2em"
+                    }}
+                    aria-label="Toggle Ordine"
+                >
+                    {sortOrder === "id_desc" ? "⬇️" : "⬆️"}
+                </button>
+                <span style={{ marginLeft: "7px" }}>
+                    {sortOrder === "id_desc" ? "Dal più nuovo" : "Dal più vecchio"}
+                </span>
             </div>
-            <button type="submit">Applica</button>
-        </form>
+        </div>
     );
 }
