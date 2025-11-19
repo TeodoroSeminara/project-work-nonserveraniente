@@ -11,7 +11,7 @@ export default function DefaultLayout() {
      </header>
 
       <main>
-        <Outlet/>
+      <Outlet/>
       </main>
 
       <footer>

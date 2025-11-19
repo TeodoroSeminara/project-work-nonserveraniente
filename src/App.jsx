@@ -7,7 +7,9 @@ import HomePage from './pages/HomePage'
 import ProductPage from './pages/ProductPage'
 import DefaultLayout from './layout/DefaultLayout'
 import AllProducts from './components/main/AllProducts'
+import CartPage from './pages/CartPage'
 import NotFound from './pages/NotFound'
+
 
 function App() {
   return (
