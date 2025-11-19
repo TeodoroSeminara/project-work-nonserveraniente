@@ -20,6 +20,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/product/:slug" element={<ProductPage />} />
             <Route path="/catalogo" element={<AllProducts />} />
+            <Route path="/carrello" element={<CartPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
