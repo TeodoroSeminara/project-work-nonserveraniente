@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "../context/CartContext";
 import dropin from "braintree-web-drop-in";
+import CheckOutPage from "./CheckOutPage";
 
 const API_BASE_URL = "http://localhost:3000/api/nonserveaniente";
 
@@ -145,7 +146,40 @@ export default function CheckoutPage() {
 
   return (
     <div style={{ maxWidth: 600, margin: "0 auto" }}>
+      
       <h1>Checkout</h1>
+
+            <div className="checkout-summary-box">
+
+              <h2 className="checkout-summary-title">Riepilogo ordine</h2>
+
+              {cartItems.length === 0 ? (
+                <p className="checkout-empty">Il carrello è vuoto.</p>
+              ) : (
+                <div>
+                  {cartItems.map((item) => (
+                    <div key={item.slug} className="checkout-item-row">
+                      <div className="checkout-item-info">
+                        {item.title}
+                        <br />
+                        <small>Quantità: {item.qty}</small> <strong>€{(item.price * item.qty).toFixed(2)}</strong>
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="checkout-total-row">
+                    <span>Totale prodotti:</span>
+                    <span className="checkout-total-price">
+                      €{cartItems
+                        .reduce((sum, item) => sum + item.price * item.qty, 0)
+                        .toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+
 
       <form onSubmit={handleSubmit}>
         <h2>Dati personali</h2>
