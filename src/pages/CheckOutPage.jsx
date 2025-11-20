@@ -66,7 +66,7 @@ export default function CheckoutPage() {
     // cleanup
     return () => {
       if (dropinInstance.current) {
-        dropinInstance.current.teardown().catch(() => {});
+        dropinInstance.current.teardown().catch(() => { });
       }
     };
   }, [clientToken]);
@@ -149,44 +149,44 @@ export default function CheckoutPage() {
 
       <form onSubmit={handleSubmit}>
         <h2>Dati personali</h2>
-        <input name="name" placeholder="Nome" 
-        value={formData.name} 
-        onChange={handleChange} required />
-        <input name="surname" placeholder="Cognome" 
-        value={formData.surname} 
-        onChange={handleChange} required />
-        <input name="phone" placeholder="Telefono" 
-        value={formData.phone} 
-        nChange={handleChange} required />
-        <input type="email" name="email" placeholder="Email" 
-        value={formData.email} 
-        onChange={handleChange} required />
+        <input name="name" placeholder="Nome"
+          value={formData.name}
+          onChange={handleChange} required />
+        <input name="surname" placeholder="Cognome"
+          value={formData.surname}
+          onChange={handleChange} required />
+        <input name="phone" placeholder="Telefono"
+          value={formData.phone}
+          onChange={handleChange} required />
+        <input type="email" name="email" placeholder="Email"
+          value={formData.email}
+          onChange={handleChange} required />
 
         <h2>Indirizzo spedizione</h2>
-        <input name="shipping_address" placeholder="Indirizzo" 
-        value={formData.shipping_address} 
-        onChange={handleChange} required />
-        <input name="shipping_cap" placeholder="CAP" 
-        value={formData.shipping_cap} 
-        onChange={handleChange} required />
-        <input name="shipping_city" placeholder="Città" 
-        value={formData.shipping_city} 
-        onChange={handleChange} required />
+        <input name="shipping_address" placeholder="Indirizzo"
+          value={formData.shipping_address}
+          onChange={handleChange} required />
+        <input name="shipping_cap" placeholder="CAP"
+          value={formData.shipping_cap}
+          onChange={handleChange} required />
+        <input name="shipping_city" placeholder="Città"
+          value={formData.shipping_city}
+          onChange={handleChange} required />
         <input name="shipping_description" placeholder="Note (es. consegna al portiere)" value={formData.shipping_description} onChange={handleChange} />
 
         <h2>Indirizzo fatturazione</h2>
-        <input name="billing_address" placeholder="Indirizzo" 
-        value={formData.billing_address} 
-        onChange={handleChange} />
-        <input name="billing_cap" placeholder="CAP" 
-        value={formData.billing_cap} 
-        onChange={handleChange} />
-        <input name="billing_city" placeholder="Città" 
-        value={formData.billing_city} 
-        onChange={handleChange} />
-        <input name="billing_description" placeholder="Note" v
-        alue={formData.billing_description} 
-        onChange={handleChange} />
+        <input name="billing_address" placeholder="Indirizzo"
+          value={formData.billing_address}
+          onChange={handleChange} />
+        <input name="billing_cap" placeholder="CAP"
+          value={formData.billing_cap}
+          onChange={handleChange} />
+        <input name="billing_city" placeholder="Città"
+          value={formData.billing_city}
+          onChange={handleChange} />
+        <input name="billing_description" placeholder="Note"
+          value={formData.billing_description}
+          onChange={handleChange} />
 
         <h2>Pagamento</h2>
         <div id="braintree-dropin-container" key={clientToken}></div>
