@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function CartPage() {
 
-  const { cartItems, increaseQty, decreaseQty } = useCart();
+  const { cartItems, increaseQty, decreaseQty, removeItem } = useCart();
   
   // calcola il totale degli articoli nel carrello 
   // sommando (prezzo * quantità) per ogni item
