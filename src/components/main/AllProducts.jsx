@@ -1,39 +1,141 @@
-import { useState } from "react";
+// import { useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { useApi } from "../../context/ApiContext";
+// import { ProductCard } from "./ProductCard";
+// import { FiHome, FiArrowUp } from "react-icons/fi";
+// import "../../styles/PopularProducts.css";
+// import "../../styles/AllProducts.css";
+// import ProductFilters from "./ProductFilters";
+
+// export default function AllProducts() {
+//   const { products, loadingProducts, loadMoreProducts, hasMore, reloadProducts } = useApi();
+//   const [categories, setCategories] = useState([]);
+
+
+//   useEffect(() => {
+//     async function fetchCategories() {
+//       const cats = await getCategories();
+//       setCategories(cats);
+//     }
+//     fetchCategories();
+//   }, []);
+
+//   const handleFilter = filters => reloadProducts(filters);
+
+//   const navigate = useNavigate();
+
+//   // Se sta caricando, mostra placeholder
+//   if (loadingProducts) {
+//     return (
+//       <div className="all-products-wrapper">
+//         <section className="products-section" id="all-products">
+//           <h2 className="products-section-title">Bello...</h2>
+//           <p className="loading">Caricamento prodotti...</p>
+//         </section>
+//       </div>
+//     );
+//   }
+
+//   const handleScrollToTop = () => {
+//     window.scrollTo({ top: 0, behavior: "smooth" });
+//   };
+
+//   const handleGoHome = () => {
+//     navigate("/");
+//   };
+
+//   return (
+//     <div className="all-products-layout">
+//       <ProductFilters categoriesFromDb={categories} onFilter={handleFilter} />
+//       <div className="all-products-main">
+//         <section className="products-section" id="all-products">
+//           <h2 className="all-products-section-title">Bello...</h2>
+//           <div className="products-section-flex">
+//             {products.map((p) => (
+//               <ProductCard key={p.slug} product={p} />
+//             ))}
+//           </div>
+//           {/* ...footer e bottoni come sempre... */}
+//           <div className="all-products-footer">
+//             <p className="all-products-counter">
+//               Mostrati {products.length} prodotti inutili
+//             </p>
+
+
+//             <div className="all-products-button-row">
+//               <button className="go-back-button" onClick={handleScrollToTop}>
+//                 <FiArrowUp />
+//               </button>
+
+//               {hasMore && !loadingProducts && (
+//                 <button className="load-more-button" type="button"
+//                   onClick={e => {
+//                     e.preventDefault(); // Precauzione massima!
+//                     loadMoreProducts();
+//                   }}>
+//                   Carica altro
+//                 </button>
+//               )}
+
+
+//               <button className="go-home-button" onClick={handleGoHome}>
+//                 <FiHome />
+//               </button>
+//             </div>
+//           </div>
+//         </section>
+//       </div>
+//     </div>
+
+//     // <div className="all-products-wrapper">
+//     //   <section className="products-section" id="all-products">
+//     //     <h2 className="all-products-section-title">Bello...</h2>
+
+//     //     <div className="products-section-flex">
+//     //       {products.map((p) => (
+//     //         <ProductCard key={p.slug} product={p} />
+//     //       ))}
+//     //     </div>
+
+
+//     //   </section >
+//     // </div >
+//   );
+// }
+
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useApi } from "../../context/ApiContext";
 import { ProductCard } from "./ProductCard";
 import { FiHome, FiArrowUp } from "react-icons/fi";
+import ProductFilters from "./ProductFilters";
 import "../../styles/PopularProducts.css";
 import "../../styles/AllProducts.css";
 
 export default function AllProducts() {
-  const { products, loadingProducts } = useApi();
-
-  // Numero di prodotti visibili
-  const [visibleCount, setVisibleCount] = useState(12);
-
+  const { products, loadingProducts, loadMoreProducts, hasMore, reloadProducts } = useApi();
+  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
-  // Se sta caricando, mostra placeholder
-  if (loadingProducts) {
-    return (
-      <div className="all-products-wrapper">
-        <section className="products-section" id="all-products">
-          <h2 className="products-section-title">Bello...</h2>
-          <p className="loading">Caricamento prodotti...</p>
-        </section>
-      </div>
-    );
-  }
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        // Assicurati che questa funzione sia definita in api.js
+        const res = await fetch("http://localhost:3000/api/categories");
+        if (res.ok) {
+          const cats = await res.json();
+          setCategories(cats);
+        }
+      } catch (error) {
+        console.error("Errore caricamento categorie:", error);
+      }
+    }
+    fetchCategories();
+  }, []);
 
-  // Prodotti attualmente visibili
-  const visibleProducts = products.slice(0, visibleCount);
-
-  // Hai mostrato tutto?
-  const hasShownAll = visibleCount >= products.length;
-
-  const handleLoadMore = () => {
-    setVisibleCount(prev => prev + 12);
+  const handleFilter = (filters) => {
+    console.log("Filtri applicati:", filters); // Debug
+    reloadProducts(filters);
   };
 
   const handleScrollToTop = () => {
@@ -44,36 +146,67 @@ export default function AllProducts() {
     navigate("/");
   };
 
+  if (loadingProducts && products.length === 0) {
+    return (
+      <div className="all-products-wrapper">
+        <section className="products-section" id="all-products">
+          <h2 className="products-section-title">Bello...</h2>
+          <p className="loading">Caricamento prodotti...</p>
+        </section>
+      </div>
+    );
+  }
+
   return (
+
     <div className="all-products-wrapper">
       <section className="products-section" id="all-products">
         <h2 className="all-products-section-title">Bello...</h2>
+        <div className="all-products-layout">
+          <ProductFilters categoriesFromDb={categories} onFilter={handleFilter} />
 
-        <div className="products-section-flex">
-          {visibleProducts.map((p) => (
-            <ProductCard key={p.slug} product={p} />
-          ))}
-        </div>
+          <div className="all-products-main">
+            <section className="products-section" id="all-products">
+              <h2 className="all-products-section-title">Bello...</h2>
 
-        <div className="all-products-footer">
-          <p className="all-products-counter">
-            Mostrati {visibleProducts.length} di {products.length} prodotti inutili
-          </p>
+              <div className="products-section-flex">
+                {products.length === 0 && !loadingProducts ? (
+                  <p>Nessun prodotto trovato con questi filtri.</p>
+                ) : (
+                  products.map((p) => (
+                    <ProductCard key={p.slug} product={p} />
+                  ))
+                )}
+              </div>
 
-          <div className="all-products-button-row">
-            <button className="go-back-button" onClick={handleScrollToTop}>
-              <FiArrowUp />
-            </button>
+              <div className="all-products-footer">
+                <p className="all-products-counter">
+                  Mostrati {products.length} prodotti inutili
+                </p>
 
-            {!hasShownAll && (
-              <button className="load-more-button" onClick={handleLoadMore}>
-                Carica altro
-              </button>
-            )}
+                <div className="all-products-button-row">
+                  <button className="go-back-button" onClick={handleScrollToTop}>
+                    <FiArrowUp />
+                  </button>
 
-            <button className="go-home-button" onClick={handleGoHome}>
-              <FiHome />
-            </button>
+                  {hasMore && !loadingProducts && (
+                    <button
+                      className="load-more-button"
+                      type="button"
+                      onClick={loadMoreProducts}
+                    >
+                      Carica altro
+                    </button>
+                  )}
+
+                  {loadingProducts && <p>Caricamento...</p>}
+
+                  <button className="go-home-button" onClick={handleGoHome}>
+                    <FiHome />
+                  </button>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </section>

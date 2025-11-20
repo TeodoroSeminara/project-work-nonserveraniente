@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.553.0",
+    "rc-slider": "^11.1.9",
     "react": "^19.2.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.2.0",

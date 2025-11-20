@@ -11,6 +11,7 @@ export default function HomePage() {
   // Stato che dice se mostrare o no la sezione "Tutti i prodotti"
   const [showAllProducts, setShowAllProducts] = useState(false);
 
+
   const handleExploreAll = () => {
     // Mostriamo la sezione
     setShowAllProducts(true);
@@ -37,7 +38,7 @@ export default function HomePage() {
       <Hero />
       <PopularProducts />
       <LastAdded />
-      
+
       {/* Passiamo la funzione al bottone finale */}
       <FinalCTA onExploreAll={handleExploreAll} />
 
@@ -48,4 +49,3 @@ export default function HomePage() {
 }
 
 
-   
