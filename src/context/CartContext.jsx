@@ -42,7 +42,7 @@
 
       });
     }
-      
+    
     // aumentare la quantità nel carrello fino a 999
       function increaseQty(slug) {
         setCartItems(prev =>
@@ -70,6 +70,10 @@
       function removeItem(slug){
         setCartItems(prev => prev.filter(item => item.slug !== slug))
       }
+      
+      function clearCart() {
+        setCartItems([]);
+      }
 
     return (
       <CartContext.Provider 
@@ -80,7 +84,9 @@
         addToCart,
         increaseQty,
         decreaseQty,
-        removeItem
+        removeItem,
+        setCartItems,
+        clearCart
         }}>
           
         {children}
