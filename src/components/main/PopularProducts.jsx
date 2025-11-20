@@ -5,6 +5,9 @@ import Carousel from "./Carousel";
 export default function PopularProducts() {
     const { products, loadingProducts } = useApi();
 
+
+
+
     // Se sta caricando → mostra un placeholder
     if (loadingProducts) {
         return (

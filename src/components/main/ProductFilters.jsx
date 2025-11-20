@@ -26,7 +26,7 @@ export default function ProductFilters({ onFilter }) {
     const [priceRange, setPriceRange] = useState([0, 500]);
     const [utilities, setUtilities] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [sortOrder, setSortOrder] = useState("id_desc"); // "id_asc" / "id_desc"
+    const [sortOrder, setSortOrder] = useState("id_asc"); // "id_asc" / "id_desc"
 
     // Callback centrale: aggiorna filtri e chiama la prop
     const triggerFilter = ({
@@ -71,7 +71,7 @@ export default function ProductFilters({ onFilter }) {
         triggerFilter({ newCategories: updated });
     };
     const handleToggleSortOrder = () => {
-        const newOrder = sortOrder === "id_desc" ? "id_asc" : "id_desc";
+        const newOrder = sortOrder === "id_asc" ? "id_desc" : "id_asc";
         setSortOrder(newOrder);
         triggerFilter({ newSortOrder: newOrder });
     };
@@ -133,7 +133,9 @@ export default function ProductFilters({ onFilter }) {
             </div>
             {/* Ordine "Ultimi Arrivi" con freccetta-toggle */}
             <div style={{ margin: "1em 0" }}>
-                <span style={{ fontWeight: 600 }}>Ordine per Arrivi:</span>
+                {/* <span style={{ fontWeight: 600 }}>Ordine per Arrivi:</span> */}
+                <span style={{ marginLeft: "7px" }}>
+                    {sortOrder === "id_asc" ? "Meno Recenti" : "Più Recenti"}</span>
                 <button
                     type="button"
                     onClick={handleToggleSortOrder}
@@ -146,11 +148,11 @@ export default function ProductFilters({ onFilter }) {
                     }}
                     aria-label="Toggle Ordine"
                 >
-                    {sortOrder === "id_desc" ? "⬇️" : "⬆️"}
+                    {sortOrder === "id_asc" ? "⬇️" : "⬆️"}
                 </button>
-                <span style={{ marginLeft: "7px" }}>
-                    {sortOrder === "id_desc" ? "Dal più nuovo" : "Dal più vecchio"}
-                </span>
+                {/* <span style={{ marginLeft: "7px" }}>
+                    {sortOrder === "id_asc" ? "Meno Recenti" : "Più Recenti"}
+                </span> */}
             </div>
         </div>
     );
