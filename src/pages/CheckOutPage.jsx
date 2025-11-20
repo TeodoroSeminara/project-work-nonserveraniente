@@ -67,7 +67,7 @@ export default function CheckoutPage() {
     // cleanup
     return () => {
       if (dropinInstance.current) {
-        dropinInstance.current.teardown().catch(() => {});
+        dropinInstance.current.teardown().catch(() => { });
       }
     };
   }, [clientToken]);
@@ -110,8 +110,14 @@ export default function CheckoutPage() {
       const body = {
         paymentMethodNonce,
         ...formData,
-        items: cartItems,
+        items: cartItems.map(item => ({
+          slug: item.slug,
+          quantity: item.qty,
+          name: item.title,
+          price: item.price,
+        })),
       };
+      console.log("Body che sto inviando:", JSON.stringify(body, null, 2));
 
       try {
         const res = await fetch(`${API_BASE_URL}/carrello/checkout`, {
@@ -146,81 +152,80 @@ export default function CheckoutPage() {
 
   return (
     <div style={{ maxWidth: 600, margin: "0 auto" }}>
-      
+
       <h1>Checkout</h1>
 
-            <div className="checkout-summary-box">
+      <div className="checkout-summary-box">
 
-              <h2 className="checkout-summary-title">Riepilogo ordine</h2>
+        <h2 className="checkout-summary-title">Riepilogo ordine</h2>
 
-              {cartItems.length === 0 ? (
-                <p className="checkout-empty">Il carrello è vuoto.</p>
-              ) : (
-                <div>
-                  {cartItems.map((item) => (
-                    <div key={item.slug} className="checkout-item-row">
-                      <div className="checkout-item-info">
-                        {item.title}
-                        <br />
-                        <small>Quantità: {item.qty}</small> <strong>€{(item.price * item.qty).toFixed(2)}</strong>
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="checkout-total-row">
-                    <span>Totale prodotti:</span>
-                    <span className="checkout-total-price">
-                      €{cartItems
-                        .reduce((sum, item) => sum + item.price * item.qty, 0)
-                        .toFixed(2)}
-                    </span>
-                  </div>
+        {cartItems.length === 0 ? (
+          <p className="checkout-empty">Il carrello è vuoto.</p>
+        ) : (
+          <div>
+            {cartItems.map((item) => (
+              <div key={item.slug} className="checkout-item-row">
+                <div className="checkout-item-info">
+                  {item.title}
+                  <br />
+                  <small>Quantità: {item.qty}</small> <strong>€{(item.price * item.qty).toFixed(2)}</strong>
                 </div>
-              )}
+              </div>
+            ))}
+
+            <div className="checkout-total-row">
+              <span>Totale prodotti:</span>
+              <span className="checkout-total-price">
+                €{cartItems
+                  .reduce((sum, item) => sum + item.price * item.qty, 0)
+                  .toFixed(2)}
+              </span>
             </div>
+          </div>
+        )}
+      </div>
 
 
 
       <form onSubmit={handleSubmit}>
         <h2>Dati personali</h2>
-        <input name="name" placeholder="Nome" 
-        value={formData.name} 
-        onChange={handleChange} required />
-        <input name="surname" placeholder="Cognome" 
-        value={formData.surname} 
-        onChange={handleChange} required />
-        <input name="phone" placeholder="Telefono" 
-        value={formData.phone} 
-        nChange={handleChange} required />
-        <input type="email" name="email" placeholder="Email" 
-        value={formData.email} 
-        onChange={handleChange} required />
+        <input name="name" placeholder="Nome"
+          value={formData.name}
+          onChange={handleChange} required />
+        <input name="surname" placeholder="Cognome"
+          value={formData.surname}
+          onChange={handleChange} required />
+        <input name="phone" placeholder="Telefono"
+          value={formData.phone}
+          onChange={handleChange} required />
+        <input type="email" name="email" placeholder="Email"
+          value={formData.email}
+          onChange={handleChange} required />
 
         <h2>Indirizzo spedizione</h2>
-        <input name="shipping_address" placeholder="Indirizzo" 
-        value={formData.shipping_address} 
-        onChange={handleChange} required />
-        <input name="shipping_cap" placeholder="CAP" 
-        value={formData.shipping_cap} 
-        onChange={handleChange} required />
-        <input name="shipping_city" placeholder="Città" 
-        value={formData.shipping_city} 
-        onChange={handleChange} required />
+        <input name="shipping_address" placeholder="Indirizzo"
+          value={formData.shipping_address}
+          onChange={handleChange} required />
+        <input name="shipping_cap" placeholder="CAP"
+          value={formData.shipping_cap}
+          onChange={handleChange} required />
+        <input name="shipping_city" placeholder="Città"
+          value={formData.shipping_city}
+          onChange={handleChange} required />
         <input name="shipping_description" placeholder="Note (es. consegna al portiere)" value={formData.shipping_description} onChange={handleChange} />
 
         <h2>Indirizzo fatturazione</h2>
-        <input name="billing_address" placeholder="Indirizzo" 
-        value={formData.billing_address} 
-        onChange={handleChange} />
-        <input name="billing_cap" placeholder="CAP" 
-        value={formData.billing_cap} 
-        onChange={handleChange} />
-        <input name="billing_city" placeholder="Città" 
-        value={formData.billing_city} 
-        onChange={handleChange} />
-        <input name="billing_description" placeholder="Note" v
-        alue={formData.billing_description} 
-        onChange={handleChange} />
+        <input name="billing_address" placeholder="Indirizzo"
+          value={formData.billing_address}
+          onChange={handleChange} />
+        <input name="billing_cap" placeholder="CAP"
+          value={formData.billing_cap}
+          onChange={handleChange} />
+        <input name="billing_city" placeholder="Città"
+          value={formData.billing_city}
+          onChange={handleChange} />
+        <input name="billing_description" placeholder="Note" value={formData.billing_description}
+          onChange={handleChange} />
 
         <h2>Pagamento</h2>
         <div id="braintree-dropin-container" key={clientToken}></div>
