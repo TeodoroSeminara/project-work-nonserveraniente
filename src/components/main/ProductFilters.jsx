@@ -26,7 +26,6 @@ const categoryOptions = [
 
 export default function ProductFilters({ onFilter }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-
     const [search, setSearch] = useState("");
 
     // Range effettivo che invii al backend
@@ -104,7 +103,7 @@ export default function ProductFilters({ onFilter }) {
                 className="filters-toggle-btn"
                 onClick={() => setSidebarOpen(true)}
             >
-                <VscSettings/>
+                <VscSettings />
             </button>
 
             {/* Overlay */}

@@ -13,6 +13,12 @@ export default function CheckoutPage() {
 
   const { cartItems, setCartItems } = useCart();
 
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + Number(item.price) * item.qty,
+    0
+  );
+  const shipping_cost = subtotal >= 50 ? 0 : 5.99;
+
   const [formData, setFormData] = useState({
     shipping_address: "",
     shipping_cap: "",
@@ -26,7 +32,6 @@ export default function CheckoutPage() {
     surname: "",
     phone: "",
     email: "",
-    shipping_cost: 6.9,
   });
 
   // carico items dal localStorage + token
@@ -110,6 +115,7 @@ export default function CheckoutPage() {
       const body = {
         paymentMethodNonce,
         ...formData,
+        shipping_cost,
         items: cartItems.map(item => ({
           slug: item.slug,
           quantity: item.qty,
@@ -176,9 +182,21 @@ export default function CheckoutPage() {
             <div className="checkout-total-row">
               <span>Totale prodotti:</span>
               <span className="checkout-total-price">
-                €{cartItems
-                  .reduce((sum, item) => sum + item.price * item.qty, 0)
-                  .toFixed(2)}
+                €{subtotal.toFixed(2)}
+              </span>
+            </div>
+
+            <div className="checkout-total-row">
+              <span>Spedizione:</span>
+              <span className="checkout-total-price">
+                {shipping_cost === 0 ? "Gratis" : `€${shipping_cost.toFixed(2)}`}
+              </span>
+            </div>
+
+            <div className="checkout-total-row" style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+              <span>Totale:</span>
+              <span className="checkout-total-price">
+                €{(subtotal + shipping_cost).toFixed(2)}
               </span>
             </div>
           </div>
