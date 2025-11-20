@@ -158,58 +158,68 @@ export default function AllProducts() {
   }
 
   return (
-
     <div className="all-products-wrapper">
+
       <section className="products-section" id="all-products">
         <h2 className="all-products-section-title">Bello...</h2>
+
         <div className="all-products-layout">
-          <ProductFilters categoriesFromDb={categories} onFilter={handleFilter} />
 
+          {/* SIDEBAR FILTRI */}
+          <ProductFilters
+            categoriesFromDb={categories}
+            onFilter={handleFilter}
+          />
+
+          {/* COLONNA PRINCIPALE */}
           <div className="all-products-main">
-            <section className="products-section" id="all-products">
-              <h2 className="all-products-section-title">Bello...</h2>
 
-              <div className="products-section-flex">
-                {products.length === 0 && !loadingProducts ? (
-                  <p>Nessun prodotto trovato con questi filtri.</p>
-                ) : (
-                  products.map((p) => (
-                    <ProductCard key={p.slug} product={p} />
-                  ))
+            <div className="products-section-flex">
+              {products.length === 0 && !loadingProducts ? (
+                <p>Nessun prodotto trovato con questi filtri.</p>
+              ) : (
+                products.map((p) => (
+                  <ProductCard key={p.slug} product={p} />
+                ))
+              )}
+            </div>
+
+            {/* FOOTER DELLA LISTA */}
+            <div className="all-products-footer">
+
+              <p className="all-products-counter">
+                Mostrati {products.length} prodotti inutili
+              </p>
+
+              <div className="all-products-button-row">
+
+                <button className="go-back-button" onClick={handleScrollToTop}>
+                  <FiArrowUp />
+                </button>
+
+                {hasMore && !loadingProducts && (
+                  <button
+                    className="load-more-button"
+                    type="button"
+                    onClick={loadMoreProducts}
+                  >
+                    Carica altro
+                  </button>
                 )}
+
+                {loadingProducts && <p>Caricamento...</p>}
+
+                <button className="go-home-button" onClick={handleGoHome}>
+                  <FiHome />
+                </button>
               </div>
 
-              <div className="all-products-footer">
-                <p className="all-products-counter">
-                  Mostrati {products.length} prodotti inutili
-                </p>
-
-                <div className="all-products-button-row">
-                  <button className="go-back-button" onClick={handleScrollToTop}>
-                    <FiArrowUp />
-                  </button>
-
-                  {hasMore && !loadingProducts && (
-                    <button
-                      className="load-more-button"
-                      type="button"
-                      onClick={loadMoreProducts}
-                    >
-                      Carica altro
-                    </button>
-                  )}
-
-                  {loadingProducts && <p>Caricamento...</p>}
-
-                  <button className="go-home-button" onClick={handleGoHome}>
-                    <FiHome />
-                  </button>
-                </div>
-              </div>
-            </section>
+            </div>
           </div>
+
         </div>
       </section>
     </div>
   );
+
 }

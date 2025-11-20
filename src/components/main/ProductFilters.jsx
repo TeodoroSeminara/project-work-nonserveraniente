@@ -27,7 +27,7 @@ export default function ProductFilters({ onFilter }) {
     const [priceRange, setPriceRange] = useState([0, 500]);
     const [utilities, setUtilities] = useState([]);
     const [categories, setCategories] = useState([]);
-    const [sortOrder, setSortOrder] = useState("id_asc"); // "id_asc" / "id_desc"
+    const [sortOrder, setSortOrder] = useState("id_asc");
 
     // Callback centrale: aggiorna filtri e chiama la prop
     const triggerFilter = ({

@@ -7,7 +7,7 @@ export default function FinalCTA() {
 
     const handleClick = () => {
 
-        navigate("/immondizia")
+        navigate("/catalogo")
 
     };
 
