@@ -29,6 +29,11 @@ export default function CartPage() {
     },
   ]);
 
+  // Rimuovere un prodotto
+  const removeItem = (slug) => {
+    setCartItems(items => items.filter(item => item.slug !== slug));
+  };
+
   // Aumento quantità
   const increaseQty = (slug) => {
     setCartItems(items =>
@@ -50,7 +55,6 @@ export default function CartPage() {
   };
 
   // Calcoli
-
   let subtotal = 0;
   for (let i = 0; i < cartItems.length; i++) {
     const item = cartItems[i];
@@ -103,9 +107,15 @@ export default function CartPage() {
               </div>
 
               <div className="text-end">
+
                 <span className="cart-item-price">
                   €{(item.price * item.qty).toFixed(2)}
                 </span>
+
+                <div className="remove-btn" onClick={() => removeItem(item.slug)}>
+                  ×
+                </div>
+
               </div>
 
             </div>
@@ -151,5 +161,3 @@ export default function CartPage() {
     </div>
   );
 }
-
-
