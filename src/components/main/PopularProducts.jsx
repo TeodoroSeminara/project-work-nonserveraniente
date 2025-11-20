@@ -1,15 +1,32 @@
-import { useApi } from "../../context/ApiContext";
+import { useEffect, useState } from "react";
+import { getProducts } from "../../services/api";
 import "../../styles/PopularProducts.css";
 import Carousel from "./Carousel";
 
 export default function PopularProducts() {
-    const { products, loadingProducts } = useApi();
+    const [popular, setPopular] = useState([]);
+    const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        async function fetchPopular() {
+            setLoading(true);
+            try {
+                // Chiamata random: parametri sort e limit
+                const result = await getProducts({
+                    sort: "random",
+                    limit: 12
+                });
+                setPopular(result);
+            } catch (err) {
+                setPopular([]);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchPopular();
+    }, []);
 
-
-
-    // Se sta caricando → mostra un placeholder
-    if (loadingProducts) {
+    if (loading) {
         return (
             <section className="products-section" id="popular-products">
                 <h2 className="products-section-title">Prodotti più popolari</h2>
@@ -18,9 +35,6 @@ export default function PopularProducts() {
             </section>
         );
     }
-
-    // Prendi i primi 12 prodotti
-    const popular = products.slice(0, 12);
 
     return (
         <section className="products-section" id="popular-products">
