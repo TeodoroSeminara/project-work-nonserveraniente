@@ -52,7 +52,7 @@ export async function getProductBySlug(slug) {
 
 // GET categorie (se necessario)
 export async function getCategories() {
-  const res = await fetch("http://localhost:3000/api/categories");
+  const res = await fetch(`${API_BASE_URL}/categories`); // ✅
 
   if (!res.ok) {
     throw new Error("Errore nel recupero delle categorie");

@@ -117,22 +117,18 @@ export default function AllProducts() {
   const { products, loadingProducts, loadMoreProducts, hasMore, reloadProducts } = useApi();
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
+
   useEffect(() => {
     async function fetchCategories() {
       try {
-        // Assicurati che questa funzione sia definita in api.js
-        const res = await fetch("http://localhost:3000/api/categories");
-        if (res.ok) {
-          const cats = await res.json();
-          setCategories(cats);
-        }
+        const cats = await getCategories(); // Usa la funzione da api.js
+        setCategories(cats);
       } catch (error) {
         console.error("Errore caricamento categorie:", error);
       }
     }
     fetchCategories();
   }, []);
-
   const handleFilter = (filters) => {
     console.log("Filtri applicati:", filters); // Debug
     reloadProducts(filters);
@@ -156,6 +152,9 @@ export default function AllProducts() {
       </div>
     );
   }
+
+
+
 
   return (
     <div className="all-products-wrapper">
