@@ -174,7 +174,7 @@ export default function AllProducts() {
           <div className="all-products-main">
 
             <div className="products-section-flex">
-              {products.length === 0 && !loadingProducts ? (
+              {!loadingProducts && products.length === 0 ? (
                 <p>Nessun prodotto trovato con questi filtri.</p>
               ) : (
                 products.map((p) => (
