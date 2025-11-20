@@ -5,61 +5,75 @@ import { Link } from "react-router-dom";
 
 export default function CartPage() {
 
-  const newProduct = {
-    slug: '',
-    title: '',
-    price: '',
-    qty: '',
-    img: ''
-  }
-
-  const [cartItems, setCartItems] = useState([
-    {
-      slug: "tazza-senza-fondo",
-      title: "Tazza Senza Fondo",
-      price: 19.99,
-      qty: 1,
-      img: "https://picsum.photos/200?random=1",
-    },
-    {
-      slug: "cucchiaio-che-si-scioglie",
-      title: "Cucchiaio che si Scioglie",
-      price: 14.99,
-      qty: 1,
-      img: "https://picsum.photos/200?random=2",
-    },
-  ]);
-
-  // Aumento quantità
-  const increaseQty = (slug) => {
-    setCartItems(items =>
-      items.map(item =>
-        item.slug === slug ? { ...item, qty: item.qty + 1 } : item
-      )
-    );
-  };
-
-  // Diminuisco quantità
-  const decreaseQty = (slug) => {
-    setCartItems(items =>
-      items.map(item =>
-        item.slug === slug && item.qty > 1
-          ? { ...item, qty: item.qty - 1 }
-          : item
-      )
-    );
-  };
-
-  // Calcoli
-
-  let subtotal = 0;
-  for (let i = 0; i < cartItems.length; i++) {
-    const item = cartItems[i];
-    subtotal += item.price * item.qty;
-  }
+  const { cartItems, increaseQty, decreaseQty } = useCart();
+  
+  // calcola il totale degli articoli nel carrello 
+  // sommando (prezzo * quantità) per ogni item
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + item.price * item.qty,
+    0
+  );
 
   const shipping = subtotal >= 50 ? 0 : 5.99;
   const total = subtotal + shipping;
+
+  // const newProduct = {
+  //   slug: '',
+  //   title: '',
+  //   price: '',
+  //   qty: '',
+  //   img: ''
+  // }
+
+  // const [cartItems, setCartItems] = useState([
+  //   {
+  //     slug: "tazza-senza-fondo",
+  //     title: "Tazza Senza Fondo",
+  //     price: 19.99,
+  //     qty: 1,
+  //     img: "https://picsum.photos/200?random=1",
+  //   },
+  //   {
+  //     slug: "cucchiaio-che-si-scioglie",
+  //     title: "Cucchiaio che si Scioglie",
+  //     price: 14.99,
+  //     qty: 1,
+  //     img: "https://picsum.photos/200?random=2",
+  //   },
+  // ]);
+
+  // // Rimuovere un prodotto
+  // const removeItem = (slug) => {
+  //   setCartItems(items => items.filter(item => item.slug !== slug));
+  // };
+
+  // // Aumento quantità
+  // const increaseQty = (slug) => {
+  //   setCartItems(items =>
+  //     items.map(item =>
+  //       item.slug === slug ? { ...item, qty: item.qty + 1 } : item
+  //     )
+  //   );
+  // };
+
+  // // Diminuisco quantità
+  // const decreaseQty = (slug) => {
+  //   setCartItems(items =>
+  //     items.map(item =>
+  //       item.slug === slug && item.qty > 1
+          // ? { ...item, qty: item.qty - 1 }
+  //         : item
+  //     )
+  //   );
+  // };
+
+  // // Calcoli
+  // let subtotal = 0;
+  // for (let i = 0; i < cartItems.length; i++) {
+  //   const item = cartItems[i];
+  //   subtotal += item.price * item.qty;
+  // }
+
 
   return (
     <div className="container py-5">
