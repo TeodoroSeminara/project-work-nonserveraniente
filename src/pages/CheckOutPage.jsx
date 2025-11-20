@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "../context/CartContext";
 import dropin from "braintree-web-drop-in";
+import CheckOutPage from "./CheckOutPage";
 
 const API_BASE_URL = "http://localhost:3000/api/nonserveaniente";
 
@@ -11,6 +12,12 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
 
   const { cartItems, setCartItems } = useCart();
+
+  const subtotal = cartItems.reduce(
+    (sum, item) => sum + Number(item.price) * item.qty,
+    0
+  );
+  const shipping_cost = subtotal >= 50 ? 0 : 5.99;
 
   const [formData, setFormData] = useState({
     shipping_address: "",
@@ -25,7 +32,6 @@ export default function CheckoutPage() {
     surname: "",
     phone: "",
     email: "",
-    shipping_cost: 6.9,
   });
 
   // carico items dal localStorage + token
@@ -109,8 +115,15 @@ export default function CheckoutPage() {
       const body = {
         paymentMethodNonce,
         ...formData,
-        items: cartItems,
+        shipping_cost,
+        items: cartItems.map(item => ({
+          slug: item.slug,
+          quantity: item.qty,
+          name: item.title,
+          price: item.price,
+        })),
       };
+      console.log("Body che sto inviando:", JSON.stringify(body, null, 2));
 
       try {
         const res = await fetch(`${API_BASE_URL}/carrello/checkout`, {
@@ -145,7 +158,52 @@ export default function CheckoutPage() {
 
   return (
     <div style={{ maxWidth: 600, margin: "0 auto" }}>
+
       <h1>Checkout</h1>
+
+      <div className="checkout-summary-box">
+
+        <h2 className="checkout-summary-title">Riepilogo ordine</h2>
+
+        {cartItems.length === 0 ? (
+          <p className="checkout-empty">Il carrello è vuoto.</p>
+        ) : (
+          <div>
+            {cartItems.map((item) => (
+              <div key={item.slug} className="checkout-item-row">
+                <div className="checkout-item-info">
+                  {item.title}
+                  <br />
+                  <small>Quantità: {item.qty}</small> <strong>€{(item.price * item.qty).toFixed(2)}</strong>
+                </div>
+              </div>
+            ))}
+
+            <div className="checkout-total-row">
+              <span>Totale prodotti:</span>
+              <span className="checkout-total-price">
+                €{subtotal.toFixed(2)}
+              </span>
+            </div>
+
+            <div className="checkout-total-row">
+              <span>Spedizione:</span>
+              <span className="checkout-total-price">
+                {shipping_cost === 0 ? "Gratis" : `€${shipping_cost.toFixed(2)}`}
+              </span>
+            </div>
+
+            <div className="checkout-total-row" style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+              <span>Totale:</span>
+              <span className="checkout-total-price">
+                €{(subtotal + shipping_cost).toFixed(2)}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+
+
 
       <form onSubmit={handleSubmit}>
         <h2>Dati personali</h2>

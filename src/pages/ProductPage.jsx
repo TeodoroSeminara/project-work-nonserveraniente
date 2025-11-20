@@ -61,8 +61,8 @@ export default function ProductPage() {
           Aggiungi al carrello
         </button>
 
-        <Link className="back-home-btn" to="/">
-          Torna alla Home
+        <Link className="back-home-btn" to="/catalogo">
+          Torna al Catalogo
         </Link>
       </div>
     </div>
