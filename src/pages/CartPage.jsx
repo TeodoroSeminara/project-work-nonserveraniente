@@ -1,5 +1,6 @@
 import "../styles/CartPage.css";
 import { useState } from "react";
+import { useCart } from "../context/CartContext"
 import { Link } from "react-router-dom";
 
 export default function CartPage() {
@@ -29,11 +30,6 @@ export default function CartPage() {
     },
   ]);
 
-  // Rimuovere un prodotto
-  const removeItem = (slug) => {
-    setCartItems(items => items.filter(item => item.slug !== slug));
-  };
-
   // Aumento quantità
   const increaseQty = (slug) => {
     setCartItems(items =>
@@ -55,6 +51,7 @@ export default function CartPage() {
   };
 
   // Calcoli
+
   let subtotal = 0;
   for (let i = 0; i < cartItems.length; i++) {
     const item = cartItems[i];
