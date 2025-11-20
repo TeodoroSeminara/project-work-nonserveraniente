@@ -9,6 +9,7 @@ import ProductPage from './pages/ProductPage'
 import DefaultLayout from './layout/DefaultLayout'
 import AllProducts from './components/main/AllProducts'
 import CartPage from './pages/CartPage'
+import CheckOutPage from './pages/CheckOutPage'
 import NotFound from './pages/NotFound'
 
 
@@ -23,6 +24,7 @@ function App() {
             <Route path="/product/:slug" element={<ProductPage />} />
             <Route path="/catalogo" element={<AllProducts />} />
             <Route path="/carrello" element={<CartPage />} />
+            <Route path="/carrello/checkout" element={<CheckOutPage />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

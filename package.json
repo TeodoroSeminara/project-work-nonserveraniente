@@ -13,6 +13,8 @@
     "axios": "^1.13.2",
     "boostrap": "^2.0.0",
     "bootstrap": "^5.3.8",
+    "braintree-web": "^3.133.0",
+    "braintree-web-drop-in-react": "^1.2.1",
     "cors": "^2.8.5",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.553.0",

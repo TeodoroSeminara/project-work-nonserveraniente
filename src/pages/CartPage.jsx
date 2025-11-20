@@ -1,7 +1,16 @@
 import "../styles/CartPage.css";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function CartPage() {
+
+  const newProduct = {
+    slug: '',
+    title: '',
+    price: '',
+    qty: '',
+    img: ''
+  }
 
   const [cartItems, setCartItems] = useState([
     {
@@ -128,7 +137,9 @@ export default function CartPage() {
               <span className="summary-total">€{total.toFixed(2)}</span>
             </div>
 
-            <button className="checkout-btn">Procedi al checkout</button>
+            <Link to="/carrello/checkout">
+              <button className="checkout-btn">Procedi al checkout</button>
+            </Link>
 
             <p className="text-center mt-2 text-muted">
               (Se proprio vuoi sprecare questi soldi…)

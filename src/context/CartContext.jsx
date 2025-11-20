@@ -22,7 +22,14 @@ export function CartProvider({ children }) {
 
   // aumenta il numero articoli
   function addToCart() {
-    setCartCount(prev => prev + 1);
+     setCartCount(prev => {
+      // SE prev è minore del massimo → restituisci prev + 1
+      if(prev < 10){
+        return prev + 1
+      } else {
+        return prev
+      }
+    });
   }
 
   return (

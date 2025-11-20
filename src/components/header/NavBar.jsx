@@ -6,6 +6,7 @@ import "../../styles/NavBar.css"
 import { useCart } from "../../context/CartContext";
 
 export default function NavBar() {
+
   const { cartCount } = useCart();
 
   return (
@@ -39,6 +40,7 @@ export default function NavBar() {
                 <span
                   id="cartBadge"
                   className="position-absolute bottom-50 badge text-black">
+                  {/* Numero di articoli nel carrello */}
                  {cartCount}
                 </span>
               </Link>

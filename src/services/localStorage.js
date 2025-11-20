@@ -10,9 +10,6 @@ window.addEventListener("DOMContentLoaded", () => {
 function aggiungiAlCarrello() {
   let count = localStorage.getItem("cartCount");
 
-  // se non c'è nessun valore, parto da 0
-  count = count ? parseInt(count) : 0;
-
   count++
 
   // salvo nel localStorage
@@ -29,3 +26,6 @@ function aggiornaBadgeCarrello(count) {
 
   badge.textContent = count;
 }
+
+
+// Salvare i dati per slug
