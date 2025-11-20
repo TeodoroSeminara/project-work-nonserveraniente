@@ -3,8 +3,11 @@ import { Link } from "react-router-dom"
 // import per le icone 
 import { ShoppingCart, Heart, Search, Badge } from "lucide-react";
 import "../../styles/NavBar.css"
+import { useCart } from "../../context/CartContext";
 
 export default function NavBar() {
+
+  const { cartCount } = useCart();
 
   return (
     <>
@@ -35,7 +38,11 @@ export default function NavBar() {
                   size={20}
                   className="position-absolute bottom-50" />
                 <span
-                  className="position-absolute bottom-50 badge text-black">5</span>
+                  id="cartBadge"
+                  className="position-absolute bottom-50 badge text-black">
+                  {/* Numero di articoli nel carrello */}
+                 {cartCount}
+                </span>
               </Link>
             </div>
           </li>

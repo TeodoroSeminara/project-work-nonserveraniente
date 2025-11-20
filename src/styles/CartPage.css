@@ -113,3 +113,21 @@ div.qty-box span{
   background: var(--bg);
   transition: 0.90s;
 }
+
+
+
+/* Remove button */
+
+.remove-btn {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 5px;
+  color: #888;
+  transition: 0.2s;
+}
+
+.remove-btn:hover {
+  color: #dc3545;
+}
+
