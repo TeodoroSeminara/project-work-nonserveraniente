@@ -242,7 +242,8 @@ export default function CheckoutPage() {
         <input name="billing_city" placeholder="Città"
           value={formData.billing_city}
           onChange={handleChange} />
-        <input name="billing_description" placeholder="Note" value={formData.billing_description}
+        <input name="billing_description" placeholder="Note"
+          value={formData.billing_description}
           onChange={handleChange} />
 
         <h2>Pagamento</h2>
