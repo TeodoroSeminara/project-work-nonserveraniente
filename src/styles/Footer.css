@@ -1,21 +1,76 @@
-a{
-  text-decoration: none;
+.footer {
+  width: 100%;
+  background-color: #1a1a1a;
+  padding: 50px 20px;
+  margin-top: 60px;
+  color: #eee;
 }
 
-li{
-  list-style: none;
-} 
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  gap: 40px;
+  flex-wrap: wrap;
+}
 
-.footer-ul{
+.footer-column {
+  min-width: 220px;
+}
+
+.footer-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #fff;
+}
+
+.footer-text {
+  color: #d4d4d4;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.footer-list {
+  list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.footer-h4{
-  font-size: 1.40rem;
+.footer-list li {
+  margin-bottom: 8px;
+  color: #cccccc;
+  cursor: pointer;
+  transition: color 0.2s ease;
 }
 
-.footer-li-info{
-  font-size: 0.80rem;
+.footer-list li:hover {
+  color: #ff8f7d; /* richiamo al rosa brand */
 }
 
+/* TABLET */
+@media (max-width: 1024px) and (min-width: 701px) {
+  .footer-inner {
+    justify-content: center;
+    gap: 50px;
+    text-align: center;
+  }
+
+  .footer-column {
+    min-width: 260px;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 700px) {
+  .footer-inner {
+    flex-direction: column;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .footer-column {
+    min-width: unset;
+  }
+}

@@ -1,54 +1,35 @@
-// Footer presente in tutte le pagine
-import '../styles/Footer.css'
+import "../styles/Footer.css";
 
-export default function Footer(){
+export default function Footer() {
   return (
-    <>
-    {/* Container principale del footer */}
-     <div className="container d-flex justify-content-between">
-      {/* Column degli elementi */}
-        <div className="col d-flex justify-content-between">
-          <div className="">
-              <ul className="footer-ul d-flex justify-content-center flex-column align-content-center">
-                <li>
-                  {/* Titolo  */}
-                  <h4 className="footer-h4">NonServeaNiente</h4>
-                </li>
-                <li className="footer-li-info">
-                  Compra ora, pentiti dopo!
-                  </li>
-                <li className="footer-li-info">
-                  Il tuo shop di oggetti assolutamente inutili
-                  </li>
-              </ul>
-          </div>
-          <div>
-            <ul className="footer-ul">
-              <li>
-                {/* Titolo  */}
-                <h4 className="footer-h4">Link Rapidi</h4>
-              </li>
-              <li>
-                Chi siamo (seriamente?)
-              </li>
-              <li>
-                Termini e condizioni(noiosi)
-              </li>
-              <li>
-               Privacy (La teniamo Stretta)
-              </li>
-            </ul>
-          </div>
-          <div>
-            <ul className="footer-ul">
-              <li>
-                {/* Titolo  */}
-                <h4 className="footer-h4">Contatti</h4>
-              </li>
-            </ul>
-          </div>
+    <div className="footer">
+      <div className="footer-inner">
+
+        {/* Colonna Brand */}
+        <div className="footer-column">
+          <h4 className="footer-title">NonServeaNiente</h4>
+          <p className="footer-text">Compra ora, pentiti dopo!</p>
+          <p className="footer-text">Il tuo shop di oggetti assolutamente inutili</p>
         </div>
-     </div>
-    </>
-  )
+
+        {/* Colonna Link */}
+        <div className="footer-column">
+          <h4 className="footer-title">Link Rapidi</h4>
+          <ul className="footer-list">
+            <li>Chi siamo (seriamente?)</li>
+            <li>Termini e condizioni (noiosi)</li>
+            <li>Privacy (la teniamo stretta)</li>
+          </ul>
+        </div>
+
+        {/* Colonna Contatti */}
+        <div className="footer-column">
+          <h4 className="footer-title">Contatti</h4>
+          <p className="footer-text">info@nonserveaniente.com</p>
+          <p className="footer-text">+39 000 000 0000</p>
+        </div>
+
+      </div>
+    </div>
+  );
 }

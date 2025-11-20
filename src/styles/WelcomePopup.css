@@ -1,0 +1,117 @@
+.welcome-popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.welcome-popup-card {
+  position: relative;
+  width: min(420px, 90%);
+  background: #fff3eb; /* crema in linea col tuo brand */
+  border-radius: 24px;
+  padding: 26px 24px 22px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+  animation: welcome-popup-in 0.25s ease-out;
+  text-align: center;
+}
+
+.welcome-popup-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.welcome-popup-close:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.welcome-popup-title {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.welcome-popup-text {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 18px;
+}
+
+.welcome-popup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.welcome-popup-form input {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid #e0d7d1;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.welcome-popup-form input:focus {
+  border-color: #ff8f7d;
+  box-shadow: 0 0 0 2px rgba(255, 143, 125, 0.25);
+}
+
+.welcome-popup-form button {
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff8f7d, #fca594);
+  color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.welcome-popup-form button:hover:enabled {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+}
+
+.welcome-popup-form button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* Animazione ingresso */
+@keyframes welcome-popup-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Mobile fine-tuning */
+@media (max-width: 480px) {
+  .welcome-popup-card {
+    padding: 22px 18px 18px;
+  }
+
+  .welcome-popup-title {
+    font-size: 1.25rem;
+  }
+
+  .welcome-popup-text {
+    font-size: 0.9rem;
+  }
+}
