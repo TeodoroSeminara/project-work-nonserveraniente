@@ -111,12 +111,12 @@ import { FiHome, FiArrowUp } from "react-icons/fi";
 import ProductFilters from "./ProductFilters";
 import "../../styles/PopularProducts.css";
 import "../../styles/AllProducts.css";
+import { getCategories } from "../../services/api";
 
 export default function AllProducts() {
   const { products, loadingProducts, loadMoreProducts, hasMore, reloadProducts } = useApi();
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
-
   useEffect(() => {
     async function fetchCategories() {
       try {
