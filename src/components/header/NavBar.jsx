@@ -17,7 +17,7 @@ export default function NavBar() {
         {/* Elementi di navigazione con icone annesse */}
         <ul className="d-flex justify-content-between align-items-center gap-5 m-0 p-0">
           <li>
-            <Link className="navbar-icon">
+            <Link to="/catalogo" className="navbar-icon">
               {/* SearchBar */}
               <Search />
             </Link>
