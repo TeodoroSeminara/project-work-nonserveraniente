@@ -1,15 +1,17 @@
 import { useState } from "react";
-import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import "../../styles/ProductFilters.css";
+import { LuCannabis } from "react-icons/lu";
+import { Switch } from "pretty-checkbox-react";
+import "pretty-checkbox/dist/pretty-checkbox.min.css";
+import { VscSettings } from "react-icons/vsc";
 
-
-// Opzioni "utility" e "category" statiche
 const utilityOptions = [
-    { label: "Utilità 1", value: 1 },
-    { label: "Utilità 2", value: 2 },
-    { label: "Utilità 3", value: 3 },
-    { label: "Utilità 4", value: 4 },
-    { label: "Utilità 5", value: 5 },
+    { label: "♿️1", value: 1 },
+    { label: "♿️2", value: 2 },
+    { label: "♿️3", value: 3 },
+    { label: "♿️4", value: 4 },
+    { label: "♿️5", value: 5 },
 ];
 
 const categoryOptions = [
@@ -23,13 +25,21 @@ const categoryOptions = [
 ];
 
 export default function ProductFilters({ onFilter }) {
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
     const [search, setSearch] = useState("");
+
+    // Range effettivo che invii al backend
     const [priceRange, setPriceRange] = useState([0, 500]);
+
+    // Input testuali "liberi" per stile Amazon
+    const [minPriceInput, setMinPriceInput] = useState("");
+    const [maxPriceInput, setMaxPriceInput] = useState("");
+
     const [utilities, setUtilities] = useState([]);
     const [categories, setCategories] = useState([]);
     const [sortOrder, setSortOrder] = useState("id_asc");
 
-    // Callback centrale: aggiorna filtri e chiama la prop
     const triggerFilter = ({
         newSearch = search,
         newPriceRange = priceRange,
@@ -41,120 +51,172 @@ export default function ProductFilters({ onFilter }) {
             name: newSearch || undefined,
             price_min: newPriceRange[0],
             price_max: newPriceRange[1],
-            utility: newUtilities.length > 0 ? newUtilities.join(",") : undefined,
-            category: newCategories.length > 0 ? newCategories.join(",") : undefined,
+            utility: newUtilities.length ? newUtilities.join(",") : undefined,
+            category: newCategories.length ? newCategories.join(",") : undefined,
             sort: newSortOrder,
         });
     };
 
-    // Handlers per filtri live (solo su interazione!)
-    const handleChangeSearch = (e) => {
-        const value = e.target.value;
-        setSearch(value);
-        triggerFilter({ newSearch: value });
-    };
-    const handleChangePrice = (range) => {
-        setPriceRange(range);
-        triggerFilter({ newPriceRange: range });
-    };
-    const handleChangeUtility = (val) => {
-        const updated = utilities.includes(val)
-            ? utilities.filter(u => u !== val)
-            : [...utilities, val];
+    const toggleUtility = (value) => {
+        const updated = utilities.includes(value)
+            ? utilities.filter((u) => u !== value)
+            : [...utilities, value];
         setUtilities(updated);
         triggerFilter({ newUtilities: updated });
     };
-    const handleChangeCategory = (val) => {
-        const updated = categories.includes(val)
-            ? categories.filter(c => c !== val)
-            : [...categories, val];
+
+    const toggleCategory = (value) => {
+        const updated = categories.includes(value)
+            ? categories.filter((c) => c !== value)
+            : [...categories, value];
         setCategories(updated);
         triggerFilter({ newCategories: updated });
     };
-    const handleToggleSortOrder = () => {
-        const newOrder = sortOrder === "id_asc" ? "id_desc" : "id_asc";
-        setSortOrder(newOrder);
-        triggerFilter({ newSortOrder: newOrder });
+
+    const handleMinPriceChange = (e) => {
+        const value = e.target.value;
+        // Permetti input vuoto o numeri SENZA formattazioni strane
+        if (/^\d*$/.test(value)) setMinPriceInput(value);
+    };
+
+    const handleMaxPriceChange = (e) => {
+        const value = e.target.value;
+        if (/^\d*$/.test(value)) setMaxPriceInput(value);
+    };
+
+    const applyPriceFilter = () => {
+        const min = minPriceInput === "" ? 0 : Number(minPriceInput);
+        const max = maxPriceInput === "" ? 999999 : Number(maxPriceInput);
+
+        const newRange = [min, max];
+        setPriceRange(newRange);
+        triggerFilter({ newPriceRange: newRange });
+    };
+
+    const onPriceKeyDown = (e) => {
+        if (e.key === "Enter") applyPriceFilter();
     };
 
     return (
-        <div className="products-filter-sidebar">
-            {/* Input testo */}
-            <div>
-                <input
-                    type="text"
-                    placeholder="Cerca per nome..."
-                    value={search}
-                    onChange={handleChangeSearch}
-                />
-            </div>
-            {/* Slider prezzo */}
-            <div style={{ margin: "0.7em 0" }}>
-                <label>Prezzo:</label>
-                <Slider
-                    range
-                    min={0}
-                    max={500}
-                    value={priceRange}
-                    allowCross={false}
-                    onChange={handleChangePrice}
-                    marks={{ 0: "0€", 500: "500€" }}
-                />
-                <span>
-                    {priceRange[0]} € – {priceRange[1]} €
-                </span>
-            </div>
-            {/* Utility checkbox */}
-            <div>
-                <span style={{ fontWeight: 600 }}>Utilità:</span>
-                {utilityOptions.map(util => (
-                    <label key={util.value} style={{ display: "block" }}>
-                        <input
-                            type="checkbox"
-                            checked={utilities.includes(util.value)}
-                            onChange={() => handleChangeUtility(util.value)}
-                        />
-                        {util.label}
-                    </label>
-                ))}
-            </div>
-            {/* Categoria checkbox */}
-            <div>
-                <span style={{ fontWeight: 600 }}>Categorie:</span>
-                {categoryOptions.map(cat => (
-                    <label key={cat.value} style={{ display: "block" }}>
-                        <input
-                            type="checkbox"
-                            checked={categories.includes(cat.value)}
-                            onChange={() => handleChangeCategory(cat.value)}
-                        />
-                        {cat.label}
-                    </label>
-                ))}
-            </div>
-            {/* Ordine "Ultimi Arrivi" con freccetta-toggle */}
-            <div style={{ margin: "1em 0" }}>
-                {/* <span style={{ fontWeight: 600 }}>Ordine per Arrivi:</span> */}
-                <span style={{ marginLeft: "7px" }}>
-                    {sortOrder === "id_asc" ? "Meno Recenti" : "Più Recenti"}</span>
-                <button
-                    type="button"
-                    onClick={handleToggleSortOrder}
-                    style={{
-                        background: "none",
-                        border: "none",
-                        marginLeft: "8px",
-                        cursor: "pointer",
-                        fontSize: "1.2em"
-                    }}
-                    aria-label="Toggle Ordine"
-                >
-                    {sortOrder === "id_asc" ? "⬇️" : "⬆️"}
-                </button>
-                {/* <span style={{ marginLeft: "7px" }}>
-                    {sortOrder === "id_asc" ? "Meno Recenti" : "Più Recenti"}
-                </span> */}
-            </div>
-        </div>
+        <>
+            {/* Bottone per aprire i filtri */}
+            <button
+                className="filters-toggle-btn"
+                onClick={() => setSidebarOpen(true)}
+            >
+                <VscSettings/>
+            </button>
+
+            {/* Overlay */}
+            <div
+                className={`filters-overlay ${sidebarOpen ? "open" : ""}`}
+                onClick={() => setSidebarOpen(false)}
+            ></div>
+
+            {/* Sidebar */}
+            <aside
+                className={`products-filter-sidebar-collapsible ${sidebarOpen ? "open" : ""}`}
+            >
+                <div className="filters-header">
+                    <h3>Filtri</h3>
+                    <button
+                        className="filters-close-btn"
+                        onClick={() => setSidebarOpen(false)}
+                    >
+                        <LuCannabis />
+                    </button>
+                </div>
+
+                <div className="filters-body">
+
+                    {/* Ricerca */}
+                    <input
+                        type="text"
+                        placeholder="Cerca per nome..."
+                        value={search}
+                        onChange={(e) => {
+                            const v = e.target.value;
+                            setSearch(v);
+                            triggerFilter({ newSearch: v });
+                        }}
+                    />
+
+                    {/* Prezzo */}
+                    <div className="filter-block">
+                        <label>Prezzo:</label>
+
+                        <div className="price-inputs">
+                            <input
+                                type="number"
+                                placeholder="Min"
+                                value={minPriceInput}
+                                onChange={handleMinPriceChange}
+                                onBlur={applyPriceFilter}
+                                onKeyDown={onPriceKeyDown}
+                            />
+
+                            <input
+                                type="number"
+                                placeholder="Max"
+                                value={maxPriceInput}
+                                onChange={handleMaxPriceChange}
+                                onBlur={applyPriceFilter}
+                                onKeyDown={onPriceKeyDown}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Utilità */}
+                    <div className="filter-block">
+                        <h4>Utilità:</h4>
+                        {utilityOptions.map((opt) => (
+                            <label key={opt.value} className="filter-switch">
+                                <Switch
+                                    animation="smooth"
+                                    checked={utilities.includes(opt.value)}
+                                    onChange={() => toggleUtility(opt.value)}
+                                />
+                                {opt.label}
+                            </label>
+
+
+                        ))}
+                    </div>
+
+                    {/* Categorie */}
+                    <div className="filter-block">
+                        <h4>Categorie:</h4>
+                        {categoryOptions.map((opt) => (
+                            <label key={opt.value} className="filter-switch">
+                                <Switch
+                                    animation="smooth"
+                                    checked={categories.includes(opt.value)}
+                                    onChange={() => toggleCategory(opt.value)}
+                                />
+                                {opt.label}
+                            </label>
+                        ))}
+                    </div>
+
+                    {/* Ordinamento */}
+                    <div className="filter-block">
+                        <label>Ordina per:</label>
+                        <select
+                            value={sortOrder}
+                            onChange={(e) => {
+                                setSortOrder(e.target.value);
+                                triggerFilter({ newSortOrder: e.target.value });
+                            }}
+                        >
+                            <option value="id_desc">Più Recenti</option>
+                            <option value="id_asc">Meno Recenti</option>
+                            <option value="price_asc">Prezzo Crescente</option>
+                            <option value="price_desc">Prezzo Decrescente</option>
+                        </select>
+                    </div>
+
+                </div>
+            </aside>
+        </>
     );
 }

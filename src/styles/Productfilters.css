@@ -1,0 +1,133 @@
+.filters-toggle-btn {
+    position: fixed;
+    top: 90px;
+    left: 20px;
+    background: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.256);
+    transition: all 0.3s ease;
+    color: var(--text);
+}
+
+.filters-toggle-btn:hover {
+    background: var(--bg);
+    color: white;
+    transform: scale(1.1);
+}
+
+.filters-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+.filters-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.products-filter-sidebar-collapsible {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 320px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.15);
+
+    transform: translateX(-100%);
+    transition: transform 0.35s ease;
+    z-index: 1002;
+}
+
+.products-filter-sidebar-collapsible.open {
+    transform: translateX(0);
+}
+
+.filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filters-close-btn {
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px 10px;
+    color: var(--text);
+    background: white;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.256);
+    transition: all 0.3s ease;
+}
+
+.filters-close-btn:hover {
+    background: var(--bg);
+    color: white;
+    transform: scale(1.2);
+}
+
+/* Input di testo */
+.products-filter-sidebar-collapsible input[type="text"],
+.products-filter-sidebar-collapsible input[type="number"],
+.products-filter-sidebar-collapsible select {
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    background: #f6f6f6;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+}
+
+/* Effetto focus elegante */
+.products-filter-sidebar-collapsible input[type="text"]:focus,
+.products-filter-sidebar-collapsible input[type="number"]:focus,
+.products-filter-sidebar-collapsible select:focus {
+    box-shadow: 0 0 0 3px rgba(253, 46, 0, 0.233);
+    outline: none;
+}
+
+/* Placeholder */
+.products-filter-sidebar-collapsible input[type="text"]::placeholder {
+    color: var(--text);
+    font-weight: 400;
+}
+
+/* Select styling */
+.products-filter-sidebar-collapsible select {
+    appearance: none;
+    cursor: pointer;
+    color: var(--text);
+
+}
+
+.filter-switch {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.pretty .state label {
+  margin-left: 5px !important;
+}
+
+.pretty.p-switch input:checked ~ .state:before {
+  background: var(--text) !important; /* colore barra ON */
+  border-color: var(--text) !important;
+}
