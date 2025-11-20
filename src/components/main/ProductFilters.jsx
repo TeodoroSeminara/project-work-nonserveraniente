@@ -2,6 +2,7 @@ import { useState } from "react";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
+
 // Opzioni "utility" e "category" statiche
 const utilityOptions = [
     { label: "Utilità 1", value: 1 },
