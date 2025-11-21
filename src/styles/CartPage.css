@@ -117,6 +117,14 @@ div.qty-box span{
   transform: scale(1.05);
 }
 
+.checkout-btn:disabled {
+  background: #ccc !important;
+  color: #888 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+
 
 
 /* Remove button */

@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export default function CartPage() {
 
   const { cartItems, increaseQty, decreaseQty, removeItem } = useCart();
-  
+
   // calcola il totale degli articoli nel carrello 
   // sommando (prezzo * quantità) per ogni item
   const subtotal = cartItems.reduce(
@@ -25,14 +25,14 @@ export default function CartPage() {
       <div className="custom-card mb-4">
         <div className="d-flex justify-content-between align-items-center">
           <span className="free-shipping-header">
-            {subtotal >= 50 
-              ? "Spedizione gratuita raggiunta!" 
-            : `Aggiungi €${(50 - subtotal).toFixed(2)} per la spedizione gratuita`
+            {subtotal >= 50
+              ? "Spedizione gratuita raggiunta!"
+              : `Aggiungi €${(50 - subtotal).toFixed(2)} per la spedizione gratuita`
             }
           </span>
 
           <span className="price-gray">
-            {subtotal >= 50 
+            {subtotal >= 50
               ? "Hai risparmiato... ma a che prezzo?"
               : `€${subtotal.toFixed(2)} / €50.00`
             }
@@ -102,8 +102,14 @@ export default function CartPage() {
             </div>
 
             <Link to="/carrello/checkout">
-              <button className="checkout-btn">Procedi al checkout</button>
+              <button
+                className="checkout-btn"
+                disabled={subtotal === 0}
+              >
+                Procedi al checkout
+              </button>
             </Link>
+
 
             <p className="text-center mt-2 text-muted">
               (Se proprio vuoi sprecare questi soldi…)
