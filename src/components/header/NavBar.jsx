@@ -30,16 +30,13 @@ export default function NavBar() {
           </li>
           <li>
             <div className="position-relative">
-              <Link className="navbar-icon"
+              <Link className="navbar-icon navbar-cart"
                to="/carrello">
                 {/* Carrello */}
                 <ShoppingCart />
-                <Badge
-                  size={20}
-                  className="position-absolute bottom-50" />
                 <span
                   id="cartBadge"
-                  className="position-absolute bottom-50 badge text-black">
+                  className="badge text-black cart-number">
                   {/* Numero di articoli nel carrello */}
                  {cartCount}
                 </span>

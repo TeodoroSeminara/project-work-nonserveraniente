@@ -99,19 +99,22 @@ div.qty-box span{
 }
 
 .checkout-btn {
-  background-color: var(--text);
+  background-color: white;
   border: none;
   padding: 14px;
   font-size: 1.1rem;
   font-weight: 600;
   border-radius: 14px;
   width: 100%;
-  color: white;
+  color: var(--text);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.256);
+  transition: all 0.3s ease;
 }
 
 .checkout-btn:hover {
   background: var(--bg);
-  transition: 0.90s;
+  color: white;
+  transform: scale(1.05);
 }
 
 

@@ -1,5 +1,5 @@
 .navbar-icon {
-    width: 25px;
+    width: 20px;
     color: black;
     padding: 20px 0;
 }
@@ -27,5 +27,24 @@
 @media (max-width: 768px) {
     .navbar {
         padding: 20px 40px !important;
+    }
+}
+
+.cart-number {
+    position: absolute;
+    left: 1px;
+    bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.navbar-cart svg {
+    z-index: 1000;
+    position: relative;
+}
+
+.navbar-cart:hover {
+    .cart-number {
+        bottom: 15px;
+        color: var(--text)!important;
     }
 }
