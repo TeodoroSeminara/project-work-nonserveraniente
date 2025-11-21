@@ -1,0 +1,191 @@
+/* Container Generale */
+.checkout-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.checkout-summary-wrapper {
+    width: 100%;
+    max-width: 700px;
+}
+
+/* Titolo Riepilogo */
+.checkout-summary-wrapper h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    color: #444;
+}
+
+/* Box Riepilogo */
+.checkout-summary-box {
+    background: white;
+    border: 1px solid #e4e4e4;
+    border-radius: 10px;
+    padding: 1.4rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.256);
+    
+}
+
+.checkout-summary-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+/* Lista degli articoli */
+.checkout-items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.checkout-item-row {
+    padding: 0.8rem 0;
+}
+
+.checkout-item-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+
+.checkout-item-title {
+    font-weight: 600;
+}
+
+.checkout-item-details {
+    display: flex;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+
+/* Totali */
+.checkout-total-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    border-top: 1px solid #eaeaea;
+    font-size: 1rem;
+}
+
+.checkout-price {
+    margin-left: 10px;
+    color: var(--text);
+}
+
+.checkout-total-price strong {
+    font-weight: 700;
+    color: var(--text);
+}
+
+.checkout-total-final {
+    font-weight: 800;
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+}
+
+/* Form di Checkout */
+.checkout-form fieldset {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    padding: 1rem 1.3rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.256);
+}
+
+.checkout-form legend {
+    font-weight: 600;
+    padding: 0 0.5rem;
+    font-size: 1.2rem;
+}
+
+
+/* Inputs */
+.checkout-form input {
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    background: white;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-form input:focus {
+    box-shadow: 0 0 0 3px rgba(253, 46, 0, 0.233);
+    outline: none;
+    border: none;
+}
+
+/* Braintree Box */
+#braintree-dropin-container {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px dashed #ccc;
+}
+
+/* Button */
+
+.checkout-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.checkout-form button {
+    width: 50%;
+    background: white;
+    color: var(--text);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.256);
+}
+
+.checkout-form button:hover:not(:disabled) {
+    background: var(--bg);
+    color: white;
+    transform: scale(1.05);
+}
+
+.checkout-form button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .checkout-container {
+        padding: 1rem;
+    }
+
+    .checkout-summary-box {
+        padding: 1rem;
+    }
+
+    .checkout-form input {
+        font-size: 0.9rem;
+    }
+
+    .checkout-form button {
+        font-size: 1rem;
+    }
+}
+

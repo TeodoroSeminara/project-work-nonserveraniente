@@ -5,23 +5,28 @@ import { LuCannabis } from "react-icons/lu";
 import { Switch } from "pretty-checkbox-react";
 import "pretty-checkbox/dist/pretty-checkbox.min.css";
 import { VscSettings } from "react-icons/vsc";
+import { BiAccessibility } from "react-icons/bi";
+import { FaHome, FaTshirt, FaGift } from "react-icons/fa";
+import { FaMicrochip, FaKitchenSet } from "react-icons/fa6";
+import { MdSportsBasketball } from "react-icons/md";
+import { PiOfficeChairFill } from "react-icons/pi";
 
 const utilityOptions = [
-    { label: "♿️", value: 1 },
-    { label: "♿️♿️", value: 2 },
-    { label: "♿️♿️♿️", value: 3 },
-    { label: "♿️♿️♿️♿️", value: 4 },
-    { label: "♿️♿️♿️♿️♿️", value: 5 },
+    { label: <BiAccessibility />, value: 1 },
+    { label: <><BiAccessibility /><BiAccessibility /></>, value: 2 },
+    { label: <><BiAccessibility /><BiAccessibility /><BiAccessibility /></>, value: 3 },
+    { label: <><BiAccessibility /><BiAccessibility /><BiAccessibility /><BiAccessibility /></>, value: 4 },
+    { label: <><BiAccessibility /><BiAccessibility /><BiAccessibility /><BiAccessibility /><BiAccessibility /></>, value: 5 },
 ];
 
 const categoryOptions = [
-    { label: "Casa & Arredo", value: 1 },
-    { label: "Tecnologia Inutile", value: 2 },
-    { label: "Accessori e Moda", value: 3 },
-    { label: "Cucina e Tavola", value: 4 },
-    { label: "Tempo libero & Regali", value: 5 },
-    { label: "Sport Outdoor", value: 6 },
-    { label: "Ufficio & Studio", value: 7 },
+    { label: <>Casa e Arredo <FaHome /></>, value: 1 },
+    { label: <>Tecnologia Inutile <FaMicrochip /></>, value: 2 },
+    { label: <>Accessori e Moda <FaTshirt /></>, value: 3 },
+    { label: <>Cucina e Tavola <FaKitchenSet /></>, value: 4 },
+    { label: <>Tempo libero & Regali <FaGift /></>, value: 5 },
+    { label: <>Sport Outdoor <MdSportsBasketball /></>, value: 6 },
+    { label: <>Ufficio & Studio <PiOfficeChairFill /></>, value: 7 },
 ];
 
 export default function ProductFilters({ onFilter }) {
