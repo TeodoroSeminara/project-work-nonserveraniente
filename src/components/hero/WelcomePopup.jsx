@@ -4,6 +4,14 @@ import "../../styles/WelcomePopup.css";
 
 const LOCALSTORAGE_KEY = "nsn_welcome_shown";
 
+// Funzione per validare la mail: deve avere @ e almeno un . dopo la @
+function isValidEmail(email) {
+    if (!email) return false;
+    const atIndex = email.indexOf("@");
+    const dotIndex = email.lastIndexOf(".");
+    return atIndex > 0 && dotIndex > atIndex + 1 && dotIndex < email.length - 1;
+}
+
 export default function WelcomePopup() {
     const [isOpen, setIsOpen] = useState(false);
     const [email, setEmail] = useState("");
@@ -24,30 +32,31 @@ export default function WelcomePopup() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!email) return;
+        if (!isValidEmail(email)) {
+            // Il popup visivo ti avvisa, non serve alert qui!
+            return;
+        }
 
         setSending(true);
 
         try {
             await emailjs.send(
-                "service_k4xenoj",     
-                "template_s78m8js",    
+                "service_k4xenoj",
+                "template_s78m8js",
                 {
-                    user_email: email,  
+                    user_email: email,
                 },
-                "MxVwJyaupO67MGcc-"     
+                "MxVwJyaupO67MGcc-"
             );
 
             setSent(true);
             localStorage.setItem(LOCALSTORAGE_KEY, "true");
 
-            // dopo 2 secondi chiudiamo
             setTimeout(() => {
                 setIsOpen(false);
             }, 2000);
         } catch (err) {
             console.error("Errore invio email:", err);
-            // in caso di errore chiudo comunque per non stressare l'utent
             localStorage.setItem(LOCALSTORAGE_KEY, "true");
             setIsOpen(false);
         } finally {
@@ -56,6 +65,9 @@ export default function WelcomePopup() {
     };
 
     if (!isOpen) return null;
+
+    // Mostra errore SOLO se l’input è non vuoto e non valido
+    const showError = email.length > 0 && !isValidEmail(email);
 
     return (
         <div className="welcome-popup-overlay">
@@ -82,7 +94,13 @@ export default function WelcomePopup() {
                                 required
                                 disabled={sending}
                             />
-                            <button type="submit" disabled={sending}>
+                            {/* Messaggio di errore visivo */}
+                            {showError && (
+                                <div className="welcome-popup-error">
+                                    Inserisci un indirizzo email valido (deve contenere @ e almeno un . dopo la @)
+                                </div>
+                            )}
+                            <button type="submit" disabled={sending || !isValidEmail(email)}>
                                 {sending ? "Invio in corso..." : "Iscriviti"}
                             </button>
                         </form>
