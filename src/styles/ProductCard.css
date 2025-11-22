@@ -55,16 +55,17 @@
 
 /* Prezzo in evidenza */
 .product-card-price {
-    margin-top: 8px;
+    margin-top: 24px;
     font-weight: 700;
     color: var(--text);
+    font-size: 1.5rem;
 }
 
 /* CONTENITORE PREZZO + BOTTONI */
 .card-bottom-row {
     width: 100%;
     display: flex;
-    justify-content: space-between; /* ← PREZZO A SINISTRA / BOTTONI A DESTRA */
+    justify-content: space-between; 
     align-items: center;
     margin-top: auto;
     padding-top: 10px;
