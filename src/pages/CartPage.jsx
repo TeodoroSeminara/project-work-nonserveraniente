@@ -119,6 +119,7 @@ export default function CartPage() {
                     +
                   </span>
                 </div>
+                <span>{item.price}</span>
               </div>
 
               <div className="text-end">

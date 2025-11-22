@@ -4,7 +4,10 @@ import { FaHeart, FaRegHeart, FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
 import { useWishlist } from "../../context/WishlistContext";
 
+// import { useNotification } from "../../context/NotificationContext";
+
 export function ProductCard({ product }) {
+
     const { addToCart } = useCart();
     const { toggleWishlist, isInWishlist } = useWishlist();
 

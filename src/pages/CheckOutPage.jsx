@@ -19,6 +19,9 @@ export default function CheckoutPage() {
   );
   const shipping_cost = subtotal >= 50 ? 0 : 5.99;
 
+  // <-- Stato per checkbox fatturazione differente
+  const [showBilling, setShowBilling] = useState(false);
+
   const [formData, setFormData] = useState({
     shipping_address: "",
     shipping_cap: "",
@@ -34,7 +37,7 @@ export default function CheckoutPage() {
     email: "",
   });
 
-  // CARICO CARRELLO + TOKEN
+  // Carico carrello + token pagamento
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("cartItems") || "[]");
     setCartItems(stored);
@@ -49,10 +52,9 @@ export default function CheckoutPage() {
       });
   }, []);
 
-  // INIZIALIZZO BRAINTREE DROPIN
+  // Inizializzo Braintree drop-in
   useEffect(() => {
     if (!clientToken) return;
-
     dropin.create(
       {
         authorization: clientToken,
@@ -68,36 +70,31 @@ export default function CheckoutPage() {
         setLoadingPaymentUI(false);
       }
     );
-
     return () => {
       if (dropinInstance.current) {
-        dropinInstance.current.teardown().catch(() => { });
+        dropinInstance.current.teardown().catch(() => {});
       }
     };
   }, [clientToken]);
 
-  // FORM HANDLER CON VALIDAZIONI
+  // Gestione input form, validazioni per CAP e telefono
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // CAP: solo numeri, max 5 cifre
     if (name === "shipping_cap" || name === "billing_cap") {
       const onlyNumbers = value.replace(/\D/g, "").slice(0, 5);
       setFormData((prev) => ({ ...prev, [name]: onlyNumbers }));
       return;
     }
-
-    // Telefono: solo numeri, max 15 cifre
     if (name === "phone") {
       const onlyNumbers = value.replace(/\D/g, "").slice(0, 15);
       setFormData((prev) => ({ ...prev, [name]: onlyNumbers }));
       return;
     }
-
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // SUBMIT ORDINE
+  // Invio ordine+pagamento
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -111,25 +108,22 @@ export default function CheckoutPage() {
       return;
     }
 
-    // Validazione CAP (deve essere 5 cifre)
+    // Validazione CAP spedizione
     if (formData.shipping_cap.length !== 5) {
       alert("Il CAP di spedizione deve essere di 5 cifre.");
       return;
     }
-
-    // Validazione telefono (minimo 6 cifre)
+    // Validazione telefono
     if (formData.phone.length < 6) {
       alert("Il numero di telefono deve avere almeno 6 cifre.");
       return;
     }
-
     // Validazione email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       alert("Inserisci un indirizzo email valido (es. nome@esempio.com)");
       return;
     }
-
     setSubmitting(true);
 
     dropinInstance.current.requestPaymentMethod(async (err, payload) => {
@@ -139,7 +133,6 @@ export default function CheckoutPage() {
         setSubmitting(false);
         return;
       }
-
       const paymentMethodNonce = payload.nonce;
 
       const body = {
@@ -160,7 +153,6 @@ export default function CheckoutPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         });
-
         const data = await res.json();
 
         if (!res.ok || !data.success) {
@@ -169,7 +161,6 @@ export default function CheckoutPage() {
           setSubmitting(false);
           return;
         }
-
         alert("Ordine completato con successo!");
         localStorage.removeItem("cartItems");
         setCartItems([]);
@@ -240,7 +231,6 @@ export default function CheckoutPage() {
         <form onSubmit={handleSubmit} className="checkout-form">
           <fieldset>
             <legend>Dati personali</legend>
-
             <input
               name="name"
               placeholder="Nome"
@@ -275,7 +265,6 @@ export default function CheckoutPage() {
 
           <fieldset>
             <legend>Indirizzo spedizione</legend>
-
             <input
               name="shipping_address"
               placeholder="Indirizzo"
@@ -306,35 +295,53 @@ export default function CheckoutPage() {
             />
           </fieldset>
 
-          <fieldset>
-            <legend>Indirizzo fatturazione</legend>
+          {/* Checkbox per fatturazione differente */}
+          <div
+            className="billing-checkbox-row"
+            style={{ margin: "18px 0 6px 0" }}
+          >
+            <input
+              type="checkbox"
+              id="show-billing"
+              checked={showBilling}
+              onChange={(e) => setShowBilling(e.target.checked)}
+            />
+            <label htmlFor="show-billing" style={{ marginLeft: 8 }}>
+              Indirizzo di fatturazione differente?
+            </label>
+          </div>
 
-            <input
-              name="billing_address"
-              placeholder="Indirizzo"
-              value={formData.billing_address}
-              onChange={handleChange}
-            />
-            <input
-              name="billing_cap"
-              placeholder="CAP"
-              value={formData.billing_cap}
-              onChange={handleChange}
-              inputMode="numeric"
-            />
-            <input
-              name="billing_city"
-              placeholder="Città"
-              value={formData.billing_city}
-              onChange={handleChange}
-            />
-            <input
-              name="billing_description"
-              placeholder="Note"
-              value={formData.billing_description}
-              onChange={handleChange}
-            />
-          </fieldset>
+          {/* Campo fatturazione opzionale */}
+          {showBilling && (
+            <fieldset>
+              <legend>Indirizzo fatturazione</legend>
+              <input
+                name="billing_address"
+                placeholder="Indirizzo"
+                value={formData.billing_address}
+                onChange={handleChange}
+              />
+              <input
+                name="billing_cap"
+                placeholder="CAP"
+                value={formData.billing_cap}
+                onChange={handleChange}
+                inputMode="numeric"
+              />
+              <input
+                name="billing_city"
+                placeholder="Città"
+                value={formData.billing_city}
+                onChange={handleChange}
+              />
+              <input
+                name="billing_description"
+                placeholder="Note"
+                value={formData.billing_description}
+                onChange={handleChange}
+              />
+            </fieldset>
+          )}
 
           <fieldset>
             <legend>Pagamento</legend>
