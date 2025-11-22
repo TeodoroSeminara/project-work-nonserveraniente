@@ -2,15 +2,20 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getProductBySlug } from "../services/api";
 import { useCart } from "../context/CartContext";
-import NotFound from "./NotFound"; // <--- Importa il tuo NotFound!
+import NotFound from "./NotFound";
 import "../styles/ProductPage.css";
+import { useNotification } from "../context/NotificationContext";
+import "../styles/Notification.css";
 
 export default function ProductPage() {
   const { addToCart } = useCart();
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState("");
-  const [notFound, setNotFound] = useState(false); // <--- aggiungi stato 404
+  // stato 404
+  const [notFound, setNotFound] = useState(false);
+  // Notifica aggiunta carrello
+  const { showNotification } = useNotification();
 
   useEffect(() => {
     setProduct(null); // Reset quando cambi slug
@@ -53,14 +58,15 @@ export default function ProductPage() {
         <p className="product-description">{product.description}</p>
 
         <button
-          onClick={() =>
+          onClick={() => {
             addToCart({
               slug: product.slug,
               title: product.name,
               price: product.price,
               img: product.images[0],
-            })
-          }
+            });
+            showNotification("Prodotto aggiunto al carrello!"); // <-- corretto!
+          }}
           className="product-btn"
         >
           Aggiungi al carrello
