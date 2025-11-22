@@ -33,8 +33,8 @@ export default function HomePage() {
 
   return (
     <>
-      <Hero />
       <LowBar />
+      <Hero />
       <PopularProducts />
       <LastAdded />
 
