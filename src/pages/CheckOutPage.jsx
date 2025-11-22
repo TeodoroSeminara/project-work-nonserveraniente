@@ -19,8 +19,9 @@ export default function CheckoutPage() {
   );
   const shipping_cost = subtotal >= 50 ? 0 : 5.99;
 
-  // <-- Stato per checkbox fatturazione differente
-  const [showBilling, setShowBilling] = useState(false);
+
+  // <-- stato dati di fatturazione = dati di spedizione
+  const [sameBilling, setSameBilling] = useState(false);
 
   const [formData, setFormData] = useState({
     shipping_address: "",
@@ -72,7 +73,7 @@ export default function CheckoutPage() {
     );
     return () => {
       if (dropinInstance.current) {
-        dropinInstance.current.teardown().catch(() => {});
+        dropinInstance.current.teardown().catch(() => { });
       }
     };
   }, [clientToken]);
@@ -91,7 +92,19 @@ export default function CheckoutPage() {
       setFormData((prev) => ({ ...prev, [name]: onlyNumbers }));
       return;
     }
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => {
+      const updated = { ...prev, [name]: value };
+
+      // se l’utente ha spuntato "stesso indirizzo", copia i campi shipping -> billing
+      if (sameBilling && name.startsWith("shipping_")) {
+        const billingField = name.replace("shipping_", "billing_");
+        if (billingField in updated) {
+          updated[billingField] = value;
+        }
+      }
+
+      return updated;
+    });
   };
 
   // Invio ordine+pagamento
@@ -126,6 +139,17 @@ export default function CheckoutPage() {
     }
     setSubmitting(true);
 
+    // Se sameBilling è true, ci assicuriamo che i campi billing siano allineati
+    const bodyFormData = {
+      ...formData,
+      ...(sameBilling && {
+        billing_address: formData.shipping_address,
+        billing_cap: formData.shipping_cap,
+        billing_city: formData.shipping_city,
+        billing_description: formData.shipping_description,
+      }),
+    };
+
     dropinInstance.current.requestPaymentMethod(async (err, payload) => {
       if (err) {
         console.error("Errore metodo pagamento:", err);
@@ -137,7 +161,7 @@ export default function CheckoutPage() {
 
       const body = {
         paymentMethodNonce,
-        ...formData,
+        ...bodyFormData,
         shipping_cost,
         items: cartItems.map((item) => ({
           slug: item.slug,
@@ -302,46 +326,69 @@ export default function CheckoutPage() {
           >
             <input
               type="checkbox"
-              id="show-billing"
-              checked={showBilling}
-              onChange={(e) => setShowBilling(e.target.checked)}
+              id="same-billing"
+              checked={sameBilling}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setSameBilling(checked);
+                setFormData((prev) =>
+                  checked
+                    ? {
+                      ...prev,
+                      billing_address: prev.shipping_address,
+                      billing_cap: prev.shipping_cap,
+                      billing_city: prev.shipping_city,
+                      billing_description: prev.shipping_description,
+                    }
+                    : {
+
+                      ...prev,
+                      billing_address: "",
+                      billing_cap: "",
+                      billing_city: "",
+                      billing_description: "",
+                    }
+                );
+              }}
             />
-            <label htmlFor="show-billing" style={{ marginLeft: 8 }}>
-              Indirizzo di fatturazione differente?
+            <label htmlFor="same-billing" style={{ marginLeft: 8 }}>
+              Usa lo stesso indirizzo di spedizione per la fatturazione
             </label>
           </div>
 
           {/* Campo fatturazione opzionale */}
-          {showBilling && (
-            <fieldset>
-              <legend>Indirizzo fatturazione</legend>
-              <input
-                name="billing_address"
-                placeholder="Indirizzo"
-                value={formData.billing_address}
-                onChange={handleChange}
-              />
-              <input
-                name="billing_cap"
-                placeholder="CAP"
-                value={formData.billing_cap}
-                onChange={handleChange}
-                inputMode="numeric"
-              />
-              <input
-                name="billing_city"
-                placeholder="Città"
-                value={formData.billing_city}
-                onChange={handleChange}
-              />
-              <input
-                name="billing_description"
-                placeholder="Note"
-                value={formData.billing_description}
-                onChange={handleChange}
-              />
-            </fieldset>
-          )}
+          <fieldset>
+            <legend>Indirizzo fatturazione (opzionale)</legend>
+            <input
+              name="billing_address"
+              placeholder="Indirizzo"
+              value={formData.billing_address}
+              onChange={handleChange}
+              disabled={sameBilling}
+            />
+            <input
+              name="billing_cap"
+              placeholder="CAP"
+              value={formData.billing_cap}
+              onChange={handleChange}
+              inputMode="numeric"
+              disabled={sameBilling}
+            />
+            <input
+              name="billing_city"
+              placeholder="Città"
+              value={formData.billing_city}
+              onChange={handleChange}
+              disabled={sameBilling}
+            />
+            <input
+              name="billing_description"
+              placeholder="Note"
+              value={formData.billing_description}
+              onChange={handleChange}
+              disabled={sameBilling}
+            />
+          </fieldset>
 
           <fieldset>
             <legend>Pagamento</legend>
@@ -359,3 +406,4 @@ export default function CheckoutPage() {
     </main>
   );
 }
+
