@@ -92,10 +92,10 @@ export default function CartPage() {
         <div className="col-lg-8">
           {cartItems.map((item) => (
             <div key={item.slug} className="cart-item mb-4">
-              <img src={item.img} alt={item.title} />
+              <img src={item.image_url} alt={item.name} />
 
               <div className="flex-grow-1">
-                <div className="cart-item-title">{item.title}</div>
+                <div className="cart-item-title">{item.name}</div>
 
                 <div className="qty-box my-2">
                   <span

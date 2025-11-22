@@ -11,25 +11,30 @@ import AllProducts from './components/main/AllProducts'
 import CartPage from './pages/CartPage'
 import CheckOutPage from './pages/CheckOutPage'
 import NotFound from './pages/NotFound'
+import { WishlistProvider } from './context/WishlistContext';
+import WishlistPage from './pages/WishlistPage';
 
 
 function App() {
   return (
     <>
-    <CartProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<DefaultLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/product/:slug" element={<ProductPage />} />
-            <Route path="/catalogo" element={<AllProducts />} />
-            <Route path="/carrello" element={<CartPage />} />
-            <Route path="/carrello/checkout" element={<CheckOutPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </CartProvider>
+      <CartProvider>
+        <WishlistProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route element={<DefaultLayout />}>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/product/:slug" element={<ProductPage />} />
+                <Route path="/catalogo" element={<AllProducts />} />
+                <Route path="/carrello" element={<CartPage />} />
+                <Route path="/carrello/checkout" element={<CheckOutPage />} />
+                <Route path="/wishlist" element={<WishlistPage />} />
+                <Route path="*" element={<NotFound />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </WishlistProvider>
+      </CartProvider>
     </>
   )
 }

@@ -23,7 +23,7 @@ export default function NavBar() {
             </Link>
           </li>
           <li>
-            <Link className="navbar-icon">
+            <Link to="/wishlist" className="navbar-icon">
               {/* Wishlist */}
               <Heart />
             </Link>
