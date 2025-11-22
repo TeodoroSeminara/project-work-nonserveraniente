@@ -28,8 +28,13 @@ export function WishlistProvider({ children }) {
     return wishlist.some(p => p.slug === slug);
   }
 
+  function clearWishlist() {
+  setWishlist([]);
+}
+
+
   return (
-    <WishlistContext.Provider value={{ wishlist, toggleWishlist, isInWishlist }}>
+    <WishlistContext.Provider value={{ wishlist, toggleWishlist, isInWishlist, clearWishlist }}>
       {children}
     </WishlistContext.Provider>
   );
