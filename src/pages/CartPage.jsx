@@ -49,18 +49,25 @@ export default function CartPage() {
         <div className="popup-overlay">
           <div className="popup-card">
             <p>Sei sicuro di voler svuotare tutto il carrello?</p>
-            <button onClick={handleClearCart}>Sì, svuota</button>
-            <button onClick={() => setConfirmClear(false)}>Annulla</button>
+
+            <button className="confirm-btn" onClick={handleClearCart}>
+              Sì, svuota
+            </button>
+
+            <button className="cancel-btn" onClick={() => setConfirmClear(false)}>
+              Annulla
+            </button>
           </div>
         </div>
       )}
+
       {/* POPUP REMOVE SINGOLO */}
       {confirmRemove.open && (
         <div className="popup-overlay">
           <div className="popup-card">
             <p>Sei sicuro di voler rimuovere questo prodotto dal carrello?</p>
-            <button onClick={handleRemove}>Sì, rimuovi</button>
-            <button
+            <button className="confirm-btn" onClick={handleRemove}>Sì, rimuovi</button>
+            <button className="cancel-btn"
               onClick={() => setConfirmRemove({ open: false, slug: null })}
             >
               Annulla
@@ -76,8 +83,8 @@ export default function CartPage() {
             {subtotal >= 50
               ? "Spedizione gratuita raggiunta!"
               : `Aggiungi €${(50 - subtotal).toFixed(
-                  2
-                )} per la spedizione gratuita`}
+                2
+              )} per la spedizione gratuita`}
           </span>
           <span className="price-gray">
             {subtotal >= 50
@@ -92,10 +99,10 @@ export default function CartPage() {
         <div className="col-lg-8">
           {cartItems.map((item) => (
             <div key={item.slug} className="cart-item mb-4">
-              <img src={item.img} alt={item.title} />
+              <img src={item.image_url} alt={item.name} />
 
               <div className="flex-grow-1">
-                <div className="cart-item-title">{item.title}</div>
+                <div className="cart-item-title">{item.name}</div>
 
                 <div className="qty-box my-2">
                   <span
@@ -162,20 +169,15 @@ export default function CartPage() {
             </Link>
 
             {/* Bottone svuota carrello */}
-            <button
-              className="clear-cart-btn"
-              onClick={handleConfirmClear}
-              disabled={cartItems.length === 0}
-              style={{
-                marginTop: "12px",
-                background: "#ff2d55",
-                color: "#fff",
-                borderRadius: "7px",
-                fontWeight: 600,
-              }}
-            >
-              Svuota carrello
-            </button>
+            <div className="d-flex justify-content-center">
+              <button
+                className="clear-cart-btn"
+                onClick={handleConfirmClear}
+                disabled={cartItems.length === 0}
+              >
+                Svuota carrello
+              </button>
+            </div>
 
             <p className="text-center mt-2 text-muted">
               (Se proprio vuoi sprecare questi soldi…)

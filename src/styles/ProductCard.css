@@ -44,6 +44,7 @@
 .product-card-title {
     font-size: 1rem;
     font-weight: 600;
+    color: var(--text);
 }
 
 /* Testo descrizione */
@@ -57,4 +58,56 @@
     margin-top: 8px;
     font-weight: 700;
     color: var(--text);
+}
+
+/* CONTENITORE PREZZO + BOTTONI */
+.card-bottom-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* ← PREZZO A SINISTRA / BOTTONI A DESTRA */
+    align-items: center;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+/* CONTENITORE BOTTONI */
+.card-action-row {
+    display: flex;
+    gap: 8px;
+}
+
+/* BOTTONI */
+.card-action-row button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s ease;
+}
+
+.card-action-row button:hover {
+    transform: scale(1.12);
+    background: #ffe0cc;
+}
+
+/* ICONA WISHLIST */
+.wishlist-icon {
+    font-size: 18px;
+    color: #444;
+}
+
+.wishlist-icon.active {
+    color: #ff4d6d;
+}
+
+/* ICONA CARRELLO */
+.cart-icon {
+    font-size: 18px;
+    color: #444;
 }

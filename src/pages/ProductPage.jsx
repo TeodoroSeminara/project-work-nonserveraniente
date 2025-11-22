@@ -4,18 +4,23 @@ import { getProductBySlug } from "../services/api";
 import { useCart } from "../context/CartContext";
 import NotFound from "./NotFound";
 import "../styles/ProductPage.css";
+import { useWishlist } from "../context/WishlistContext";
 import { useNotification } from "../context/NotificationContext";
 import "../styles/Notification.css";
+
 
 export default function ProductPage() {
   const { addToCart } = useCart();
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState("");
+  const { wishlist, toggleWishlist } = useWishlist();
+
   // stato 404
   const [notFound, setNotFound] = useState(false);
   // Notifica aggiunta carrello
   const { showNotification } = useNotification();
+
 
   useEffect(() => {
     setProduct(null); // Reset quando cambi slug
@@ -69,7 +74,21 @@ export default function ProductPage() {
           }}
           className="product-btn"
         >
-          Aggiungi al carrello
+          Aggiungi al Carrello
+        </button>
+        <button
+          onClick={() =>
+            toggleWishlist({
+              slug: product.slug,
+              name: product.name,
+              price: product.price,
+              image_url: product.images[0],
+              description: product.description,
+            })
+          }
+          className="product-btn"
+        >
+         Aggiungi alla Wishlist
         </button>
 
         <Link className="back-home-btn" to="/catalogo">

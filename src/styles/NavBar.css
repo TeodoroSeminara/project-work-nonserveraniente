@@ -32,8 +32,8 @@
 
 .cart-number {
     position: absolute;
-    left: 1px;
-    bottom: 10px;
+    left: 17px;
+    bottom: 12px;
     transition: all 0.3s ease;
 }
 
@@ -43,8 +43,10 @@
 }
 
 .navbar-cart:hover {
+
     .cart-number {
-        bottom: 15px;
+        left: 20px;
+        bottom: 10px;
         color: var(--text)!important;
     }
 }

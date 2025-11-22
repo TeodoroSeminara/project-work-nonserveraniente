@@ -1,0 +1,127 @@
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.container h2 {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+}
+
+
+.wishlist-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.wishlist-btn-center {
+    width: 100%;
+    display: flex;
+    justify-content: center; 
+    margin-top: 20px;
+}
+
+.clear-wishlist-btn {
+    background: #ff2d55;
+    color: white;
+    padding: 10px 16px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    margin: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.clear-wishlist-btn:hover:not(:disabled) {
+    background: #ff1a43;
+    transform: scale(1.05);
+}
+
+.clear-wishlist-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.not-found-wishlist {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* Overlay scuro */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* Card popup */
+.popup-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    animation: popupFade 0.25s ease;
+}
+
+@keyframes popupFade {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.popup-card p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: #444;
+}
+
+/* Bottoni */
+.confirm-btn {
+    background: #ff2d55;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    width: 100%;
+    font-weight: 600;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.confirm-btn:hover {
+    background: #e02449;
+}
+
+.cancel-btn {
+    background: #ddd;
+    color: #444;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 8px;
+    width: 100%;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.cancel-btn:hover {
+    background: #cfcfcf;
+}
