@@ -7,6 +7,7 @@ import ProductFilters from "./ProductFilters";
 import "../../styles/PopularProducts.css";
 import "../../styles/AllProducts.css";
 import { getCategories } from "../../services/api";
+import LowBar from "./Lowbar";
 
 export default function AllProducts() {
   // Hook custom dal context per API prodotti
@@ -101,52 +102,58 @@ export default function AllProducts() {
   }
 
   return (
-    <div className="all-products-wrapper">
-      <section className="products-section" id="all-products">
-        <h2 className="all-products-section-title">Bello...</h2>
-        <div className="all-products-layout">
-          {/* SIDEBAR FILTRI: riceve le categorie e la callback onFilter */}
-          <ProductFilters
-            categoriesFromDb={categories}
-            onFilter={handleFilter}
-          />
-          {/* Main area: lista prodotti renderizzati */}
-          <div className="all-products-main">
-            <div className="products-section-flex">
-              {!loadingProducts && products.length === 0 ? (
-                <p>Nessun prodotto trovato con questi filtri.</p>
-              ) : (
-                products.map((p) => <ProductCard key={p.slug} product={p} />)
-              )}
-            </div>
-            {/* FOOTER: mostra quanti prodotti, pulsanti UX */}
-            <div className="all-products-footer">
-              <p className="all-products-counter">
-                Mostrati {products.length} prodotti inutili
-              </p>
-              <div className="all-products-button-row">
-                <button className="go-back-button" onClick={handleScrollToTop}>
-                  <FiArrowUp />
-                </button>
-                {hasMore && !loadingProducts && (
-                  <button
-                    className="load-more-button"
-                    type="button"
-                    onClick={loadMoreProducts}
-                  >
-                    Carica altro
-                  </button>
+    <>
+      <LowBar />
+      <div className="all-products-wrapper">
+        <section className="products-section" id="all-products">
+          <h2 className="all-products-section-title">Bello...</h2>
+          <div className="all-products-layout">
+            {/* SIDEBAR FILTRI: riceve le categorie e la callback onFilter */}
+            <ProductFilters
+              categoriesFromDb={categories}
+              onFilter={handleFilter}
+            />
+            {/* Main area: lista prodotti renderizzati */}
+            <div className="all-products-main">
+              <div className="products-section-flex">
+                {!loadingProducts && products.length === 0 ? (
+                  <p>Nessun prodotto trovato con questi filtri.</p>
+                ) : (
+                  products.map((p) => <ProductCard key={p.slug} product={p} />)
                 )}
-                {loadingProducts && <p>Caricamento...</p>}
-                <button className="go-home-button" onClick={handleGoHome}>
-                  <FiHome />
-                </button>
+              </div>
+              {/* FOOTER: mostra quanti prodotti, pulsanti UX */}
+              <div className="all-products-footer">
+                <p className="all-products-counter">
+                  Mostrati {products.length} prodotti inutili
+                </p>
+                <div className="all-products-button-row">
+                  <button
+                    className="go-back-button"
+                    onClick={handleScrollToTop}
+                  >
+                    <FiArrowUp />
+                  </button>
+                  {hasMore && !loadingProducts && (
+                    <button
+                      className="load-more-button"
+                      type="button"
+                      onClick={loadMoreProducts}
+                    >
+                      Carica altro
+                    </button>
+                  )}
+                  {loadingProducts && <p>Caricamento...</p>}
+                  <button className="go-home-button" onClick={handleGoHome}>
+                    <FiHome />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
+      </div>
+    </>
   );
 }
 
