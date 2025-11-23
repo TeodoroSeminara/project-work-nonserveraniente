@@ -7,6 +7,7 @@ import "../styles/ProductPage.css";
 import { useWishlist } from "../context/WishlistContext";
 import { useNotification } from "../context/NotificationContext";
 import "../styles/Notification.css";
+import ProductChatbot from "../components/ProductChatbot";
 
 
 export default function ProductPage() {
@@ -94,6 +95,11 @@ export default function ProductPage() {
         <Link className="back-home-btn" to="/catalogo">
           Torna al Catalogo
         </Link>
+
+        {/* componente chatbot */}
+        <div style={{ marginTop: "20px" }}>
+        <ProductChatbot product={product} />
+      </div>
       </div>
     </div>
   );
