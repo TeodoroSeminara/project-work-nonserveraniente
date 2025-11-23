@@ -8,42 +8,56 @@ import { useWishlist } from "../context/WishlistContext";
 import { useNotification } from "../context/NotificationContext";
 import "../styles/Notification.css";
 
-
 export default function ProductPage() {
-  const { addToCart } = useCart();
   const { slug } = useParams();
-  const [product, setProduct] = useState(null);
-  const [mainImage, setMainImage] = useState("");
-  const { wishlist, toggleWishlist } = useWishlist();
 
-  // stato 404
-  const [notFound, setNotFound] = useState(false);
-  // Notifica aggiunta carrello
+  const { cartItems, addToCart, increaseQty, decreaseQty, removeItem } = useCart();
+  const { toggleWishlist } = useWishlist();
   const { showNotification } = useNotification();
 
+  const [product, setProduct] = useState(null);
+  const [mainImage, setMainImage] = useState("");
+  const [notFound, setNotFound] = useState(false);
 
+  // Selettore quantità (solo visivo)
+  const [showQtySelector, setShowQtySelector] = useState(false);
+
+  // Cerca nel carrello il prodotto corrente
+  const cartEntry = cartItems.find((item) => item.slug === slug);
+  const currentQty = cartEntry ? cartEntry.qty : 0;
+
+  // Quando la qty va a 0 → nascondi selettore e mostra “Aggiungi”
   useEffect(() => {
-    setProduct(null); // Reset quando cambi slug
-    setNotFound(false); // Reset anche 404
+    if (currentQty === 0) {
+      setShowQtySelector(false);
+    }
+  }, [currentQty]);
+
+  // Carica prodotto
+  useEffect(() => {
+    setProduct(null);
+    setNotFound(false);
+    setShowQtySelector(false);
+
     getProductBySlug(slug)
       .then((data) => {
         const uniqueImages = [...new Set(data.images)];
         setProduct({ ...data, images: uniqueImages });
-        setMainImage(uniqueImages.length > 0 ? uniqueImages[0] : null);
+        setMainImage(uniqueImages[0] || null);
       })
-      .catch(() => setNotFound(true)); // <--- errore: mostra NotFound
+      .catch(() => setNotFound(true));
   }, [slug]);
 
-  if (notFound) return <NotFound />; // <--- Mostra pagina custom 404
-
+  if (notFound) return <NotFound />;
   if (!product) return <h2>Caricamento...</h2>;
 
   return (
     <div className="product-container">
+
       {/* Colonna immagini */}
       <div className="product-image-section">
         <img className="main-image" src={mainImage} alt={product.name} />
-        {/* Thumbnails */}
+
         <div className="thumbnail-row">
           {product.images?.map((img, index) => (
             <img
@@ -62,7 +76,9 @@ export default function ProductPage() {
         <p className="product-price">{product.price}€</p>
         <p className="product-description">{product.description}</p>
 
+        {/* Bottone — sempre visibile */}
         <button
+          className="product-btn"
           onClick={() => {
             addToCart({
               slug: product.slug,
@@ -70,13 +86,38 @@ export default function ProductPage() {
               price: product.price,
               img: product.images[0],
             });
-            showNotification("Prodotto aggiunto al carrello!"); // <-- corretto!
+
+            showNotification("Prodotto aggiunto al carrello!");
+            setShowQtySelector(true);
           }}
-          className="product-btn"
         >
           Aggiungi al Carrello
         </button>
+
+        {/* Selettore quantità */}
+        {showQtySelector && (
+          <div className="product-qty-box">
+            <button
+              className="qty-btn"
+              onClick={() => decreaseQty(product.slug)}
+            >
+              -
+            </button>
+
+            <span className="qty-number">{currentQty}</span>
+
+            <button
+              className="qty-btn"
+              onClick={() => increaseQty(product.slug)}
+            >
+              +
+            </button>
+          </div>
+        )}
+
+        {/* Wishlist */}
         <button
+          className="product-btn"
           onClick={() =>
             toggleWishlist({
               slug: product.slug,
@@ -86,9 +127,8 @@ export default function ProductPage() {
               description: product.description,
             })
           }
-          className="product-btn"
         >
-         Aggiungi alla Wishlist
+          Aggiungi alla Wishlist
         </button>
 
         <Link className="back-home-btn" to="/catalogo">
@@ -98,6 +138,8 @@ export default function ProductPage() {
     </div>
   );
 }
+
+
 
 // import { useParams, Link } from "react-router-dom";
 // import { useEffect, useState } from "react";
