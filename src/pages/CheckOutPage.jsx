@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "../context/CartContext";
 import dropin from "braintree-web-drop-in";
-import { useNavigate } from "react-router-dom";  // <--- AGGIUNTO
+import { useNavigate } from "react-router-dom"; 
 import "../styles/CheckoutPage.css";
 
 const API_BASE_URL = "http://localhost:3000/api/nonserveaniente";
@@ -12,7 +12,7 @@ export default function CheckoutPage() {
   const [loadingPaymentUI, setLoadingPaymentUI] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  const navigate = useNavigate(); // <--- AGGIUNTO
+  const navigate = useNavigate(); 
 
   const { cartItems, setCartItems } = useCart();
 
@@ -174,7 +174,7 @@ export default function CheckoutPage() {
         localStorage.removeItem("cartItems");
         setCartItems([]);
 
-        navigate("/thank-you"); // <--- REDIRECT FUNZIONANTE
+        navigate("/thank-you"); 
 
       } catch (error) {
         console.error("Errore rete:", error);
