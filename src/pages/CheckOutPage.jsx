@@ -311,7 +311,6 @@ export default function CheckoutPage() {
             </label>
           </div>
 
-          {/* Campo fatturazione opzionale */}
           {showBilling && (
             <fieldset>
               <legend>Indirizzo fatturazione</legend>
