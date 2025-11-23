@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useCart } from "../../context/CartContext";
 import { Link } from "react-router-dom";
 import "../../styles/CartDrawer.css";
@@ -6,6 +7,18 @@ import { LuCannabis } from "react-icons/lu";
 
 export default function CartDrawer({ open, onClose }) {
   const { cartItems, removeItem, increaseQty, decreaseQty } = useCart();
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
 
   return (
     <>
@@ -17,16 +30,20 @@ export default function CartDrawer({ open, onClose }) {
 
       {/* Sidebar */}
       <aside className={`cartdrawer ${open ? "open" : ""}`}>
+
         <div className="cartdrawer-header">
           <h3>Il tuo carrello</h3>
-          <button className="close-btn" onClick={onClose}><LuCannabis/></button>
+          <button className="close-btn" onClick={onClose}>
+            <LuCannabis />
+          </button>
         </div>
 
+        {/* 🔥 Scroll SOLO dentro il drawer */}
         <div className="cartdrawer-body">
           {cartItems.length === 0 ? (
             <p className="empty">Il carrello è vuoto!</p>
           ) : (
-            cartItems.map(item => (
+            cartItems.map((item) => (
               <div key={item.slug} className="cartdrawer-item">
 
                 <img src={item.image_url} alt={item.name} />
@@ -42,24 +59,21 @@ export default function CartDrawer({ open, onClose }) {
                   </div>
                 </div>
 
-                <FaTrash 
-                  className="remove-icon" 
-                  onClick={() => removeItem(item.slug)} 
+                <FaTrash
+                  className="remove-icon"
+                  onClick={() => removeItem(item.slug)}
                 />
-
               </div>
             ))
           )}
         </div>
 
-        {/* Footer */}
         <div className="cartdrawer-footer">
           <Link to="/carrello" onClick={onClose}>
-            <button className="go-to-cart-btn">
-              Vai al carrello
-            </button>
+            <button className="go-to-cart-btn">Vai al carrello</button>
           </Link>
         </div>
+
       </aside>
     </>
   );

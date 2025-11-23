@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { useCart } from "../context/CartContext";
 import dropin from "braintree-web-drop-in";
 import "../styles/CheckoutPage.css";
+import { Switch } from "pretty-checkbox-react";
+import "pretty-checkbox/dist/pretty-checkbox.min.css";
+
 
 const API_BASE_URL = "http://localhost:3000/api/nonserveaniente";
 
@@ -165,8 +168,9 @@ export default function CheckoutPage() {
         shipping_cost,
         items: cartItems.map((item) => ({
           slug: item.slug,
+          image_url: item.image_url,
           quantity: item.qty,
-          name: item.title,
+          name: item.name,
           price: item.price,
         })),
       };
@@ -211,17 +215,28 @@ export default function CheckoutPage() {
             <div className="checkout-items-list">
               {cartItems.map((item) => (
                 <div key={item.slug} className="checkout-item-row">
-                  <div className="checkout-item-info">
-                    <div className="checkout-item-title">{item.title}</div>
-                    <div className="checkout-item-details">
-                      <span>Quantità: {item.qty}</span>
-                      <strong className="checkout-price">
-                        €{(item.price * item.qty).toFixed(2)}
-                      </strong>
+
+                  <img
+                    src={item.image_url}
+                    alt={item.name}
+                    className="checkout-item-img"
+                  />
+
+                  <div className="checkout-item-middle">
+                    <div className="checkout-item-name">{item.name}</div>
+                    <div className="checkout-item-price-unit">€{item.price}</div>
+                  </div>
+
+                  <div className="checkout-item-right">
+                    <div className="checkout-item-qty">Qtà: {item.qty}</div>
+                    <div className="checkout-item-total">
+                      €{(item.price * item.qty).toFixed(2)}
                     </div>
                   </div>
+
                 </div>
               ))}
+
 
               <div className="checkout-total-row">
                 <span>Totale prodotti:</span>
@@ -320,18 +335,15 @@ export default function CheckoutPage() {
           </fieldset>
 
           {/* Checkbox per fatturazione differente */}
-          <div
-            className="billing-checkbox-row"
-            style={{ margin: "18px 0 6px 0" }}
-          >
-            <input
-              type="checkbox"
-              id="same-billing"
+          <div className="filter-switch">
+            <Switch
               checked={sameBilling}
+              animation="smooth"
               onChange={(e) => {
                 const checked = e.target.checked;
                 setSameBilling(checked);
-                setFormData((prev) =>
+
+                setFormData(prev =>
                   checked
                     ? {
                       ...prev,
@@ -341,7 +353,6 @@ export default function CheckoutPage() {
                       billing_description: prev.shipping_description,
                     }
                     : {
-
                       ...prev,
                       billing_address: "",
                       billing_cap: "",
@@ -350,11 +361,13 @@ export default function CheckoutPage() {
                     }
                 );
               }}
-            />
-            <label htmlFor="same-billing" style={{ marginLeft: 8 }}>
-              Usa lo stesso indirizzo di spedizione per la fatturazione
-            </label>
+            >
+              Usa lo stesso indirizzo di spedizione
+            </Switch>
           </div>
+
+
+
 
           {/* Campo fatturazione opzionale */}
           <fieldset>

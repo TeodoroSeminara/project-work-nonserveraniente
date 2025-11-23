@@ -37,6 +37,7 @@ import { getProducts } from "../../services/api";
 import Carousel from "./Carousel";
 import "../../styles/PopularProducts.css";
 
+
 export default function LastAdded() {
     const [latestProducts, setLatestProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -52,7 +53,7 @@ export default function LastAdded() {
                 });
                 setLatestProducts(latest);
             } catch (err) {
-                setLatestProducts([]); // fallback
+                setLatestProducts([]);
             } finally {
                 setLoading(false);
             }

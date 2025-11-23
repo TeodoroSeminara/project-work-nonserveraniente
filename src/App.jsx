@@ -21,24 +21,24 @@ function App() {
   return (
     <>
 
-    <NotificationProvider>
+      <NotificationProvider>
         <WishlistProvider>
-        <CartProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route element={<DefaultLayout />}>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/product/:slug" element={<ProductPage />} />
-                <Route path="/catalogo" element={<AllProducts />} />
-                <Route path="/carrello" element={<CartPage />} />
-                <Route path="/carrello/checkout" element={<CheckOutPage />} />
-                <Route path="/wishlist" element={<WishlistPage />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>      
-      </CartProvider>
-    </WishlistProvider>
+          <CartProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route element={<DefaultLayout />}>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/product/:slug" element={<ProductPage />} />
+                  <Route path="/catalogo" element={<AllProducts />} />
+                  <Route path="/carrello" element={<CartPage />} />
+                  <Route path="/carrello/checkout" element={<CheckOutPage />} />
+                  <Route path="/wishlist" element={<WishlistPage />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          </CartProvider>
+        </WishlistProvider>
       </NotificationProvider>
     </>
   );

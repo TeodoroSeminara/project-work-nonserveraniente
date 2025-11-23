@@ -1,33 +1,50 @@
 import { createContext, useState, useContext, useEffect } from "react";
 
-// creo un contesto globale per il carrello
 const CartContext = createContext();
-
 export function useCart() {
   return useContext(CartContext);
 }
 
 export function CartProvider({ children }) {
-  // recupero il carrello da localStorage
+  // Recupero carrello da localStorage
   const [cartItems, setCartItems] = useState(() => {
     const saved = localStorage.getItem("cartItems");
-    // se esiste cartItems in local storage lo trasforma da stringa a un array
     return saved ? JSON.parse(saved) : [];
   });
 
-  // ogni volta che cartCount cambia, salvo su localStorage
+  // Stato temporaneo per input quantità
+  const [qtyInputState, setQtyInputState] = useState({});
+
+  // Salva quantità input temporanea
+  function setQtyInput(slug, value) {
+    setQtyInputState((prev) => ({
+      ...prev,
+      [slug]: value,
+    }));
+  }
+
+  // Reset input temporaneo
+  function clearQtyInput(slug) {
+    setQtyInputState((prev) => {
+      const copy = { ...prev };
+      delete copy[slug];
+      return copy;
+    });
+  }
+
+  // Salva su localStorage
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // calcolo il totale oggetti (per la navBar)
+  // Count totale per navbar
   const rawCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
   const cartCount = rawCount > 99 ? "99+" : rawCount;
 
-  // find sull articolo
+  // Aggiungi al carrello
   function addToCart(product) {
     setCartItems((prev) => {
-      const existing = prev.find((item) => item.slug === product.slug);
+      const existing = prev.find((i) => i.slug === product.slug);
 
       if (existing) {
         return prev.map((item) =>
@@ -36,11 +53,12 @@ export function CartProvider({ children }) {
             : item
         );
       }
+
       return [...prev, { ...product, qty: 1 }];
     });
   }
 
-  // aumentare la quantità nel carrello fino a 999
+  // Aumenta quantità
   function increaseQty(slug) {
     setCartItems((prev) =>
       prev.map((item) =>
@@ -51,20 +69,32 @@ export function CartProvider({ children }) {
     );
   }
 
-  // diminuire la quanità nel carrello per - 1
+  // Diminuisci quantità
   function decreaseQty(slug) {
     setCartItems((prev) =>
       prev.map((item) =>
-        item.slug === slug ? { ...item, qty: Math.max(item.qty - 1, 1) } : item
+        item.slug === slug
+          ? { ...item, qty: Math.max(item.qty - 1, 1) }
+          : item
       )
     );
   }
 
-  // rimuovere un articolo dal carrello del tutto
+  // Set quantità da input
+  function setQty(slug, qty) {
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.slug === slug ? { ...item, qty } : item
+      )
+    );
+  }
+
+  // Rimuovi prodotto
   function removeItem(slug) {
     setCartItems((prev) => prev.filter((item) => item.slug !== slug));
   }
 
+  // Svuota carrello
   function clearCart() {
     setCartItems([]);
   }
@@ -80,6 +110,10 @@ export function CartProvider({ children }) {
         removeItem,
         setCartItems,
         clearCart,
+        setQty,
+        qtyInputState,
+        setQtyInput,
+        clearQtyInput,
       }}
     >
       {children}

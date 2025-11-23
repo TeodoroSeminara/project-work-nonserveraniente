@@ -1,24 +1,34 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useRef } from "react";
 
 const NotificationContext = createContext();
 
 export function NotificationProvider({ children }) {
   const [message, setMessage] = useState(null);
+  const timeoutRef = useRef(null);
 
-  // mostra notifica per n secondi
   const showNotification = (msg, duration = 2000) => {
     setMessage(msg);
-    setTimeout(() => setMessage(null), duration);
+
+    // Cancella timeout precedente se esiste
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    // Imposta timeout nuovo
+    timeoutRef.current = setTimeout(() => {
+      setMessage(null);
+    }, duration);
   };
+
   return (
     <NotificationContext.Provider value={{ message, showNotification }}>
       {children}
-      {/* Overlay notifica globale, visibile OVUNQUE */}
       {message && <div className="notification-toast">{message}</div>}
     </NotificationContext.Provider>
   );
 }
-// Hook per notifica
+
+// Hook
 export function useNotification() {
   return useContext(NotificationContext);
 }

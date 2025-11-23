@@ -67,30 +67,41 @@ export default function ProductPage() {
           onClick={() => {
             addToCart({
               slug: product.slug,
-              title: product.name,
+              name: product.name,
               price: product.price,
-              img: product.images[0],
+              image_url: product.images[0],
             });
-            showNotification("Prodotto aggiunto al carrello!"); // <-- corretto!
+            showNotification("Prodotto aggiunto al carrello!");
           }}
           className="product-btn"
         >
           Aggiungi al Carrello
         </button>
         <button
-          onClick={() =>
+          onClick={() => {
+            const isAlreadySaved = wishlist.some((w) => w.slug === product.slug);
+
             toggleWishlist({
               slug: product.slug,
               name: product.name,
               price: product.price,
               image_url: product.images[0],
               description: product.description,
-            })
-          }
+            });
+
+            if (isAlreadySaved) {
+              showNotification("Prodotto rimosso dalla wishlist");
+            } else {
+              showNotification("Prodotto aggiunto alla wishlist");
+            }
+          }}
           className="product-btn"
         >
-         Aggiungi alla Wishlist
+          {wishlist.some((w) => w.slug === product.slug)
+            ? "Rimuovi dalla Wishlist"
+            : "Aggiungi alla Wishlist"}
         </button>
+
 
         <Link className="back-home-btn" to="/catalogo">
           Torna al Catalogo
