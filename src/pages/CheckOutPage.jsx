@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "../context/CartContext";
 import dropin from "braintree-web-drop-in";
+import { useNavigate } from "react-router-dom";  // <--- AGGIUNTO
 import "../styles/CheckoutPage.css";
 
 const API_BASE_URL = "http://localhost:3000/api/nonserveaniente";
@@ -11,6 +12,8 @@ export default function CheckoutPage() {
   const [loadingPaymentUI, setLoadingPaymentUI] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
+  const navigate = useNavigate(); // <--- AGGIUNTO
+
   const { cartItems, setCartItems } = useCart();
 
   const subtotal = cartItems.reduce(
@@ -19,7 +22,6 @@ export default function CheckoutPage() {
   );
   const shipping_cost = subtotal >= 50 ? 0 : 5.99;
 
-  // <-- Stato per checkbox fatturazione differente
   const [showBilling, setShowBilling] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -52,9 +54,10 @@ export default function CheckoutPage() {
       });
   }, []);
 
-  // Inizializzo Braintree drop-in
+  // Inizializzo Braintree Drop-in
   useEffect(() => {
     if (!clientToken) return;
+
     dropin.create(
       {
         authorization: clientToken,
@@ -70,6 +73,7 @@ export default function CheckoutPage() {
         setLoadingPaymentUI(false);
       }
     );
+
     return () => {
       if (dropinInstance.current) {
         dropinInstance.current.teardown().catch(() => {});
@@ -77,7 +81,7 @@ export default function CheckoutPage() {
     };
   }, [clientToken]);
 
-  // Gestione input form, validazioni per CAP e telefono
+  // Gestione campi input
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -86,15 +90,17 @@ export default function CheckoutPage() {
       setFormData((prev) => ({ ...prev, [name]: onlyNumbers }));
       return;
     }
+
     if (name === "phone") {
       const onlyNumbers = value.replace(/\D/g, "").slice(0, 15);
       setFormData((prev) => ({ ...prev, [name]: onlyNumbers }));
       return;
     }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Invio ordine+pagamento
+  // INVIO PAGAMENTO + FATTURA
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -103,27 +109,27 @@ export default function CheckoutPage() {
       return;
     }
 
-    if (!cartItems || cartItems.length === 0) {
-      alert("Il carrello è vuoto.");
+    if (cartItems.length === 0) {
+      alert("Carrello vuoto.");
       return;
     }
 
-    // Validazione CAP spedizione
     if (formData.shipping_cap.length !== 5) {
-      alert("Il CAP di spedizione deve essere di 5 cifre.");
+      alert("Il CAP deve avere 5 cifre.");
       return;
     }
-    // Validazione telefono
+
     if (formData.phone.length < 6) {
-      alert("Il numero di telefono deve avere almeno 6 cifre.");
+      alert("Telefono troppo corto.");
       return;
     }
-    // Validazione email
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      alert("Inserisci un indirizzo email valido (es. nome@esempio.com)");
+      alert("Email non valida.");
       return;
     }
+
     setSubmitting(true);
 
     dropinInstance.current.requestPaymentMethod(async (err, payload) => {
@@ -133,6 +139,7 @@ export default function CheckoutPage() {
         setSubmitting(false);
         return;
       }
+
       const paymentMethodNonce = payload.nonce;
 
       const body = {
@@ -153,6 +160,7 @@ export default function CheckoutPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
         });
+
         const data = await res.json();
 
         if (!res.ok || !data.success) {
@@ -161,11 +169,15 @@ export default function CheckoutPage() {
           setSubmitting(false);
           return;
         }
-        alert("Ordine completato con successo!");
+
+        // 🎉 SUCCESSO: svuoto carrello e redirect
         localStorage.removeItem("cartItems");
         setCartItems([]);
+
+        navigate("/thank-you"); // <--- REDIRECT FUNZIONANTE
+
       } catch (error) {
-        console.error("Errore di rete:", error);
+        console.error("Errore rete:", error);
         alert("Errore di rete, riprova.");
       } finally {
         setSubmitting(false);
@@ -231,75 +243,22 @@ export default function CheckoutPage() {
         <form onSubmit={handleSubmit} className="checkout-form">
           <fieldset>
             <legend>Dati personali</legend>
-            <input
-              name="name"
-              placeholder="Nome"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-            <input
-              name="surname"
-              placeholder="Cognome"
-              value={formData.surname}
-              onChange={handleChange}
-              required
-            />
-            <input
-              name="phone"
-              placeholder="Telefono"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              inputMode="tel"
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
+            <input name="name" placeholder="Nome" value={formData.name} onChange={handleChange} required />
+            <input name="surname" placeholder="Cognome" value={formData.surname} onChange={handleChange} required />
+            <input name="phone" placeholder="Telefono" value={formData.phone} onChange={handleChange} required inputMode="tel" />
+            <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
           </fieldset>
 
           <fieldset>
             <legend>Indirizzo spedizione</legend>
-            <input
-              name="shipping_address"
-              placeholder="Indirizzo"
-              value={formData.shipping_address}
-              onChange={handleChange}
-              required
-            />
-            <input
-              name="shipping_cap"
-              placeholder="CAP"
-              value={formData.shipping_cap}
-              onChange={handleChange}
-              required
-              inputMode="numeric"
-            />
-            <input
-              name="shipping_city"
-              placeholder="Città"
-              value={formData.shipping_city}
-              onChange={handleChange}
-              required
-            />
-            <input
-              name="shipping_description"
-              placeholder="Note (facoltative)"
-              value={formData.shipping_description}
-              onChange={handleChange}
-            />
+            <input name="shipping_address" placeholder="Indirizzo" value={formData.shipping_address} onChange={handleChange} required />
+            <input name="shipping_cap" placeholder="CAP" value={formData.shipping_cap} onChange={handleChange} required inputMode="numeric" />
+            <input name="shipping_city" placeholder="Città" value={formData.shipping_city} onChange={handleChange} required />
+            <input name="shipping_description" placeholder="Note (facoltative)" value={formData.shipping_description} onChange={handleChange} />
           </fieldset>
 
-          {/* Checkbox per fatturazione differente */}
-          <div
-            className="billing-checkbox-row"
-            style={{ margin: "18px 0 6px 0" }}
-          >
+          {/* BILLING CHECKBOX */}
+          <div className="billing-checkbox-row" style={{ margin: "18px 0 6px 0" }}>
             <input
               type="checkbox"
               id="show-billing"
@@ -314,31 +273,10 @@ export default function CheckoutPage() {
           {showBilling && (
             <fieldset>
               <legend>Indirizzo fatturazione</legend>
-              <input
-                name="billing_address"
-                placeholder="Indirizzo"
-                value={formData.billing_address}
-                onChange={handleChange}
-              />
-              <input
-                name="billing_cap"
-                placeholder="CAP"
-                value={formData.billing_cap}
-                onChange={handleChange}
-                inputMode="numeric"
-              />
-              <input
-                name="billing_city"
-                placeholder="Città"
-                value={formData.billing_city}
-                onChange={handleChange}
-              />
-              <input
-                name="billing_description"
-                placeholder="Note"
-                value={formData.billing_description}
-                onChange={handleChange}
-              />
+              <input name="billing_address" placeholder="Indirizzo" value={formData.billing_address} onChange={handleChange} />
+              <input name="billing_cap" placeholder="CAP" value={formData.billing_cap} onChange={handleChange} inputMode="numeric" />
+              <input name="billing_city" placeholder="Città" value={formData.billing_city} onChange={handleChange} />
+              <input name="billing_description" placeholder="Note" value={formData.billing_description} onChange={handleChange} />
             </fieldset>
           )}
 
@@ -358,3 +296,4 @@ export default function CheckoutPage() {
     </main>
   );
 }
+
