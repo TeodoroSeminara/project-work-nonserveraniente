@@ -1,0 +1,52 @@
+/* Contenitore principale */
+.thankyou-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  background: white;
+}
+
+/* Paragrafo "Numero ordine" (margin-top: 1rem) */
+.thankyou-order-number {
+  margin-top: 1rem;
+}
+
+/* Sezione riepilogo ordine */
+.thankyou-order-summary {
+  margin-top: 2rem;
+  text-align: left;
+}
+
+/* Lista prodotti */
+.thankyou-order-items {
+  list-style: none;
+  padding: 0;
+}
+
+/* Singolo elemento prodotto */
+.thankyou-order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* Totali (spedizione + totale) */
+.thankyou-order-totals {
+  margin-top: 1rem;
+  text-align: right;
+}
+
+/* Totale ordine (font più grande e grassetto) */
+.thankyou-order-total-amount {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Messaggio di redirect (margin-top: 2rem) */
+.thankyou-redirect-message {
+  margin-top: 2rem;
+}
