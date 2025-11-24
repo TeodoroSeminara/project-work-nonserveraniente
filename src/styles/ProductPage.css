@@ -134,6 +134,16 @@
     transform: scale(1.05);
 }
 
+.product-quantity {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.product-quantity span {
+  color: #212529;
+}
+
 
 /* --- VERSIONE MOBILE --- */
 

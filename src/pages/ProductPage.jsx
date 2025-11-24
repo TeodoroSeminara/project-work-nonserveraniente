@@ -11,7 +11,7 @@ import ProductChatbot from "../components/ProductChatbot";
 
 
 export default function ProductPage() {
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart();
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState("");
@@ -28,6 +28,7 @@ export default function ProductPage() {
     setNotFound(false); // Reset anche 404
     getProductBySlug(slug)
       .then((data) => {
+        console.log("PRODUCT DATA:", data);
         const uniqueImages = [...new Set(data.images)];
         setProduct({ ...data, images: uniqueImages });
         setMainImage(uniqueImages.length > 0 ? uniqueImages[0] : null);
@@ -38,6 +39,15 @@ export default function ProductPage() {
   if (notFound) return <NotFound />; // <--- Mostra pagina custom 404
 
   if (!product) return <h2>Caricamento...</h2>;
+  console.log("STATE PRODUCT IN RENDER:", product);
+
+
+// quante unità di questo prodotto sono già nel carrello
+const cartItem = cartItems.find(i => i.slug === product.slug);
+const inCartQty = cartItem ? cartItem.qty : 0;
+
+// quantità effettivamente disponibile
+const availableQty = Math.max(product.quantity - inCartQty, 0);
 
   return (
     <div className="product-container">
@@ -61,6 +71,30 @@ export default function ProductPage() {
       <div className="product-info-box">
         <h1 className="product-title">{product.name}</h1>
         <p className="product-price">{product.price}€</p>
+        {/* Quantità disponibile a schermo */}
+        <p className="product-quantity">
+          Quantità disponibile: <span>{availableQty ?? "N/D"}</span>
+        </p>
+
+        {/* Stato disponibilità */}
+        {availableQty === 0 && (
+          <p className="stock-status out-of-stock">
+            ❌ Prodotto attualmente esaurito
+          </p>
+        )}
+
+        {availableQty > 0 && availableQty <= 3 && (
+          <p className="stock-status low-stock">
+            ⚠️ Solo {availableQty} pezzo
+            {availableQty > 1 ? "i" : ""} rimasti!
+          </p>
+        )}
+
+        {availableQty > 3 && (
+          <p className="stock-status in-stock">
+            ✅ Disponibilità immediata
+          </p>
+        )}
         <p className="product-description">{product.description}</p>
 
         <button
@@ -69,13 +103,16 @@ export default function ProductPage() {
               slug: product.slug,
               name: product.name,
               price: product.price,
+              quantity: availableQty,
               image_url: product.images[0],
             });
+            
             showNotification("Prodotto aggiunto al carrello!");
           }}
           className="product-btn"
+          disabled={availableQty === 0}
         >
-          Aggiungi al Carrello
+          {availableQty === 0 ? "Non disponibile" : "Aggiungi al Carrello"}
         </button>
         <button
           onClick={() => {

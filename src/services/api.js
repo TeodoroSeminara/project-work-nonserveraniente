@@ -47,6 +47,7 @@ export async function getProductBySlug(slug) {
   }
 
   const data = await res.json();
+  console.log("RISPOSTA API /prodotto:", data);
   return data;
 }
 
