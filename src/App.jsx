@@ -15,6 +15,7 @@ import NotFound from './pages/NotFound'
 import { WishlistProvider } from './context/WishlistContext';
 import WishlistPage from './pages/WishlistPage';
 import { NotificationProvider } from "./context/NotificationContext";
+import ThankYouPage from "./pages/ThankYouPage";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
                   <Route path="/carrello" element={<CartPage />} />
                   <Route path="/carrello/checkout" element={<CheckOutPage />} />
                   <Route path="/wishlist" element={<WishlistPage />} />
+                  <Route path="/ThankYou" element={<ThankYouPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Route>
               </Routes>

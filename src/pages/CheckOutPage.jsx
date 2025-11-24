@@ -4,17 +4,20 @@ import dropin from "braintree-web-drop-in";
 import "../styles/CheckoutPage.css";
 import { Switch } from "pretty-checkbox-react";
 import "pretty-checkbox/dist/pretty-checkbox.min.css";
+import { useNavigate } from "react-router-dom";
 
 
 const API_BASE_URL = "http://localhost:3000/api/nonserveaniente";
 
 export default function CheckoutPage() {
+
   const dropinInstance = useRef(null);
   const [clientToken, setClientToken] = useState(null);
   const [loadingPaymentUI, setLoadingPaymentUI] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   const { cartItems, setCartItems } = useCart();
+  const navigate = useNavigate();
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + Number(item.price) * item.qty,
@@ -189,9 +192,16 @@ export default function CheckoutPage() {
           setSubmitting(false);
           return;
         }
+        const { invoice, items } = data;
         alert("Ordine completato con successo!");
         localStorage.removeItem("cartItems");
         setCartItems([]);
+        navigate("/ThankYou", {
+          state: {
+            invoice,
+            items
+          },
+        });
       } catch (error) {
         console.error("Errore di rete:", error);
         alert("Errore di rete, riprova.");
