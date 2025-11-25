@@ -50,17 +50,38 @@ export default function AllProducts() {
   }, []);
 
   // 🔹 Effetto che ricarica i prodotti quando cambiano filtri/pagina/perPage
+
+  const [prevRequest, setPrevRequest] = useState(null);
+
   useEffect(() => {
     const limit = perPage;
     const offset = (page - 1) * perPage;
 
-    console.log("Ricarico prodotti con:", { page, perPage, limit, offset, filters });
+    // console.log("Ricarico prodotti con:", { page, perPage, limit, offset, filters });
 
-    reloadProducts({
+    const currentRequest = {
       ...filters,
       limit,
       offset,
-    });
+    };
+
+      // Evita di ricaricare se la richiesta è identica alla precedente
+      if (JSON.stringify(currentRequest) === JSON.stringify(prevRequest)) {
+        return;
+      }
+
+      setPrevRequest(currentRequest);
+
+      console.log("Ricarico prodotti con:", currentRequest);
+
+      reloadProducts(currentRequest);
+
+    // errore che causava loop
+    // reloadProducts({
+    //   ...filters,
+    //   limit,
+    //   offset,
+    // });
     // NON metto reloadProducts nelle deps per evitare loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters, page, perPage]);

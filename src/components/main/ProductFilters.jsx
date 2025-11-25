@@ -484,6 +484,10 @@ export default function ProductFilters({ onFilter }) {
   const [categories, setCategories] = useState([]);
   // Filtro ordinamento
   const [sortOrder, setSortOrder] = useState("id_asc");
+  
+  // state di controllor URL
+  const [isSyncingFromUrl, setIsSyncingFromUrl] = useState(false);
+
 
   const navigate = useNavigate();
   const location = useLocation(); // Lo usiamo per leggere i parametri dell'URL
@@ -492,6 +496,9 @@ export default function ProductFilters({ onFilter }) {
   // All'avvio e quando l'URL cambia, aggiorno gli state con i valori settati nella query string
   useEffect(() => {
     const params = new URLSearchParams(location.search);
+    
+    // Sincronizzazione attiva dell'url
+    setIsSyncingFromUrl(true);
     
     setSearch(params.get("name") || "");
     setMinPriceInput(params.get("price_min") || "");
@@ -502,9 +509,7 @@ export default function ProductFilters({ onFilter }) {
         ? params
             .get("utility")
             .split(",")
-            // errore fix che causa loop
-            // .map((v) => Number(v))
-            .map(Number)
+            .map((v) => Number(v))
         : []
     );
 
@@ -513,25 +518,24 @@ export default function ProductFilters({ onFilter }) {
         ? params
             .get("category")
             .split(",")
-                        // errore fix che causa loop
-            // .map((v) => Number(v))
-            .map(Number)
+            .map((v) => Number(v))
         : []
     );
+
     setSortOrder(params.get("sort") || "id_asc");
 
-                // errore fix che causa loop
 
     // Chiama il filtro anche qui per sincronizzare risultati con stato locale
-    // onFilter({
-    //   name: params.get("name") || undefined,
-    //   price_min: params.get("price_min") || 0,
-    //   price_max: params.get("price_max") || 999999,
-    //   utility: params.get("utility") || undefined,
-    //   category: params.get("category") || undefined,
-    //   sort: params.get("sort") || "id_asc",
-    // });
-    
+    onFilter({
+      name: params.get("name") || undefined,
+      price_min: params.get("price_min") || 0,
+      price_max: params.get("price_max") || 999999,
+      utility: params.get("utility") || undefined,
+      category: params.get("category") || undefined,
+      sort: params.get("sort") || "id_asc",
+    });
+
+
     // eslint-disable-next-line
   }, [location.search]); // ogni volta che l’URL cambia (es. refresh o apertura nuova scheda)
 
@@ -543,6 +547,8 @@ export default function ProductFilters({ onFilter }) {
     newCategories = categories,
     newSortOrder = sortOrder,
   } = {}) => {
+
+
     // Costruisci la query string in maniera dinamica
     const params = new URLSearchParams();
     if (newSearch) params.set("name", newSearch);
