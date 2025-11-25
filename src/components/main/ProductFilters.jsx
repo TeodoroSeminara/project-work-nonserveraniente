@@ -484,6 +484,10 @@ export default function ProductFilters({ onFilter }) {
   const [categories, setCategories] = useState([]);
   // Filtro ordinamento
   const [sortOrder, setSortOrder] = useState("id_asc");
+  
+  // state di controllor URL
+  const [isSyncingFromUrl, setIsSyncingFromUrl] = useState(false);
+
 
   const navigate = useNavigate();
   const location = useLocation(); // Lo usiamo per leggere i parametri dell'URL
@@ -492,9 +496,14 @@ export default function ProductFilters({ onFilter }) {
   // All'avvio e quando l'URL cambia, aggiorno gli state con i valori settati nella query string
   useEffect(() => {
     const params = new URLSearchParams(location.search);
+    
+    // Sincronizzazione attiva dell'url
+    setIsSyncingFromUrl(true);
+    
     setSearch(params.get("name") || "");
     setMinPriceInput(params.get("price_min") || "");
     setMaxPriceInput(params.get("price_max") || "");
+
     setUtilities(
       params.get("utility")
         ? params
@@ -503,6 +512,7 @@ export default function ProductFilters({ onFilter }) {
             .map((v) => Number(v))
         : []
     );
+
     setCategories(
       params.get("category")
         ? params
@@ -511,7 +521,10 @@ export default function ProductFilters({ onFilter }) {
             .map((v) => Number(v))
         : []
     );
+
     setSortOrder(params.get("sort") || "id_asc");
+
+
     // Chiama il filtro anche qui per sincronizzare risultati con stato locale
     onFilter({
       name: params.get("name") || undefined,
@@ -521,6 +534,8 @@ export default function ProductFilters({ onFilter }) {
       category: params.get("category") || undefined,
       sort: params.get("sort") || "id_asc",
     });
+
+
     // eslint-disable-next-line
   }, [location.search]); // ogni volta che l’URL cambia (es. refresh o apertura nuova scheda)
 
@@ -532,6 +547,8 @@ export default function ProductFilters({ onFilter }) {
     newCategories = categories,
     newSortOrder = sortOrder,
   } = {}) => {
+
+
     // Costruisci la query string in maniera dinamica
     const params = new URLSearchParams();
     if (newSearch) params.set("name", newSearch);
