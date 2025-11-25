@@ -22,6 +22,7 @@
 .all-products-counter {
     font-size: 0.9rem;
     color: #666;
+    margin: 7px 0 0 0;
 }
 
 /* Bottoni */
@@ -52,7 +53,6 @@
 
 .go-back-button,
 .go-home-button,
-.pagination-buttons,
 .pagination-button {
     border: none;
     padding: 10px 20px;
@@ -65,12 +65,56 @@
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
 }
 
+.all-products-pagination-row {
+    width: 100%;
+}
+
+.pagination-buttons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+}
+.pagination-button:hover,
 .go-back-button:hover,
 .go-home-button:hover {
     background: var(--bg);
     color: white;
     transform: scale(1.2);
 }
+
+.pagination-current-page {
+    padding: 0 10px;
+    color: var(--text);
+}
+
+.per-page-select {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0 20px 0;
+    color: #666;
+}
+
+.per-page-select select {
+    padding: 5px 5px;
+    border: none;
+    background: white;
+    color: #666;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.256);
+}
+
+.per-page-select select:focus {
+    box-shadow: 0 0 0 3px rgba(253, 46, 0, 0.233);
+    outline: none;
+}
+
+
 
 
 /* barra di ricerca */

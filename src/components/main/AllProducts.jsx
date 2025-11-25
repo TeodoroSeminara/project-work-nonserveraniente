@@ -162,37 +162,34 @@ export default function AllProducts() {
                   {/* Bottoni paginazione */}
                   <div className="pagination-buttons">
                     <button
-                      className="pagination-button"
-                      type="button"
-                      onClick={() => handlePageChange(page - 1)}
-                      disabled={page <= 1 || loadingProducts}
-                    >
-                      <FiArrowLeft />
-                    </button>
-
-                    <span className="pagination-current-page">
-                      Pagina {page}
-                    </span>
-
-                    <button
-                      className="pagination-button"
-                      type="button"
-                      onClick={() => handlePageChange(page + 1)}
-                      disabled={!hasMore || loadingProducts}
-                    >
-                      <FiArrowRight />
-                    </button>
-                  </div>
-
-                  {/* Bottoni extra */}
-                  <div className="all-products-button-row">
-                    <button
                       className="go-back-button"
                       onClick={handleScrollToTop}
                     >
                       <FiArrowUp />
                     </button>
+                    <div>
+                      <button
+                        className="pagination-button"
+                        type="button"
+                        onClick={() => handlePageChange(page - 1)}
+                        disabled={page <= 1 || loadingProducts}
+                      >
+                        <FiArrowLeft />
+                      </button>
 
+                      <span className="pagination-current-page">
+                        Pagina {page}
+                      </span>
+
+                      <button
+                        className="pagination-button"
+                        type="button"
+                        onClick={() => handlePageChange(page + 1)}
+                        disabled={!hasMore || loadingProducts}
+                      >
+                        <FiArrowRight />
+                      </button>
+                    </div>
                     <button
                       className="go-home-button"
                       onClick={handleGoHome}
