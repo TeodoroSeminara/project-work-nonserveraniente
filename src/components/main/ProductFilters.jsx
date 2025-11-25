@@ -492,35 +492,46 @@ export default function ProductFilters({ onFilter }) {
   // All'avvio e quando l'URL cambia, aggiorno gli state con i valori settati nella query string
   useEffect(() => {
     const params = new URLSearchParams(location.search);
+    
     setSearch(params.get("name") || "");
     setMinPriceInput(params.get("price_min") || "");
     setMaxPriceInput(params.get("price_max") || "");
+
     setUtilities(
       params.get("utility")
         ? params
             .get("utility")
             .split(",")
-            .map((v) => Number(v))
+            // errore fix che causa loop
+            // .map((v) => Number(v))
+            .map(Number)
         : []
     );
+
     setCategories(
       params.get("category")
         ? params
             .get("category")
             .split(",")
-            .map((v) => Number(v))
+                        // errore fix che causa loop
+            // .map((v) => Number(v))
+            .map(Number)
         : []
     );
     setSortOrder(params.get("sort") || "id_asc");
+
+                // errore fix che causa loop
+
     // Chiama il filtro anche qui per sincronizzare risultati con stato locale
-    onFilter({
-      name: params.get("name") || undefined,
-      price_min: params.get("price_min") || 0,
-      price_max: params.get("price_max") || 999999,
-      utility: params.get("utility") || undefined,
-      category: params.get("category") || undefined,
-      sort: params.get("sort") || "id_asc",
-    });
+    // onFilter({
+    //   name: params.get("name") || undefined,
+    //   price_min: params.get("price_min") || 0,
+    //   price_max: params.get("price_max") || 999999,
+    //   utility: params.get("utility") || undefined,
+    //   category: params.get("category") || undefined,
+    //   sort: params.get("sort") || "id_asc",
+    // });
+    
     // eslint-disable-next-line
   }, [location.search]); // ogni volta che l’URL cambia (es. refresh o apertura nuova scheda)
 
