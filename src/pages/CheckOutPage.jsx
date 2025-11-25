@@ -27,7 +27,7 @@ export default function CheckoutPage() {
 
 
   // <-- stato dati di fatturazione = dati di spedizione
-  const [sameBilling, setSameBilling] = useState(false);
+  const [sameBilling, setSameBilling] = useState(true);
 
   const [formData, setFormData] = useState({
     shipping_address: "",
