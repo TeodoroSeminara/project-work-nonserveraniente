@@ -65,16 +65,16 @@ export default function AllProducts() {
       offset,
     };
 
-      // Evita di ricaricare se la richiesta è identica alla precedente
-      if (JSON.stringify(currentRequest) === JSON.stringify(prevRequest)) {
-        return;
-      }
+    // Evita di ricaricare se la richiesta è identica alla precedente
+    if (JSON.stringify(currentRequest) === JSON.stringify(prevRequest)) {
+      return;
+    }
 
-      setPrevRequest(currentRequest);
+    setPrevRequest(currentRequest);
 
-      console.log("Ricarico prodotti con:", currentRequest);
+    console.log("Ricarico prodotti con:", currentRequest);
 
-      reloadProducts(currentRequest);
+    reloadProducts(currentRequest);
 
     // errore che causava loop
     // reloadProducts({
@@ -120,20 +120,6 @@ export default function AllProducts() {
     navigate("/");
   };
 
-  if (loadingProducts && products.length === 0) {
-    return (
-      <>
-        <LowBar />
-        <div className="all-products-wrapper">
-          <section className="products-section" id="all-products">
-            <h2 className="products-section-title">Bello...</h2>
-            <p className="loading">Caricamento prodotti...</p>
-          </section>
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
       <LowBar />
@@ -151,7 +137,9 @@ export default function AllProducts() {
             {/* MAIN LISTA PRODOTTI */}
             <div className="all-products-main">
               <div className="products-section-flex">
-                {!loadingProducts && products.length === 0 ? (
+                {loadingProducts && products.length === 0 ? (
+                  <p className="loading">Caricamento prodotti...</p>
+                ) : !loadingProducts && products.length === 0 ? (
                   <p>Nessun prodotto trovato con questi filtri.</p>
                 ) : (
                   products.map((p) => (
@@ -223,7 +211,7 @@ export default function AllProducts() {
                   </div>
                 </div>
 
-                {loadingProducts && <p>Caricamento...</p>}
+                
               </div>
             </div>
           </div>
