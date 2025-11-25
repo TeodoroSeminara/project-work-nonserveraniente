@@ -35,6 +35,8 @@
 
 .products-filter-sidebar-collapsible {
     position: fixed;
+    display: flex;
+    flex-direction: column;
     top: 0;
     left: 0;
     height: 100vh;
@@ -49,6 +51,10 @@
 
 .products-filter-sidebar-collapsible.open {
     transform: translateX(0);
+}
+
+.filters-body{
+    overflow-y: auto;
 }
 
 .filters-header {
