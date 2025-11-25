@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom"; // Serve per gestire URL!
+import { useNavigate } from "react-router-dom";
 import { useApi } from "../../context/ApiContext";
 import { ProductCard } from "./ProductCard";
-import { FiHome, FiArrowUp } from "react-icons/fi";
+import { FiHome, FiArrowUp, FiArrowRight, FiArrowLeft } from "react-icons/fi";
 import ProductFilters from "./ProductFilters";
 import "../../styles/PopularProducts.css";
 import "../../styles/AllProducts.css";
@@ -10,23 +10,32 @@ import { getCategories } from "../../services/api";
 import LowBar from "./Lowbar";
 
 export default function AllProducts() {
-  // Hook custom dal context per API prodotti
   const {
     products,
     loadingProducts,
-    loadMoreProducts,
     hasMore,
-    reloadProducts,
+    reloadProducts, // deve accettare un oggetto di parametri (filtri + limit/offset)
   } = useApi();
 
-  // Stato locale delle categorie (usato solo per sidebar filtri)
   const [categories, setCategories] = useState([]);
 
-  // Hooks per manipolare/navigare l’URL della pagina
-  const navigate = useNavigate();
-  const location = useLocation();
+  // 🔹 Stato paginazione
+  const [page, setPage] = useState(1);      // pagina corrente (1-based)
+  const [perPage, setPerPage] = useState(12); // prodotti per pagina
 
-  // Carica categorie dal backend all’avvio
+  // 🔹 Stato filtri attivi
+  const [filters, setFilters] = useState({
+    name: "",
+    price_min: "",
+    price_max: "",
+    utility: "",
+    category: "",
+    sort: "",
+  });
+
+  const navigate = useNavigate();
+
+  // Carico le categorie solo all'inizio
   useEffect(() => {
     async function fetchCategories() {
       try {
@@ -36,68 +45,71 @@ export default function AllProducts() {
         console.error("Errore caricamento categorie:", error);
       }
     }
+
     fetchCategories();
   }, []);
 
-  // Funzione chiamata dal componente filtri ogni volta che cambia qualcosa
-  // Aggiorna l'URL per avere la ricerca condivisibile (e triggera la ricerca)
-  const handleFilter = (filters) => {
-    // Genera stringa della query da tutti i filtri attivi (es: category, price_min...)
-    const params = new URLSearchParams();
-    if (filters.name) params.set("name", filters.name);
-    if (filters.price_min !== undefined)
-      params.set("price_min", filters.price_min);
-    if (filters.price_max !== undefined)
-      params.set("price_max", filters.price_max);
-    if (filters.utility) params.set("utility", filters.utility);
-    if (filters.category) params.set("category", filters.category);
-    if (filters.sort) params.set("sort", filters.sort);
+  // 🔹 Effetto che ricarica i prodotti quando cambiano filtri/pagina/perPage
+  useEffect(() => {
+    const limit = perPage;
+    const offset = (page - 1) * perPage;
 
-    // Naviga all’URL aggiornato
-    navigate(`?${params.toString()}`);
+    console.log("Ricarico prodotti con:", { page, perPage, limit, offset, filters });
 
-    // Aggiorna subito i risultati prodotti secondo i nuovi filtri
-    reloadProducts(filters);
+    reloadProducts({
+      ...filters,
+      limit,
+      offset,
+    });
+    // NON metto reloadProducts nelle deps per evitare loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters, page, perPage]);
+
+  // Quando ProductFilters applica nuovi filtri
+  const handleFilter = (newFilters) => {
+    setFilters((prev) => ({
+      ...prev,
+      ...newFilters,
+    }));
+    setPage(1); // con nuovi filtri riparto dalla prima pagina
   };
 
-  // Quando cambia la query string (per esempio all'apertura, refresh o copia/incolla URL)
-  // aggiorna i prodotti mostrati!
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const filters = {};
+  // Cambio pagina (Prec / Succ)
+  const handlePageChange = (newPage) => {
+    if (newPage < 1) return;
+    // opzionale: bloccare avanti se non ci sono altri risultati
+    // if (newPage > page && !hasMore) return;
+    setPage(newPage);
+  };
 
-    // Estrai filtri dai parametri attuali dell’URL
-    if (params.get("name")) filters.name = params.get("name");
-    if (params.get("price_min")) filters.price_min = params.get("price_min");
-    if (params.get("price_max")) filters.price_max = params.get("price_max");
-    if (params.get("utility")) filters.utility = params.get("utility");
-    if (params.get("category")) filters.category = params.get("category");
-    if (params.get("sort")) filters.sort = params.get("sort");
+  // Cambio numero di prodotti per pagina
+  const handlePerPageChange = (event) => {
+    const newPerPage = parseInt(event.target.value, 10);
+    if (!newPerPage || newPerPage <= 0) return;
 
-    // Aggiorna la lista prodotti filtrati dal context secondo URL
-    reloadProducts(filters);
-    // eslint-disable-next-line
-  }, [location.search]);
+    setPerPage(newPerPage);
+    setPage(1); // resetto alla prima pagina
+  };
 
-  // Scrolla in cima alla pagina prodotti
   const handleScrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Torna alla homepage
   const handleGoHome = () => {
     navigate("/");
   };
 
-  // Mostra caricamento all'avvio
   if (loadingProducts && products.length === 0) {
     return (
-      <div className="all-products-wrapper">
-        <section className="products-section" id="all-products">
-          <h2 className="products-section-title">Bello...</h2>
-          <p className="loading">Caricamento prodotti...</p>
-        </section>
-      </div>
+      <>
+        <LowBar />
+        <div className="all-products-wrapper">
+          <section className="products-section" id="all-products">
+            <h2 className="products-section-title">Bello...</h2>
+            <p className="loading">Caricamento prodotti...</p>
+          </section>
+        </div>
+      </>
     );
   }
 
@@ -107,47 +119,90 @@ export default function AllProducts() {
       <div className="all-products-wrapper">
         <section className="products-section" id="all-products">
           <h2 className="all-products-section-title">Bello...</h2>
+
           <div className="all-products-layout">
-            {/* SIDEBAR FILTRI: riceve le categorie e la callback onFilter */}
+            {/* SIDEBAR FILTRI */}
             <ProductFilters
               categoriesFromDb={categories}
               onFilter={handleFilter}
             />
-            {/* Main area: lista prodotti renderizzati */}
+
+            {/* MAIN LISTA PRODOTTI */}
             <div className="all-products-main">
               <div className="products-section-flex">
                 {!loadingProducts && products.length === 0 ? (
                   <p>Nessun prodotto trovato con questi filtri.</p>
                 ) : (
-                  products.map((p) => <ProductCard key={p.slug} product={p} />)
+                  products.map((p) => (
+                    <ProductCard key={p.slug} product={p} />
+                  ))
                 )}
               </div>
-              {/* FOOTER: mostra quanti prodotti, pulsanti UX */}
+
+              {/* FOOTER: paginazione + controlli */}
               <div className="all-products-footer">
                 <p className="all-products-counter">
-                  Mostrati {products.length} prodotti inutili
+                  Mostrati {products.length} prodotti inutili – pagina {page}
                 </p>
-                <div className="all-products-button-row">
-                  <button
-                    className="go-back-button"
-                    onClick={handleScrollToTop}
-                  >
-                    <FiArrowUp />
-                  </button>
-                  {hasMore && !loadingProducts && (
+
+                <div className="all-products-pagination-row">
+                  {/* Selettore "prodotti per pagina" */}
+                  <div className="per-page-select">
+                    <label>
+                      Prodotti per pagina:{" "}
+                      <select value={perPage} onChange={handlePerPageChange}>
+                        <option value={6}>6</option>
+                        <option value={12}>12</option>
+                        <option value={24}>24</option>
+                        <option value={48}>48</option>
+                      </select>
+                    </label>
+                  </div>
+
+                  {/* Bottoni paginazione */}
+                  <div className="pagination-buttons">
                     <button
-                      className="load-more-button"
+                      className="pagination-button"
                       type="button"
-                      onClick={loadMoreProducts}
+                      onClick={() => handlePageChange(page - 1)}
+                      disabled={page <= 1 || loadingProducts}
                     >
-                      Carica altro
+                      <FiArrowLeft />
                     </button>
-                  )}
-                  {loadingProducts && <p>Caricamento...</p>}
-                  <button className="go-home-button" onClick={handleGoHome}>
-                    <FiHome />
-                  </button>
+
+                    <span className="pagination-current-page">
+                      Pagina {page}
+                    </span>
+
+                    <button
+                      className="pagination-button"
+                      type="button"
+                      onClick={() => handlePageChange(page + 1)}
+                      disabled={!hasMore || loadingProducts}
+                    >
+                      <FiArrowRight />
+                    </button>
+                  </div>
+
+                  {/* Bottoni extra */}
+                  <div className="all-products-button-row">
+                    <button
+                      className="go-back-button"
+                      onClick={handleScrollToTop}
+                    >
+                      <FiArrowUp />
+                    </button>
+
+                    <button
+                      className="go-home-button"
+                      onClick={handleGoHome}
+                    >
+                      <FiHome />
+                    </button>
+                  </div>
                 </div>
+
+                {loadingProducts && <p>Caricamento...</p>}
               </div>
             </div>
           </div>
@@ -156,116 +211,3 @@ export default function AllProducts() {
     </>
   );
 }
-
-// import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { useApi } from "../../context/ApiContext";
-// import { ProductCard } from "./ProductCard";
-// import { FiHome, FiArrowUp } from "react-icons/fi";
-// import ProductFilters from "./ProductFilters";
-// import "../../styles/PopularProducts.css";
-// import "../../styles/AllProducts.css";
-// import { getCategories } from "../../services/api";
-
-// export default function AllProducts() {
-//   const {
-//     products,
-//     loadingProducts,
-//     loadMoreProducts,
-//     hasMore,
-//     reloadProducts,
-//   } = useApi();
-//   const [categories, setCategories] = useState([]);
-//   const navigate = useNavigate();
-
-//   useEffect(() => {
-//     async function fetchCategories() {
-//       try {
-//         const cats = await getCategories(); // Usa la funzione da api.js
-//         setCategories(cats);
-//       } catch (error) {
-//         console.error("Errore caricamento categorie:", error);
-//       }
-//     }
-//     fetchCategories();
-//   }, []);
-//   const handleFilter = (filters) => {
-//     console.log("Filtri applicati:", filters); // Debug
-//     reloadProducts(filters);
-//   };
-
-//   const handleScrollToTop = () => {
-//     window.scrollTo({ top: 0, behavior: "smooth" });
-//   };
-
-//   const handleGoHome = () => {
-//     navigate("/");
-//   };
-
-//   if (loadingProducts && products.length === 0) {
-//     return (
-//       <div className="all-products-wrapper">
-//         <section className="products-section" id="all-products">
-//           <h2 className="products-section-title">Bello...</h2>
-//           <p className="loading">Caricamento prodotti...</p>
-//         </section>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="all-products-wrapper">
-//       <section className="products-section" id="all-products">
-//         <h2 className="all-products-section-title">Bello...</h2>
-
-//         <div className="all-products-layout">
-//           {/* SIDEBAR FILTRI */}
-//           <ProductFilters
-//             categoriesFromDb={categories}
-//             onFilter={handleFilter}
-//           />
-
-//           {/* COLONNA PRINCIPALE */}
-//           <div className="all-products-main">
-//             <div className="products-section-flex">
-//               {!loadingProducts && products.length === 0 ? (
-//                 <p>Nessun prodotto trovato con questi filtri.</p>
-//               ) : (
-//                 products.map((p) => <ProductCard key={p.slug} product={p} />)
-//               )}
-//             </div>
-
-//             {/* FOOTER DELLA LISTA */}
-//             <div className="all-products-footer">
-//               <p className="all-products-counter">
-//                 Mostrati {products.length} prodotti inutili
-//               </p>
-
-//               <div className="all-products-button-row">
-//                 <button className="go-back-button" onClick={handleScrollToTop}>
-//                   <FiArrowUp />
-//                 </button>
-
-//                 {hasMore && !loadingProducts && (
-//                   <button
-//                     className="load-more-button"
-//                     type="button"
-//                     onClick={loadMoreProducts}
-//                   >
-//                     Carica altro
-//                   </button>
-//                 )}
-
-//                 {loadingProducts && <p>Caricamento...</p>}
-
-//                 <button className="go-home-button" onClick={handleGoHome}>
-//                   <FiHome />
-//                 </button>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </section>
-//     </div>
-//   );
-// }

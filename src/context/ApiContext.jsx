@@ -1,90 +1,51 @@
-import { useContext, createContext, useState, useEffect } from "react";
-import * as api from "../services/api";
+// ApiContext.jsx (o come si chiama)
 
-const apiContextDefaultvalue = {
-    products: [],
-    loadingProducts: false,
-    reloadProducts: () => { },
-    loadMoreProducts: () => { },
-    getProduct: () => Promise.resolve(null),
-    hasMore: true,
-}
+import { createContext, useContext, useState, useCallback } from "react";
+import { getProducts } from "../services/api";
 
-const ApiContext = createContext(apiContextDefaultvalue);
+const ApiContext = createContext();
 
-export const ApiProvider = ({ children }) => {
-    const [products, setProducts] = useState([]);
-    const [loadingProducts, setLoadingProducts] = useState(false);
-    const [offset, setOffset] = useState(0);
-    const [limit] = useState(12);
-    const [hasMore, setHasMore] = useState(true);
-    const [currentFilters, setCurrentFilters] = useState({}); // <-- NUOVO: mantiene i filtri correnti
+export function ApiProvider({ children }) {
+  const [products, setProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
 
-    const loadProducts = async (reset = false, filters = {}) => {
-        setLoadingProducts(true);
-        try {
-            const currentOffset = reset ? 0 : offset;
+  // ⬇⬇⬇ FUNZIONE CHIAVE ⬇⬇⬇
+  const reloadProducts = useCallback(async (params = {}) => {
+    setLoadingProducts(true);
+    try {
+      console.log("Chiamo getProducts con params:", params);
+      const data = await getProducts(params);
+      setProducts(data);
 
-            // Unisci i filtri correnti con limit e offset
-            const params = {
-                ...filters,
-                limit,
-                offset: currentOffset
-            };
+      // hasMore: se ho esattamente "limit" prodotti, suppongo che ci sia ancora roba dopo
+      if (params.limit !== undefined) {
+        const lim = Number(params.limit);
+        setHasMore(data.length === lim);
+      } else {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error("Errore nel caricamento prodotti:", error);
+    } finally {
+      setLoadingProducts(false);
+    }
+  }, []);
 
-            const data = await api.getProducts(params);
-
-            if (reset) {
-                setProducts(data);
-                setOffset(limit);
-            } else {
-                setProducts(prev => [...prev, ...data]);
-                setOffset(prev => prev + limit);
-            }
-
-            setHasMore(data.length === limit);
-        } catch (error) {
-            console.error("Errore caricamento prodotti:", error);
-            setHasMore(false);
-        } finally {
-            setLoadingProducts(false);
-        }
-    };
-
-    // Ricarica con nuovi filtri (reset della paginazione)
-    const reloadProducts = (filters = {}) => {
-        setCurrentFilters(filters); // Salva i filtri
-        setOffset(0); // Reset offset
-        loadProducts(true, filters);
-    };
-
-    // Carica più prodotti mantenendo gli stessi filtri
-    const loadMoreProducts = () => {
-        loadProducts(false, currentFilters);
-    };
-
-    const getProduct = async (slug) => {
-        return api.getProductBySlug(slug);
-    };
-
-    useEffect(() => {
-        loadProducts(true, {}); // Carica iniziale senza filtri
-    }, []);
-
-    const value = {
+  return (
+    <ApiContext.Provider
+      value={{
         products,
         loadingProducts,
-        reloadProducts,
-        loadMoreProducts,
         hasMore,
-        getProduct,
-    };
+        reloadProducts,
+      }}
+    >
+      {children}
+    </ApiContext.Provider>
+  );
+}
 
-    return (
-        <ApiContext.Provider value={value}>
-            {children}
-        </ApiContext.Provider>
-    );
-};
-
-export const useApi = () => useContext(ApiContext);
+export function useApi() {
+  return useContext(ApiContext);
+}

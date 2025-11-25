@@ -20,23 +20,24 @@ function toQueryString(params) {
 // Viene usata da PopularProducts, LastAdded, AllProducts, ecc.
 // Puoi passare parametri come {limit: 12, offset: 0, name: "tazza"}
 // GET prodotti con filtri e paginazione
+// ⬇⬇⬇ QUESTA È LA PARTE IMPORTANTE ⬇⬇⬇
 export async function getProducts(params = {}) {
+  // QUI non mettiamo nessun offset/limit fisso: usiamo quello che passa il chiamante
   const queryString = toQueryString(params);
-  const url = API_BASE_URL + queryString;
 
-  console.log("Fetching products from:", url); // Debug
-  // Facciamo una GET all'endpoint /api/nonserveaniente
-  const res = await fetch(url);
-  // Se la risposta NON è ok, lanciamo un errore.
+  console.log("Fetching products from:", `${API_BASE_URL}${queryString}`);
+
+  const res = await fetch(`${API_BASE_URL}${queryString}`);
+
   if (!res.ok) {
     throw new Error("Errore nel recupero dei prodotti");
   }
-  // Debug
+
   const data = await res.json();
   console.log("Products received:", data.length);
-
   return data;
 }
+
 
 // GET singolo prodotto per slug
 export async function getProductBySlug(slug) {
