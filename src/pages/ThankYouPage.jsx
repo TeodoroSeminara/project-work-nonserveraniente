@@ -24,7 +24,7 @@ export default function ThankYou() {
 
         const timer = setTimeout(() => {
             navigate("/");
-        }, 5000); // 5 secondi
+        }, 40000); // 40 secondi
 
         return () => clearTimeout(timer);
     }, [invoice, navigate]); 

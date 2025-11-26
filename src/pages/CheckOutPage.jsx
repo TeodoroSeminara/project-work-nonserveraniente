@@ -207,7 +207,6 @@ export default function CheckoutPage() {
             return;
           }
           const { invoice, items } = data;
-          alert("Ordine completato con successo!");
           localStorage.removeItem("cartItems");
           setCartItems([]);
           navigate("/ThankYou", {
