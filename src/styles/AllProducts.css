@@ -11,6 +11,12 @@
     text-align: center;
 }
 
+.all-products-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .all-products-footer {
     margin-top: 24px;
     display: flex;

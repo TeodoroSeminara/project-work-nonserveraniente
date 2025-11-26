@@ -66,7 +66,7 @@
 
 }
 
-@media screen and (max-width: 670px) {
+@media (max-width: 670px) {
 
     .product-card {
         width: 350px;
@@ -74,6 +74,18 @@
 
     .product-card-image-wrapper {
         height: 270px;
+    }
+
+}
+
+@media (max-width: 430px) {
+
+    .product-card {
+        width: 230px;
+    }
+
+    .product-card-image-wrapper {
+        height: 180px;
     }
 
 }

@@ -49,3 +49,9 @@
         color: var(--text)!important;
     }
 }
+
+@media (max-width: 450px) {
+    .navbar {
+        justify-content: center !important;
+    }
+}
