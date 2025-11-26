@@ -412,7 +412,7 @@ const categoryOptions = [
   {
     label: (
       <>
-        Casa e Arredo <FaHome />
+        <FaHome />Casa e Arredo 
       </>
     ),
     value: 1,
@@ -420,7 +420,7 @@ const categoryOptions = [
   {
     label: (
       <>
-        Tecnologia Inutile <FaMicrochip />
+        <FaMicrochip />Tecnologia Inutile 
       </>
     ),
     value: 2,
@@ -428,7 +428,7 @@ const categoryOptions = [
   {
     label: (
       <>
-        Accessori e Moda <FaTshirt />
+        <FaTshirt />Accessori e Moda 
       </>
     ),
     value: 3,
@@ -436,7 +436,7 @@ const categoryOptions = [
   {
     label: (
       <>
-        Cucina e Tavola <FaKitchenSet />
+        <FaKitchenSet />Cucina e Tavola 
       </>
     ),
     value: 4,
@@ -444,7 +444,7 @@ const categoryOptions = [
   {
     label: (
       <>
-        Tempo libero & Regali <FaGift />
+        <FaGift />Tempo libero & Regali 
       </>
     ),
     value: 5,
@@ -452,7 +452,7 @@ const categoryOptions = [
   {
     label: (
       <>
-        Sport Outdoor <MdSportsBasketball />
+        <MdSportsBasketball />Sport Outdoor 
       </>
     ),
     value: 6,
@@ -460,7 +460,7 @@ const categoryOptions = [
   {
     label: (
       <>
-        Ufficio & Studio <PiOfficeChairFill />
+        <PiOfficeChairFill />Ufficio & Studio 
       </>
     ),
     value: 7,
